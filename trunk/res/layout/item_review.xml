@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="4dp" >
+
+    <elitech.vietnam.myfashion.widgets.CircularImageView
+        android:id="@+id/detail_review_imgAvatar"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/no_avatar" />
+
+    <TextView
+        android:id="@+id/detail_review_txtName"
+        style="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/detail_review_imgAvatar"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/detail_review_vNameSeparator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/detail_review_txtName"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/detail_review_imgAvatar"
+        android:background="@android:drawable/divider_horizontal_bright" />
+
+    <TextView
+        android:id="@+id/detail_review_txtTitle"
+        style="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/detail_review_vNameSeparator"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@+id/detail_review_imgAvatar" />
+
+    <RatingBar
+        android:id="@+id/detail_review_rtbRating"
+        style="?android:attr/ratingBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/detail_review_txtTitle"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@+id/detail_review_imgAvatar"
+        android:rating="2" />
+
+    <TextView
+        android:id="@+id/detail_review_txtTime"
+        style="?android:attr/textAppearanceSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/detail_review_rtbRating"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@+id/detail_review_imgAvatar"
+        android:textColor="@color/gray"
+        android:textSize="12sp" />
+
+</RelativeLayout>

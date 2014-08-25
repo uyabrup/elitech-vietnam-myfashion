@@ -1,0 +1,17 @@
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bod_layRefresh"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#d3d6db"
+    android:padding="5dp" >
+
+    <GridView
+        android:id="@+id/bod_gvMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:horizontalSpacing="5dp"
+        android:verticalSpacing="5dp"
+        android:numColumns="@integer/grid_columns" />
+
+</android.support.v4.widget.SwipeRefreshLayout>
