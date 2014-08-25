@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/item_border"
+    android:descendantFocusability="blocksDescendants" >
+
+    <TextView
+        android:id="@+id/itembestofday_tvName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:maxLines="2"
+        android:minLines="2"
+        android:textColor="@color/green"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/itembestofday_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/itembestofday_tvName"
+        android:layout_margin="5dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/ok"
+        android:scaleType="centerCrop"
+        android:src="@drawable/no_avatar" />
+
+    <TextView
+        android:id="@+id/itembestofday_tvPrice"
+        style="?android:attr/textAppearanceSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/itembestofday_image"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:textColor="@color/red" />
+
+    <LinearLayout
+        android:id="@+id/itembestofday_layLikesCart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/itembestofday_tvPrice"
+        android:background="@drawable/bg_likecart"
+        android:orientation="horizontal" >
+
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            layout="@layout/button_like" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@android:drawable/divider_horizontal_bright" />
+
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            layout="@layout/button_cart" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/itembestofday_layoutSale"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/itembestofday_image"
+        android:layout_alignTop="@+id/itembestofday_image"
+        android:layout_marginRight="-50dp"
+        android:layout_marginTop="-10dp" >
+
+        <ImageView
+            android:id="@+id/itembestofday_imgSale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/ok"
+            android:src="@drawable/saleoff" />
+
+        <TextView
+            android:id="@+id/itembestofday_txtSale"
+            style="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="7dp"
+            android:fontFamily="serif"
+            android:textColor="#af6823"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+</RelativeLayout>

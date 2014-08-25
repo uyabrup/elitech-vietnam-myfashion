@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="white">#FFFFFF</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="fuchsia">#FF00FF</color>
+    <color name="red">#cc0000</color>
+    <color name="silver">#C0C0C0</color>
+    <color name="gray">#808080</color>
+    <color name="darkgray">#333333</color>
+    <color name="olive">#808000</color>
+    <color name="purple">#9933cc</color>
+    <color name="maroon">#800000</color>
+    <color name="aqua">#00FFFF</color>
+    <color name="lime">#00FF00</color>
+    <color name="teal">#008080</color>
+    <color name="green">#046738</color>
+    <color name="blue">#0099cc</color>
+    <color name="darkblue">#2f6397</color>
+    <color name="navy">#000080</color>
+    <color name="black">#000000</color>
+    <color name="orange">#ff8800</color>
+    <color name="light_blue">#33b5e5</color>
+    <color name="light_orange">#ffbb33</color>
+    <color name="light_purple">#aa66cc</color>
+    <color name="light_green">#a3d0a3</color>
+    <color name="pink">#e89090</color>
+    <color name="background">#ececec</color>
+    <color name="theme">#ececec</color>
+    <color name="dark_orange">#b98724</color>
+    <color name="light_red">#ff4444</color>
+    <color name="cornsilk">#FFF8DC</color>
+    <color name="cosmic_latte">#FFF8E7</color>
+    <color name="floral_white">#FFFAF0</color>
+    <color name="menuclick_p">#00090909</color>
+    <color name="menuclick_d">#FFFFFFFF</color>
+    <color name="menu_bg">#211427</color>
+    <color name="actionbarcolor">#bfa644</color>
+    <color name="stackedcolor">#d6d6d6</color>
+    <color name="tabindicatorcolor">#bfa644</color>
+    <color name="popupcolor">#f2f2f2</color>
+    <color name="accentcolor">#eece6f</color>
+    <color name="actionmodebackgroundcolor">#ffffff</color>
+    <color name="actionmodehighlightcolor">#eece6f</color>
+
+    <color name="likebutton_press">#2Fbfa644</color>
+    <color name="likebutton_normal">#0Fbfa644</color>
+    <color name="menuicon_press">#dbbe5e</color>
+    <color name="menuicon_normal">#00FFFFFF</color>
+    <color name="btn_checkout_press">#6ead3a</color>
+    <color name="btn_checkout_normal">#67ba2a</color>
+</resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/slidemenu_txtChild"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:drawableLeft="@drawable/menuicon_best"
+    android:drawablePadding="10dp"
+    android:gravity="center_vertical"
+    android:paddingBottom="5dp"
+    android:paddingLeft="20dp"
+    android:paddingTop="5dp"
+    android:text="@string/bestoftoday"
+    android:textAppearance="?android:attr/textAppearanceSmall"
+    android:textColor="#d7d7d7" />

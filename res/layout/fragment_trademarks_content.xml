@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/trademarks_layRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#d3d6db"
+        android:padding="5dp" >
+
+        <elitech.vietnam.myfashion.widgets.QuickReturnGridView
+            android:id="@+id/trademarks_gvMain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:horizontalSpacing="5dp"
+            android:numColumns="@integer/grid_columns"
+            android:verticalSpacing="5dp" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <HorizontalScrollView
+        android:id="@+id/trademarks_layQuickReturn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#F5D295"
+        android:fillViewport="true" >
+
+        <RadioGroup
+            android:id="@+id/trademarks_layQuickItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+        </RadioGroup>
+    </HorizontalScrollView>
+
+</RelativeLayout>

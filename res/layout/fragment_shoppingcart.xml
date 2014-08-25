@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#d3d6db"
+    android:orientation="vertical" >
+
+    <com.sothree.slidinguppanel.SlidingUpPanelLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        app:dragView="@+id/cart_layoutPurchase"
+        app:panelHeight="68dp"
+        app:paralaxOffset="100dp"
+        app:shadowHeight="4dp" >
+
+        <elitech.vietnam.myfashion.widgets.QuickReturnListView
+            android:id="@+id/cart_lvMain"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp" />
+
+        <RelativeLayout
+            android:id="@+id/cart_layoutPurchase"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/white"
+            android:padding="10dp" >
+
+            <TextView
+                android:id="@+id/cart_txtTotal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/cart_txtTotalValue"
+                android:layout_toStartOf="@+id/cart_txtTotalValue"
+                android:text="Item Total:" />
+
+            <TextView
+                android:id="@+id/cart_txtTotalValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/cart_btnPurchase"
+                android:layout_toStartOf="@+id/cart_btnPurchase"
+                android:text="100 VND" />
+
+            <TextView
+                android:id="@+id/cart_txtShipping"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cart_txtTotal"
+                android:layout_toLeftOf="@+id/cart_txtShippingValue"
+                android:layout_toStartOf="@+id/cart_txtShippingValue"
+                android:text="Shipping:" />
+
+            <TextView
+                android:id="@+id/cart_txtShippingValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cart_txtTotal"
+                android:layout_toLeftOf="@+id/cart_btnPurchase"
+                android:layout_toStartOf="@+id/cart_btnPurchase"
+                android:text="100 VND" />
+
+            <View
+                android:id="@+id/cart_dividerPrice"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/cart_txtShipping"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_toLeftOf="@+id/cart_btnPurchase"
+                android:layout_toStartOf="@+id/cart_btnPurchase"
+                android:background="@android:drawable/divider_horizontal_bright" />
+
+            <TextView
+                android:id="@+id/cart_txtTotalPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cart_dividerPrice"
+                android:layout_toLeftOf="@+id/cart_txtTotalPriceValue"
+                android:layout_toStartOf="@+id/cart_txtTotalPriceValue"
+                android:text="Order Total:"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/cart_txtTotalPriceValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cart_dividerPrice"
+                android:layout_toLeftOf="@+id/cart_btnPurchase"
+                android:layout_toStartOf="@+id/cart_btnPurchase"
+                android:text="100 VND"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/cart_btnPurchase"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/bg_button_checkout"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="@string/checkout"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+        </RelativeLayout>
+    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/ok" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/go_shopping" />
+    </LinearLayout>
+
+</RelativeLayout>
