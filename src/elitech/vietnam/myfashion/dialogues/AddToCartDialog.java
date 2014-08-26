@@ -8,7 +8,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.Button;
@@ -19,22 +18,23 @@ import elitech.vietnam.myfashion.R;
  * @author Cong
  *
  */
-public class ConfirmDialogFragment extends DialogFragment implements View.OnClickListener {
+public class AddToCartDialog extends DialogFragment implements View.OnClickListener {
 	
 	public static final String ARG_MESSAGE = "ARG_MESSAGE";
 	public static final String ARG_TITLE = "ARG_TITLE";
 	public static final String ARG_REQUEST = "ARG_REQUEST";
+	public static final String ARG_POSITION = "ARG_POSITION";
 	
-	ConfirmDialogClick mClick;
+	AddToCartCallBack mClick;
 	
 	TextView mContent;
 	Button mBtnYes, mBtnNo;
 	
 	String mMessage, mTitle;
-	int mRequest;
+	int mRequest, mPosition;
 	
-	public static Builder createBuilder() {
-		return new Builder();
+	public static AddToCartDialog newInstance() {
+		return null;
 	}
 	
 	@Override
@@ -42,14 +42,15 @@ public class ConfirmDialogFragment extends DialogFragment implements View.OnClic
 		super.onCreate(savedInstanceState);
 		if (getTargetFragment() != null) {
 			mRequest = getTargetRequestCode();
-			mClick = (ConfirmDialogClick) getTargetFragment();
+			mClick = (AddToCartCallBack) getTargetFragment();
 		} else {
 			mRequest = getArguments().getInt(ARG_REQUEST);
-			mClick = (ConfirmDialogClick) getActivity();
+			mClick = (AddToCartCallBack) getActivity();
 		}
 		mMessage = getArguments().getString(ARG_MESSAGE);
 		mTitle = getArguments().getString(ARG_TITLE);
-		if (mClick == null || mRequest <= 0) {
+		mPosition = getArguments().getInt(ARG_POSITION);
+		if (mClick == null || mRequest < 0) {
 			throw new IllegalArgumentException("Must set call back and request code");
 		}
 	}
@@ -72,21 +73,21 @@ public class ConfirmDialogFragment extends DialogFragment implements View.OnClic
 //	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		return new AlertDialog.Builder(getActivity(), R.style.Theme_Base_AppCompat_Dialog_Light_FixedSize)
-		.setTitle(mTitle)
-		.setMessage(mMessage)
+		return new AlertDialog.Builder(getActivity())
+		.setTitle("Add to cart")
+		.setMessage("Lorem ispu dollo reman nesta")
 		.setPositiveButton(R.string.addtocart, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				if (mClick != null)
-					mClick.yesClick(mRequest);
+					mClick.yesClick(mRequest, mPosition);
 			}
 		})
 		.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				if (mClick != null)
-					mClick.noClick(mRequest);
+					mClick.noClick(mRequest, mPosition);
 			}
 		}).create();
 	}
@@ -96,11 +97,11 @@ public class ConfirmDialogFragment extends DialogFragment implements View.OnClic
 		switch (v.getId()) {
 		case R.id.confirmdialog_btnYes:
 			if (mClick != null)
-				mClick.yesClick(mRequest);
+				mClick.yesClick(mRequest, mPosition);
 			break;
 		case R.id.confirmdialog_btnNo:
 			if (mClick != null)
-				mClick.noClick(mRequest);
+				mClick.noClick(mRequest, mPosition);
 			break;
 		default:
 			break;
@@ -118,48 +119,8 @@ public class ConfirmDialogFragment extends DialogFragment implements View.OnClic
 		super.show(manager, getClass().getName());
 	}
 	
-	public interface ConfirmDialogClick {
-		public void yesClick(int requestCode);
-		public void noClick(int requestCode);
-	}
-	
-	public static class Builder {
-		String mMessage, mTitle;
-		ConfirmDialogClick mCallBack;
-		int mRequest;
-		
-		private Builder() {}
-		
-		public Builder setMessage(String message) {
-			mMessage = message;
-			return this;
-		}
-		
-		public Builder setTitle(String title) {
-			mTitle = title;
-			return this;
-		}
-		
-		public Builder setRequestCode(int requestCode) {
-			mRequest = requestCode;
-			return this;
-		}
-		
-		public Builder setCallBack(ConfirmDialogClick callBack) {
-			mCallBack = callBack;
-			return this;
-		}
-		
-		public ConfirmDialogFragment build() {
-			ConfirmDialogFragment fragment = new ConfirmDialogFragment();
-			Bundle bundle = new Bundle();
-			bundle.putString(ARG_MESSAGE, mMessage);
-			bundle.putString(ARG_TITLE, mTitle);
-			bundle.putInt(ARG_REQUEST, mRequest);
-			if (mCallBack instanceof Fragment)
-				fragment.setTargetFragment((Fragment) mCallBack, mRequest);
-			fragment.setArguments(bundle);
-			return fragment;
-		}
+	public interface AddToCartCallBack {
+		public void yesClick(int request, int position);
+		public void noClick(int request, int position);
 	}
 }

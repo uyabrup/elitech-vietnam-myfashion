@@ -19,17 +19,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import elitech.vietnam.myfashion.R;
 import elitech.vietnam.myfashion.adapters.ProductGridAdapter;
+import elitech.vietnam.myfashion.dialogues.AddToCartDialog.AddToCartCallBack;
 import elitech.vietnam.myfashion.entities.Product;
 
 /**
  * @author Cong
  *
  */
-public class BestOfTodayFragment extends AbstractFragment implements OnRefreshListener, OnItemClickListener {
+public class BestOfTodayFragment extends AbstractFragment implements OnRefreshListener, OnItemClickListener, AddToCartCallBack {
 
 	private static final int LOADMORE = 20;
 	
@@ -49,7 +51,7 @@ public class BestOfTodayFragment extends AbstractFragment implements OnRefreshLi
 		mGrid = (GridView) view.findViewById(R.id.bod_gvMain);
 		
 		mLayoutRefresh.setColorSchemeResources(R.color.red, R.color.green, R.color.blue, R.color.orange);
-		mAdapter = new ProductGridAdapter(mActivity, R.layout.item_bestofday, mBest);
+		mAdapter = new ProductGridAdapter(mActivity, R.layout.item_bestofday, mBest, this);
 		mGrid.setAdapter(mAdapter);
 		
 		mLayoutRefresh.setOnRefreshListener(this);
@@ -114,5 +116,16 @@ public class BestOfTodayFragment extends AbstractFragment implements OnRefreshLi
 	
 	public static interface BestOfTodayCallback {
 		public void onItemClick(Product product);
+	}
+
+
+	@Override
+	public void yesClick(int request, int position) {
+		Toast.makeText(mActivity, "Yes", Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void noClick(int request, int position) {
+		Toast.makeText(mActivity, "No", Toast.LENGTH_SHORT).show();
 	}
 }

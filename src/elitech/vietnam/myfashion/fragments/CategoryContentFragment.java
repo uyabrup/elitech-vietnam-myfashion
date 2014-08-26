@@ -52,7 +52,7 @@ public class CategoryContentFragment extends AbstractFragment implements OnRefre
 		mGrid = (GridView) view.findViewById(R.id.bod_gvMain);
 
 		mLayoutRefresh.setColorSchemeResources(R.color.red, R.color.green, R.color.blue, R.color.orange);
-		mAdapter = new ProductGridAdapter(mActivity, R.layout.item_bestofday, mProducts);
+		mAdapter = new ProductGridAdapter(mActivity, R.layout.item_bestofday, mProducts, this);
 		mGrid.setAdapter(mAdapter);
 
 		mLayoutRefresh.setOnRefreshListener(this);

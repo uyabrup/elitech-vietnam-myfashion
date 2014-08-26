@@ -9,6 +9,8 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +26,7 @@ import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import elitech.vietnam.myfashion.MainActivity;
 import elitech.vietnam.myfashion.R;
 import elitech.vietnam.myfashion.config.Const;
+import elitech.vietnam.myfashion.dialogues.AddToCartDialog;
 import elitech.vietnam.myfashion.entities.Product;
 import elitech.vietnam.myfashion.utilities.Utilities;
 
@@ -34,11 +37,13 @@ import elitech.vietnam.myfashion.utilities.Utilities;
 public class ProductGridAdapter extends ArrayAdapter<Product> {
 	
 	MainActivity mActivity;
+	Fragment mFragment;
 	int mImageHeight;
 
-	public ProductGridAdapter(Context context, int resource, List<Product> objects) {
+	public ProductGridAdapter(Context context, int resource, List<Product> objects, Fragment fragment) {
 		super(context, resource, objects);
 		mActivity = (MainActivity) context;
+		mFragment = fragment;
 		mImageHeight = mActivity.getConfig().getScreenHeigh() / 5 * 4 / mActivity.getResources().getInteger(R.integer.grid_columns);
 	}
 
@@ -78,7 +83,7 @@ public class ProductGridAdapter extends ArrayAdapter<Product> {
 			@Override
 			public void onClick(View v) {
 				if (mActivity.getLoggedinUser() == null)
-					return;
+					return;	// TODO: 
 				dummyHolder.mBtnLikes.setEnabled(false);
 				int liked = dummyItem.Liked() ? -1 : 1;
 				mActivity.getServices().doLikes(dummyItem.Id, mActivity.getLoggedinUser().Id, liked, 1, new Callback<Integer>() {
@@ -98,6 +103,19 @@ public class ProductGridAdapter extends ArrayAdapter<Product> {
 						dummyHolder.mBtnLikes.setEnabled(true);
 					}
 				});
+			}
+		});
+		
+		final int dummyPos = position;
+		holder.mBtnCart.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Bundle args = new Bundle();
+				args.putInt(AddToCartDialog.ARG_POSITION, dummyPos);
+				AddToCartDialog dialog = new AddToCartDialog();
+				dialog.setArguments(args);
+				dialog.setTargetFragment(mFragment, 0);
+				dialog.show(mFragment.getFragmentManager());
 			}
 		});
 		

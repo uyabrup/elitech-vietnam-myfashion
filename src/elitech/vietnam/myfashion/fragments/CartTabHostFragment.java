@@ -8,9 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
+
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+
 import elitech.vietnam.myfashion.R;
-import elitech.vietnam.myfashion.widgets.QuickReturnListView;
 
 /**
  * @author Cong
@@ -18,8 +21,9 @@ import elitech.vietnam.myfashion.widgets.QuickReturnListView;
  */
 public class CartTabHostFragment extends AbstractFragment {
 
+	SlidingUpPanelLayout mSliding;
 	RelativeLayout mLayoutCheckout;
-	QuickReturnListView mListCart;
+	ListView mListCart;
 	
 	String[] txt = new String[] {"Android","Android","Android","Android","Android","Android","Android","Android","Android","Android","Android","Android","Android","Android","Android","Android","Android","Android","Android","Android","Android","Android","Android","Android","Android","Android","Android","Android","Android","Android","Android","Android","Android","Android","Android","Android","Android","Android","Android","Android","Android"};
 	
@@ -30,13 +34,12 @@ public class CartTabHostFragment extends AbstractFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_shoppingcart, container, false);
 		
+		mSliding = (SlidingUpPanelLayout) view.findViewById(R.id.cart_layoutSliding);
 		mLayoutCheckout = (RelativeLayout) view.findViewById(R.id.cart_layoutPurchase);
-		mListCart = (QuickReturnListView) view.findViewById(R.id.cart_lvMain);
+		mListCart = (ListView) view.findViewById(R.id.cart_lvMain);
 		
 		ArrayAdapter<String> adapter = new ArrayAdapter<>(mActivity, android.R.layout.simple_expandable_list_item_1, txt);
 		mListCart.setAdapter(adapter);
-		
-		mListCart.setQuickReturnView(mLayoutCheckout);
 		
 		return view;
 	}
