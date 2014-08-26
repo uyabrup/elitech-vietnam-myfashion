@@ -7,15 +7,15 @@
     android:orientation="vertical" >
 
     <com.sothree.slidinguppanel.SlidingUpPanelLayout
+        android:id="@+id/cart_layoutSliding"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="bottom"
         app:dragView="@+id/cart_layoutPurchase"
-        app:panelHeight="68dp"
-        app:paralaxOffset="100dp"
-        app:shadowHeight="4dp" >
+        app:panelHeight="52dp"
+        app:paralaxOffset="100dp" >
 
-        <elitech.vietnam.myfashion.widgets.QuickReturnListView
+        <ListView
             android:id="@+id/cart_lvMain"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -30,86 +30,189 @@
             android:background="@color/white"
             android:padding="10dp" >
 
-            <TextView
-                android:id="@+id/cart_txtTotal"
+            <LinearLayout
+                android:id="@+id/cart_layoutCheckHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/cart_txtTotalValue"
-                android:layout_toStartOf="@+id/cart_txtTotalValue"
-                android:text="Item Total:" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
 
-            <TextView
-                android:id="@+id/cart_txtTotalValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/cart_btnPurchase"
-                android:layout_toStartOf="@+id/cart_btnPurchase"
-                android:text="100 VND" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3 items"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/cart_txtShipping"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/cart_txtTotal"
-                android:layout_toLeftOf="@+id/cart_txtShippingValue"
-                android:layout_toStartOf="@+id/cart_txtShippingValue"
-                android:text="Shipping:" />
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@android:drawable/divider_horizontal_bright" />
 
-            <TextView
-                android:id="@+id/cart_txtShippingValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/cart_txtTotal"
-                android:layout_toLeftOf="@+id/cart_btnPurchase"
-                android:layout_toStartOf="@+id/cart_btnPurchase"
-                android:text="100 VND" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:text="Total: "
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:text="1000000 VND"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@android:drawable/divider_horizontal_bright" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/ic_checkout" />
+            </LinearLayout>
 
             <View
-                android:id="@+id/cart_dividerPrice"
-                android:layout_width="match_parent"
+                android:id="@+id/cart_checkoutHeaderDivider"
+                android:layout_width="wrap_content"
                 android:layout_height="1dp"
-                android:layout_below="@+id/cart_txtShipping"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_toLeftOf="@+id/cart_btnPurchase"
-                android:layout_toStartOf="@+id/cart_btnPurchase"
+                android:layout_below="@+id/cart_layoutCheckHeader"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
                 android:background="@android:drawable/divider_horizontal_bright" />
 
-            <TextView
-                android:id="@+id/cart_txtTotalPrice"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/cart_dividerPrice"
-                android:layout_toLeftOf="@+id/cart_txtTotalPriceValue"
-                android:layout_toStartOf="@+id/cart_txtTotalPriceValue"
-                android:text="Order Total:"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/cart_txtTotalPriceValue"
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/cart_dividerPrice"
-                android:layout_toLeftOf="@+id/cart_btnPurchase"
-                android:layout_toStartOf="@+id/cart_btnPurchase"
-                android:text="100 VND"
-                android:textStyle="bold" />
+                android:layout_below="@+id/cart_checkoutHeaderDivider" >
 
-            <Button
-                android:id="@+id/cart_btnPurchase"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:layout_marginStart="10dp"
-                android:background="@drawable/bg_button_checkout"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:text="@string/checkout"
-                android:textColor="@color/white"
-                android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/cart_txtNote"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/textfield_default_holo_light"
+                    android:text="Add optional note to seller"
+                    android:textColor="@color/gray" />
+
+                <TextView
+                    android:id="@+id/cart_txtItemTotalLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cart_txtNote"
+                    android:layout_marginTop="20dp"
+                    android:text="Item total:"
+                    android:textColor="@color/gray" />
+
+                <TextView
+                    android:id="@+id/cart_txtItemTotal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cart_txtNote"
+                    android:layout_marginTop="20dp"
+                    android:layout_toEndOf="@+id/cart_txtItemTotalLabel"
+                    android:layout_toRightOf="@+id/cart_txtItemTotalLabel"
+                    android:gravity="end"
+                    android:text="100000 VND:"
+                    android:textColor="@color/gray" />
+
+                <TextView
+                    android:id="@+id/cart_txtShippingLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cart_txtItemTotalLabel"
+                    android:layout_marginTop="5dp"
+                    android:text="Shipping:"
+                    android:textColor="@color/gray" />
+
+                <TextView
+                    android:id="@+id/cart_txtShipping"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cart_txtItemTotalLabel"
+                    android:layout_marginTop="5dp"
+                    android:layout_toEndOf="@+id/cart_txtShippingLabel"
+                    android:layout_toRightOf="@+id/cart_txtShippingLabel"
+                    android:gravity="end"
+                    android:text="20000 VND"
+                    android:textColor="@color/gray" />
+
+                <TextView
+                    android:id="@+id/cart_txtOrderLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cart_txtShipping"
+                    android:layout_marginTop="5dp"
+                    android:text="Order Total"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/cart_txtOrder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cart_txtShipping"
+                    android:layout_marginTop="5dp"
+                    android:layout_toEndOf="@+id/cart_txtOrderLabel"
+                    android:layout_toRightOf="@+id/cart_txtOrderLabel"
+                    android:gravity="end"
+                    android:text="20000 VND"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/cart_txtShippingNote"
+                    style="?android:attr/textAppearanceSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/cart_txtOrder"
+                    android:layout_marginTop="5dp"
+                    android:text="Shipping take up 7 days to complete"
+                    android:textColor="@color/gray" />
+
+                <View
+                    android:id="@+id/cart_checkoutTermDivider"
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/cart_txtShippingNote"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@android:drawable/divider_horizontal_bright" />
+
+                <TextView
+                    android:id="@+id/cart_txtWarning"
+                    style="?android:attr/textAppearanceSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cart_checkoutTermDivider"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:gravity="center_horizontal"
+                    android:text="By clicking Checkout, you agree with our Term of Service"
+                    android:textColor="@color/gray" />
+
+                <Button
+                    android:id="@+id/cart_btnCheckout"
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cart_txtWarning"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_button_checkout"
+                    android:text="@string/checkout"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+            </RelativeLayout>
         </RelativeLayout>
     </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 

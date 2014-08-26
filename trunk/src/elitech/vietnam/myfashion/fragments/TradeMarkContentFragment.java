@@ -65,7 +65,7 @@ public class TradeMarkContentFragment extends AbstractFragment implements OnRefr
 
 		mRefresh.setColorSchemeResources(R.color.red, R.color.green, R.color.blue, R.color.orange);
 
-		mAdapter = new ProductGridAdapter(mActivity, R.layout.item_bestofday, mProducts);
+		mAdapter = new ProductGridAdapter(mActivity, R.layout.item_bestofday, mProducts, this);
 		mGrid.setAdapter(mAdapter);
 
 		mGrid.setQuickReturnView(mQuickLayout);
