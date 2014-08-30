@@ -703,6 +703,58 @@ $app->get ( '/category/:id/products', function ($category) use($app) {
 	echoRespnse ( 200, $response );
 } );
 
+$app->get ( '/product/:id/sizes', function ($product) {
+	authenticate ();
+	
+	$response = array ();
+	$db = new DbHandler ();
+	
+	$result = $db->getProductSize ( $product );
+	while ( $row = $result->fetch_assoc () )
+		array_push ( $response, $row );
+	
+	echoRespnse ( 200, $response );
+} );
+
+$app->get ( '/product/:id/colors', function ($product) {
+	authenticate ();
+	
+	$response = array ();
+	$db = new DbHandler ();
+	
+	$result = $db->getProductColor ( $product );
+	while ( $row = $result->fetch_assoc () )
+		array_push ( $response, $row );
+	
+	echoRespnse ( 200, $response );
+} );
+
+$app->get ( '/cities', function () {
+	authenticate ();
+	
+	$response = array ();
+	$db = new DbHandler ();
+	
+	$result = $db->getCities ();
+	while ( $row = $result->fetch_assoc () )
+		array_push ( $response, $row );
+	
+	echoRespnse ( 200, $response );
+} );
+
+$app->get ( '/districts', function () {
+	authenticate ();
+	
+	$response = array ();
+	$db = new DbHandler ();
+	
+	$result = $db->getDistricts ();
+	while ( $row = $result->fetch_assoc () )
+		array_push ( $response, $row );
+	
+	echoRespnse ( 200, $response );
+} );
+
 /**
  * Test method
  */

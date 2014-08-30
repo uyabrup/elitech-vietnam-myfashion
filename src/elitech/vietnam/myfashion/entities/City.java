@@ -10,6 +10,9 @@ public class City {
 	@SerializedName("name")
 	public String Name;
 	
+	@SerializedName("code")
+	public String Code;
+	
 	@SerializedName("pos")
 	public int Order;
 	

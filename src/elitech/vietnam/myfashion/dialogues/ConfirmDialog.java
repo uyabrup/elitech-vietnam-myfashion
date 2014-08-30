@@ -19,7 +19,7 @@ import elitech.vietnam.myfashion.R;
  * @author Cong
  *
  */
-public class ConfirmDialogFragment extends DialogFragment implements View.OnClickListener {
+public class ConfirmDialog extends DialogFragment implements View.OnClickListener {
 	
 	public static final String ARG_MESSAGE = "ARG_MESSAGE";
 	public static final String ARG_TITLE = "ARG_TITLE";
@@ -115,7 +115,7 @@ public class ConfirmDialogFragment extends DialogFragment implements View.OnClic
 	}
 	
 	public void show(FragmentManager manager) {
-		super.show(manager, getClass().getName());
+		super.show(manager, "Dialog");
 	}
 	
 	public interface ConfirmDialogClick {
@@ -150,8 +150,8 @@ public class ConfirmDialogFragment extends DialogFragment implements View.OnClic
 			return this;
 		}
 		
-		public ConfirmDialogFragment build() {
-			ConfirmDialogFragment fragment = new ConfirmDialogFragment();
+		public ConfirmDialog build() {
+			ConfirmDialog fragment = new ConfirmDialog();
 			Bundle bundle = new Bundle();
 			bundle.putString(ARG_MESSAGE, mMessage);
 			bundle.putString(ARG_TITLE, mTitle);

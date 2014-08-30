@@ -25,6 +25,7 @@
     <color name="light_purple">#aa66cc</color>
     <color name="light_green">#a3d0a3</color>
     <color name="pink">#e89090</color>
+    <color name="light_gray">#d3d3d3</color>
     <color name="background">#ececec</color>
     <color name="theme">#ececec</color>
     <color name="dark_orange">#b98724</color>
@@ -49,4 +50,6 @@
     <color name="menuicon_normal">#00FFFFFF</color>
     <color name="btn_checkout_press">#6ead3a</color>
     <color name="btn_checkout_normal">#67ba2a</color>
+    <color name="dialogbutton_press">#2797b2</color>
+    <color name="dialogbutton_normal">#2ba8c6</color>
 </resources>

@@ -9,6 +9,7 @@
         android:id="@+id/detail_comment_imgAvatar"
         android:layout_width="70dp"
         android:layout_height="70dp"
+        android:layout_marginEnd="3dp"
         android:layout_marginRight="3dp"
         android:contentDescription="@string/ok"
         android:padding="1dp"
@@ -20,6 +21,7 @@
         android:id="@+id/detail_comment_txtName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/detail_comment_imgAvatar"
         android:layout_toRightOf="@+id/detail_comment_imgAvatar"
         android:textSize="14sp"
         android:textStyle="bold" />
@@ -30,6 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/detail_comment_txtName"
         android:layout_marginTop="2dp"
+        android:layout_toEndOf="@+id/detail_comment_imgAvatar"
         android:layout_toRightOf="@+id/detail_comment_imgAvatar" />
 
     <TextView
@@ -38,6 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/detail_comment_txtContent"
         android:layout_marginTop="3dp"
+        android:layout_toEndOf="@+id/detail_comment_imgAvatar"
         android:layout_toRightOf="@+id/detail_comment_imgAvatar"
         android:textColor="#0000FF"
         android:visibility="gone" />

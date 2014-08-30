@@ -21,13 +21,15 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import elitech.vietnam.myfashion.R;
 import elitech.vietnam.myfashion.adapters.ProductGridAdapter;
+import elitech.vietnam.myfashion.dialogues.AddToCartDialog.AddToCartCallBack;
+import elitech.vietnam.myfashion.entities.Color;
 import elitech.vietnam.myfashion.entities.Product;
-import elitech.vietnam.myfashion.fragments.BestOfTodayFragment.BestOfTodayCallback;
+import elitech.vietnam.myfashion.entities.Size;
 
 /**
  * @author Cong
  */
-public class CategoryContentFragment extends AbstractFragment implements OnRefreshListener, OnItemClickListener {
+public class CategoryContentFragment extends AbstractFragment implements OnRefreshListener, AddToCartCallBack, OnItemClickListener {
 
 	private static final int	LOADMORE	= 20;
 	
@@ -76,7 +78,7 @@ public class CategoryContentFragment extends AbstractFragment implements OnRefre
 
 	private void getData() {
 		int member = (mActivity.getLoggedinUser() != null) ? mActivity.getLoggedinUser().Id : -1;
-		mActivity.getServices().getCategoryProduct(mId, member, mFashion, mProducts.size(), LOADMORE,
+		mActivity.getServices().getCategoryProduct(mId, member, mFashion, 0, LOADMORE,
 				new Callback<List<Product>>() {
 					@Override
 					public void success(List<Product> arg0, Response arg1) {
@@ -113,6 +115,20 @@ public class CategoryContentFragment extends AbstractFragment implements OnRefre
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		((BestOfTodayCallback) mActivity).onItemClick(mProducts.get(position));
+		mActivity.getController().onItemClick(mProducts.get(position));
+	}
+
+	@Override
+	public void yesClick(int request, int position, Color color, Size size, int quantity) {
+		mActivity.getController().addToCart(mProducts.get(position), color, size, quantity);
+	}
+
+	@Override
+	public void noClick(int request, int position) {
+	}
+
+	@Override
+	public Product getData(int request, int position) {
+		return mProducts.get(position);
 	}
 }

@@ -30,8 +30,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import elitech.vietnam.myfashion.R;
 import elitech.vietnam.myfashion.adapters.CommentAdapter;
-import elitech.vietnam.myfashion.dialogues.ConfirmDialogFragment;
-import elitech.vietnam.myfashion.dialogues.ConfirmDialogFragment.ConfirmDialogClick;
+import elitech.vietnam.myfashion.dialogues.ConfirmDialog;
+import elitech.vietnam.myfashion.dialogues.ConfirmDialog.ConfirmDialogClick;
 import elitech.vietnam.myfashion.entities.Comment;
 import elitech.vietnam.myfashion.entities.Product;
 
@@ -82,7 +82,7 @@ public class ProductCommentFragment extends AbstractFragment implements ConfirmD
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		mProduct = mActivity.getDetail();
+		mProduct = mActivity.getController().getProduct();
 		
 		mRefresh.setRefreshing(true);
 		onRefresh();
@@ -119,7 +119,7 @@ public class ProductCommentFragment extends AbstractFragment implements ConfirmD
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.detail_comment_btnSend:
-			ConfirmDialogFragment.createBuilder()
+			ConfirmDialog.createBuilder()
 			.setMessage("You are not logged in")
 			.setCallBack(this)
 			.build().show(getFragmentManager());

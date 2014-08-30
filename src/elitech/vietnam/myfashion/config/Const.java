@@ -18,4 +18,7 @@ public class Const {
 	public static final String	MAIN_PREF				= "elitech.vietnam.myfashion.MAIN_PREF";
 	public static final String	PROPERTY_REG_ID			= "registration_id";
 	public static final String	PROPERTY_APP_VERSION	= "appVersion";
+	public static final String	CURRENCY_VN				= " ₫";
+	public static final String	CURRENCY_KR				= " 원";
+	public static final String	CURRENCY_EN				= " $";
 }

@@ -36,6 +36,8 @@ import elitech.vietnam.myfashion.utilities.Utilities;
  */
 public class ProductGridAdapter extends ArrayAdapter<Product> {
 	
+	public static final int REQ_ADDTOCART = 100;
+	
 	MainActivity mActivity;
 	Fragment mFragment;
 	int mImageHeight;
@@ -72,7 +74,7 @@ public class ProductGridAdapter extends ArrayAdapter<Product> {
 		UrlImageViewHelper.setUrlDrawable(holder.mImage, Const.SERVER_IMAGE_URL + item.Image);
 		holder.mTxtName.setText(item.Name);
 		holder.mBtnLikes.setText(item.Likes + "");
-		holder.mTxtPrice.setText(Utilities.numberFormat((item.SaleOff != 0) ? item.PriceSale : item.PriceVN) + " VNĐ");
+		holder.mTxtPrice.setText(Utilities.numberFormat((item.SaleOff != 0) ? item.PriceSale : item.PriceVN) + Const.CURRENCY_VN);
 		holder.mBtnLikes.setCompoundDrawablesWithIntrinsicBounds((item.Liked > 0) ? R.drawable.ic_fav_active : R.drawable.ic_fav_inactive, 0, 0, 0);
 		holder.mLaySaleOff.setVisibility((item.SaleOff > 0) ? View.VISIBLE : View.GONE);
 		holder.mTxtSale.setText("-" + item.SaleOff + "%");
@@ -114,7 +116,7 @@ public class ProductGridAdapter extends ArrayAdapter<Product> {
 				args.putInt(AddToCartDialog.ARG_POSITION, dummyPos);
 				AddToCartDialog dialog = new AddToCartDialog();
 				dialog.setArguments(args);
-				dialog.setTargetFragment(mFragment, 0);
+				dialog.setTargetFragment(mFragment, REQ_ADDTOCART);
 				dialog.show(mFragment.getFragmentManager());
 			}
 		});

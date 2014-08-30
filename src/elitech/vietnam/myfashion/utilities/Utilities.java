@@ -67,32 +67,7 @@ public class Utilities {
 			return 0;
 		}
 	}
-/*
-	public static int getSaleOffTagId(int value) {
-		switch (value) {
-		case 10:
-			return R.drawable.sale_10;
-		case 20:
-			return R.drawable.sale_20;
-		case 30:
-			return R.drawable.sale_30;
-		case 40:
-			return R.drawable.sale_40;
-		case 50:
-			return R.drawable.sale_50;
-		case 60:
-			return R.drawable.sale_60;
-		case 70:
-			return R.drawable.sale_70;
-		case 80:
-			return R.drawable.sale_80;
-		case 90:
-			return R.drawable.sale_90;
-		default:
-			return 0;
-		}
-	}
-*/
+	
 	public static String getMD5(String string) {
 		MessageDigest md;
 		StringBuffer sb = new StringBuffer();
@@ -198,7 +173,7 @@ public class Utilities {
 		return formatter.format(value);
 
 	}
-
+	
 	public static boolean isNetworkEnabled(Context context) {
 		ConnectivityManager conMgr = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -219,7 +194,6 @@ public class Utilities {
 		int inSampleSize = 1;
 
 		if (height > reqHeight || width > reqWidth) {
-
 			final int halfHeight = height / 2;
 			final int halfWidth = width / 2;
 

@@ -707,9 +707,7 @@ class DbHandler {
 				ON			c.`id`=p.`id_category`
 				WHERE			p.`status`=1
 							AND	p.`id_category`=?
-							AND	p.`quantity`=1"
-							. ( ( $fashion < 0 ) ? "" : "	AND p.`fashion`=$fashion" ) 
-							. "
+							AND	p.`quantity`=1" . (($fashion < 0) ? "" : "	AND p.`fashion`=$fashion") . "
 				ORDER BY	c.`pos`			ASC,
 							c.`pos1`		ASC,
 							p.`create_day`	DESC,
@@ -718,6 +716,56 @@ class DbHandler {
 		
 		$stmt = $this->conn->prepare ( $str );
 		$stmt->bind_param ( "iiii", $account, $category, $start, $count );
+		$stmt->execute ();
+		$data = $stmt->get_result ();
+		$stmt->close ();
+		return $data;
+	}
+	public function getProductSize($product) {
+		$str = "SELECT 		pc.*, s.*
+				FROM		`product_size` pc
+				INNER JOIN	`size` s
+				ON			s.`id`=pc.`id_size`
+				WHERE		pc.`id_product`=?;";
+		
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->bind_param ( "i", $product );
+		$stmt->execute ();
+		$data = $stmt->get_result ();
+		$stmt->close ();
+		return $data;
+	}
+	public function getProductColor($product) {
+		$str = "SELECT 		pc.*, c.*
+				FROM		`product_color` pc
+				INNER JOIN	`color` c
+				ON			c.`id`=pc.`id_color`
+				WHERE		pc.`id_product`=?;";
+		
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->bind_param ( "i", $product );
+		$stmt->execute ();
+		$data = $stmt->get_result ();
+		$stmt->close ();
+		return $data;
+	}
+	public function getCities() {
+		$str = "SELECT		*
+				FROM		`city` c
+				ORDER BY	c.`pos`	ASC";
+		
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->execute ();
+		$data = $stmt->get_result ();
+		$stmt->close ();
+		return $data;
+	}
+	public function getDistricts() {
+		$str = "SELECT		*
+				FROM		`district` d
+				ORDER BY	d.`pos`	ASC";
+		
+		$stmt = $this->conn->prepare ( $str );
 		$stmt->execute ();
 		$data = $stmt->get_result ();
 		$stmt->close ();

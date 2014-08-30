@@ -8,6 +8,18 @@ import java.util.List;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import android.content.Intent;
+import android.graphics.Paint;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.WebSettings.LayoutAlgorithm;
+import android.webkit.WebView;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
@@ -18,18 +30,6 @@ import elitech.vietnam.myfashion.entities.Product;
 import elitech.vietnam.myfashion.entities.ProductDetail;
 import elitech.vietnam.myfashion.utilities.Utilities;
 import elitech.vietnam.myfashion.widgets.rdimgview.RoundedImageView;
-import android.content.Intent;
-import android.graphics.Paint;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.webkit.WebSettings.LayoutAlgorithm;
-import android.widget.Button;
-import android.widget.TextView;
 
 /**
  * @author Cong
@@ -41,6 +41,7 @@ public class ProductDetailFragment extends AbstractFragment implements View.OnCl
 	Button						mBtnLike, mBtnCart;
 	WebView						mWebDetail;
 
+	ProductDetailCallback		mCallback;
 	Product						mProduct;
 
 	private int					fingerState			= FINGER_RELEASED;
@@ -55,6 +56,9 @@ public class ProductDetailFragment extends AbstractFragment implements View.OnCl
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_product_detail, container, false);
+		// Get product from activity
+		mCallback = mActivity.getController();
+		mProduct = mCallback.getProduct();
 
 		mImage = (RoundedImageView) view.findViewById(R.id.detail_imgProduct);
 		mTxtName = (TextView) view.findViewById(R.id.detail_txtName);
@@ -78,8 +82,6 @@ public class ProductDetailFragment extends AbstractFragment implements View.OnCl
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		// Get product from activity
-		mProduct = mActivity.getDetail();
 
 		/*
 		 * Get list details if not exists
@@ -105,8 +107,8 @@ public class ProductDetailFragment extends AbstractFragment implements View.OnCl
 		 */
 		UrlImageViewHelper.setUrlDrawable(mImage, Const.SERVER_IMAGE_THUMB_URL + mProduct.Image);
 		mTxtName.setText(mProduct.Name);
-		mTxtPrice.setText(Utilities.numberFormat(mProduct.PriceVN) + " VNĐ");
-		mTxtSalePrice.setText(Utilities.numberFormat(mProduct.PriceSale) + " VNĐ");
+		mTxtPrice.setText(Utilities.numberFormat(mProduct.PriceVN) + Const.CURRENCY_VN);
+		mTxtSalePrice.setText(Utilities.numberFormat(mProduct.PriceSale) + Const.CURRENCY_VN);
 		if (mProduct.SaleOff > 0)
 			mTxtPrice.setPaintFlags(mTxtPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 		else
@@ -227,5 +229,9 @@ public class ProductDetailFragment extends AbstractFragment implements View.OnCl
 
 	}
 	
+	public static interface ProductDetailCallback {
+		Product getProduct();
+		void setProduct(Product product);
+	}
 	//TODO: click thumb zoom image
 }

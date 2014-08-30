@@ -22,6 +22,7 @@ public class BaseFragment extends Fragment {
 	public static final String	TAG					= "BASETAG";
 	public static final String	ARG_POSITION		= "ARG_POSITION";
 
+	public static final String	TAG_SPLASH			= "TAG_SPLASH";
 	public static final String	TAG_BESTOFDAY		= "TAG_BESTOFDAY";
 	public static final String	TAG_WOMENFASHION	= "TAG_WOMENFASHION";
 	public static final String	TAG_OFFICEFASHION	= "TAG_OFFICEFASHION";
@@ -78,6 +79,8 @@ public class BaseFragment extends Fragment {
 		if (savedInstanceState == null) {
 			Log.w("savedInstanceState", "NULL");
 			Fragment fragment = null;
+			if (mTag.equals(TAG_SPLASH))
+				fragment = new FirstLoadingFragment();
 			if (mTag.equals(TAG_BESTOFDAY))
 				fragment = new BestOfTodayFragment();
 			if (mTag.equals(TAG_WOMENFASHION))
@@ -91,7 +94,7 @@ public class BaseFragment extends Fragment {
 			if (mTag.equals(TAG_BRANCHES + mPos))
 				fragment = new TradeMarkDetailFragment();
 			if (mTag.equals(TAG_MYSHOPPING))
-				fragment = new CartTabHostFragment();
+				fragment = new ShoppingCartFragment();
 			
 			getChildFragmentManager().beginTransaction().add(R.id.base_container, fragment, mTag).commit();
 		} else
