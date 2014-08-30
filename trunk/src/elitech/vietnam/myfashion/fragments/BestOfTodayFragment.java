@@ -19,13 +19,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import elitech.vietnam.myfashion.R;
 import elitech.vietnam.myfashion.adapters.ProductGridAdapter;
 import elitech.vietnam.myfashion.dialogues.AddToCartDialog.AddToCartCallBack;
+import elitech.vietnam.myfashion.entities.Color;
 import elitech.vietnam.myfashion.entities.Product;
+import elitech.vietnam.myfashion.entities.Size;
 
 /**
  * @author Cong
@@ -34,6 +35,8 @@ import elitech.vietnam.myfashion.entities.Product;
 public class BestOfTodayFragment extends AbstractFragment implements OnRefreshListener, OnItemClickListener, AddToCartCallBack {
 
 	private static final int LOADMORE = 20;
+	
+	BestOfTodayCallback mCallback;
 	
 	SwipeRefreshLayout mLayoutRefresh;
 	GridView mGrid;
@@ -46,6 +49,7 @@ public class BestOfTodayFragment extends AbstractFragment implements OnRefreshLi
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_bestofday, container, false);
+		mCallback = mActivity.getController();
 		
 		mLayoutRefresh = (SwipeRefreshLayout) view.findViewById(R.id.bod_layRefresh);
 		mGrid = (GridView) view.findViewById(R.id.bod_gvMain);
@@ -110,22 +114,25 @@ public class BestOfTodayFragment extends AbstractFragment implements OnRefreshLi
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		((BestOfTodayCallback) mActivity).onItemClick(mBest.get(position));
+		mCallback.onItemClick(mBest.get(position));
 	}
-	
 	
 	public static interface BestOfTodayCallback {
 		public void onItemClick(Product product);
 	}
 
-
 	@Override
-	public void yesClick(int request, int position) {
-		Toast.makeText(mActivity, "Yes", Toast.LENGTH_SHORT).show();
+	public Product getData(int request, int position) {
+		return mBest.get(position);
 	}
 
 	@Override
 	public void noClick(int request, int position) {
-		Toast.makeText(mActivity, "No", Toast.LENGTH_SHORT).show();
+		
+	}
+
+	@Override
+	public void yesClick(int request, int position, Color color, Size size, int quantity) {
+		mActivity.getController().addToCart(mBest.get(position), color, size, quantity);
 	}
 }

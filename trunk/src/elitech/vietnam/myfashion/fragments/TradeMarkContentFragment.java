@@ -25,15 +25,18 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import elitech.vietnam.myfashion.R;
 import elitech.vietnam.myfashion.adapters.ProductGridAdapter;
+import elitech.vietnam.myfashion.dialogues.AddToCartDialog.AddToCartCallBack;
 import elitech.vietnam.myfashion.entities.Category;
+import elitech.vietnam.myfashion.entities.Color;
 import elitech.vietnam.myfashion.entities.Product;
+import elitech.vietnam.myfashion.entities.Size;
 import elitech.vietnam.myfashion.fragments.BestOfTodayFragment.BestOfTodayCallback;
 import elitech.vietnam.myfashion.widgets.QuickReturnGridView;
 
 /**
  * @author Cong
  */
-public class TradeMarkContentFragment extends AbstractFragment implements OnRefreshListener, OnCheckedChangeListener, OnItemClickListener {
+public class TradeMarkContentFragment extends AbstractFragment implements OnRefreshListener, AddToCartCallBack, OnCheckedChangeListener, OnItemClickListener {
 
 	private static final int	LOADMORE				= 20;
 	public static final String	ARG_CATEGORY_POSITION	= "ARG_CATEGORY_POSITION";
@@ -57,7 +60,7 @@ public class TradeMarkContentFragment extends AbstractFragment implements OnRefr
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_trademarks_content, container, false);
 
-		mItem = mActivity.getTradeMark().Categories.get(getArguments().getInt(ARG_CATEGORY_POSITION));
+		mItem = mActivity.getController().getTradeMark().Categories.get(getArguments().getInt(ARG_CATEGORY_POSITION));
 		mRefresh = (SwipeRefreshLayout) view.findViewById(R.id.trademarks_layRefresh);
 		mGrid = (QuickReturnGridView) view.findViewById(R.id.trademarks_gvMain);
 		mQuickLayout = (HorizontalScrollView) view.findViewById(R.id.trademarks_layQuickReturn);
@@ -154,5 +157,20 @@ public class TradeMarkContentFragment extends AbstractFragment implements OnRefr
 	@Override
 	public void onRefresh() {
 		getData();
+	}
+
+	@Override
+	public void yesClick(int request, int position, Color color, Size size, int quantity) {
+		mActivity.getController().addToCart(mProducts.get(position), color, size, quantity);
+	}
+
+	@Override
+	public void noClick(int request, int position) {
+		
+	}
+
+	@Override
+	public Product getData(int request, int position) {
+		return mProducts.get(position);
 	}
 }

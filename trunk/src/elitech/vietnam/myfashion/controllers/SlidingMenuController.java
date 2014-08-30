@@ -13,6 +13,7 @@ import retrofit.client.Response;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -123,10 +124,17 @@ public class SlidingMenuController implements OnGroupClickListener, OnChildClick
 				mBranches.clear();
 				mBranches.addAll(arg0);
 				mMenuAdapter.notifyDataSetChanged();
-				mActivity.getDatabase().saveMenuItem(mBranches);
-			}  
+				AsyncTask.execute(new Runnable() {
+					@Override
+					public void run() {
+						mActivity.getDatabase().saveMenuItem(mBranches);
+					}
+				});
+			}
 			@Override
 			public void failure(RetrofitError arg0) {
+				mBranches.clear();
+				mBranches.addAll(mActivity.getDatabase().loadMenuItem());
 			}
 		});
 		
@@ -176,7 +184,7 @@ public class SlidingMenuController implements OnGroupClickListener, OnChildClick
 	@Override
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 		if (mGroups.get(groupPosition).Id == BRANDS_ID) {
-			mActivity.setTradeMark(mBranches.get(childPosition));
+			mActivity.getController().setTradeMark(mBranches.get(childPosition));
 			Bundle args = new Bundle();
 			args.putInt(BaseFragment.ARG_POSITION, childPosition);
 			mActivity.changeBase(BaseFragment.TAG_BRANCHES + childPosition, args);

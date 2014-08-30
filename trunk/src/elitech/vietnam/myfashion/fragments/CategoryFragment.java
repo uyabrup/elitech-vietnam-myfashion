@@ -98,7 +98,7 @@ public class CategoryFragment extends AbstractFragment implements OnItemClickLis
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		((CategoryCallback) mActivity).onItemClick(mCategories.get(position), mFashion);
+		mActivity.getController().onItemClick(mCategories.get(position), mFashion);
 	}
 	
 	/**

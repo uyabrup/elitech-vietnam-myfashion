@@ -65,7 +65,7 @@ public class ProductReviewFragment extends AbstractFragment implements OnItemCli
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		mProduct = mActivity.getDetail();
+		mProduct = mActivity.getController().getProduct();
 		
 		mRefresh.setRefreshing(true);
 		onRefresh();

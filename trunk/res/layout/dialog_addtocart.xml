@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:id="@+id/atc_layoutMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp" >
+
+            <ImageView
+                android:id="@+id/atc_imgProduct"
+                android:layout_width="80dp"
+                android:layout_height="120dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/ok"
+                android:scaleType="centerCrop"
+                android:src="@drawable/no_avatar" />
+
+            <TextView
+                android:id="@+id/atc_imgProductName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/atc_imgProduct"
+                android:layout_toRightOf="@+id/atc_imgProduct"
+                android:textColor="@color/green"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/atc_imgProductPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/atc_imgProductName"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@+id/atc_imgProduct"
+                android:layout_toRightOf="@+id/atc_imgProduct"
+                android:textColor="@color/red"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/atc_imgProductSale"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/atc_imgProductPrice"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@+id/atc_imgProduct"
+                android:layout_toRightOf="@+id/atc_imgProduct"
+                android:textColor="@color/red"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/atc_layoutColor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/atc_imgProductSale"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/atc_imgProduct"
+                android:layout_toRightOf="@+id/atc_imgProduct"
+                android:gravity="center_vertical" >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.4"
+                    android:text="@string/color" />
+
+                <Spinner
+                    android:id="@+id/atc_spinColor"
+                    style="?android:attr/spinnerDropDownItemStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/atc_layoutSize"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/atc_layoutColor"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/atc_imgProduct"
+                android:layout_toRightOf="@+id/atc_imgProduct"
+                android:gravity="center_vertical" >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.4"
+                    android:text="@string/size" />
+
+                <Spinner
+                    android:id="@+id/atc_spinSize"
+                    style="?android:attr/spinnerDropDownItemStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6" />
+            </LinearLayout>
+            
+            <LinearLayout
+                android:id="@+id/atc_layoutQuantity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/atc_layoutSize"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_toEndOf="@+id/atc_imgProduct"
+                android:layout_toRightOf="@+id/atc_imgProduct"
+                android:gravity="center_vertical" >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.4"
+                    android:text="@string/quantity" />
+
+                <Spinner
+                    android:id="@+id/atc_spinQuantity"
+                    style="?android:attr/spinnerDropDownItemStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6" />
+            </LinearLayout>
+            
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/atc_btnCancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_button_dialog"
+                android:text="@string/cancel"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/atc_btnOk"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_button_dialog"
+                android:text="@string/ok"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <include layout="@layout/loadingview" />
+
+</RelativeLayout>

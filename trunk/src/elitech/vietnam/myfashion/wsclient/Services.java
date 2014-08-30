@@ -13,8 +13,12 @@ import retrofit.http.POST;
 import retrofit.http.Path;
 import retrofit.http.Query;
 import elitech.vietnam.myfashion.entities.Category;
+import elitech.vietnam.myfashion.entities.City;
+import elitech.vietnam.myfashion.entities.Color;
 import elitech.vietnam.myfashion.entities.Comment;
+import elitech.vietnam.myfashion.entities.District;
 import elitech.vietnam.myfashion.entities.Member;
+import elitech.vietnam.myfashion.entities.Size;
 import elitech.vietnam.myfashion.entities.TradeMark;
 import elitech.vietnam.myfashion.entities.Product;
 import elitech.vietnam.myfashion.entities.ProductDetail;
@@ -59,4 +63,16 @@ public interface Services {
 	
 	@GET("/category/{id}/products")
 	void getCategoryProduct(@Path("id") int category, @Query("account") int account, @Query("fashion") int fashion, @Query("start") int start, @Query("count") int count, Callback<List<Product>> callback);
+	
+	@GET("/product/{id}/sizes")
+	void getProductSize(@Path("id") int product, Callback<List<Size>> callback);
+	
+	@GET("/product/{id}/colors")
+	void getProductColor(@Path("id") int product, Callback<List<Color>> callback);
+	
+	@GET("/cities")
+	void getCities(Callback<List<City>> callback);
+	
+	@GET("/districts")
+	void getDistricts(Callback<List<District>> callback);
 }

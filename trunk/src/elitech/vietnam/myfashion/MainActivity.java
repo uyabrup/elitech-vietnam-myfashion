@@ -16,21 +16,16 @@ import android.view.View;
 import com.readystatesoftware.viewbadger.BadgeView;
 
 import elitech.vietnam.myfashion.config.Config;
+import elitech.vietnam.myfashion.controllers.AppController;
 import elitech.vietnam.myfashion.controllers.SlidingMenuController;
 import elitech.vietnam.myfashion.database.DBHandler;
-import elitech.vietnam.myfashion.entities.Category;
 import elitech.vietnam.myfashion.entities.Member;
-import elitech.vietnam.myfashion.entities.Product;
-import elitech.vietnam.myfashion.entities.TradeMark;
 import elitech.vietnam.myfashion.fragments.BaseFragment;
-import elitech.vietnam.myfashion.fragments.BestOfTodayFragment.BestOfTodayCallback;
-import elitech.vietnam.myfashion.fragments.CategoryDetailFragment;
-import elitech.vietnam.myfashion.fragments.CategoryFragment.CategoryCallback;
-import elitech.vietnam.myfashion.fragments.ProductTabHostFragment;
+import elitech.vietnam.myfashion.prefs.PrefsDefinition;
 import elitech.vietnam.myfashion.wsclient.ServiceBuilder;
 import elitech.vietnam.myfashion.wsclient.Services;
 
-public class MainActivity extends ActionBarActivity implements BestOfTodayCallback, CategoryCallback {
+public class MainActivity extends ActionBarActivity {
 	
 	Config mConfig;
 	SharedPreferences mPrefs;
@@ -40,15 +35,13 @@ public class MainActivity extends ActionBarActivity implements BestOfTodayCallba
 	
 	BadgeView mCartBadge;
 	
-	SlidingMenuController mMenuController;
+	SlidingMenuController mSlideMenuController;
+	AppController mController;
 	
 	Member mUser;
 	
 	String mBaseTag;
-	
-	Product mDetail;
-	Category mCategory;
-	TradeMark mTradeMark;
+	boolean mFirstLaunch;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,23 +51,30 @@ public class MainActivity extends ActionBarActivity implements BestOfTodayCallba
 		mConfig = new Config(this);
 		mPrefs = getSharedPreferences(getPackageName(), MODE_PRIVATE);
 		mDBHandler = new DBHandler(getApplicationContext());
-		
 		mServices = new ServiceBuilder(this).build();
 		
+		mController = new AppController(this);
+		mSlideMenuController = new SlidingMenuController(this);
+		
+		mActionBar = getSupportActionBar();
+		mActionBar.setHomeButtonEnabled(true);
+
+		mFirstLaunch = mDBHandler.isFirstLaunch();
+
 		/*
 		 * Dummy user data
 		 */
 		mUser = new Member();
 		mUser.Id = 8;
 
-		mMenuController = new SlidingMenuController(this);
-		mMenuController.setUp();
-		
-		mActionBar = getSupportActionBar();
-		mActionBar.setHomeButtonEnabled(true);
+		mSlideMenuController.setUp();
 		
 		if (savedInstanceState == null) {
-			mBaseTag = BaseFragment.TAG_BESTOFDAY;
+			if (mFirstLaunch) {
+				mBaseTag = BaseFragment.TAG_SPLASH;
+			} else {
+				mBaseTag = BaseFragment.TAG_BESTOFDAY;
+			}
 			getSupportFragmentManager().beginTransaction().add(R.id.container, BaseFragment.newInstance(mBaseTag), mBaseTag).commit();
 		} else {
 			mBaseTag = savedInstanceState.getString(BaseFragment.TAG);
@@ -117,7 +117,7 @@ public class MainActivity extends ActionBarActivity implements BestOfTodayCallba
 			return true;
 		}
 		if (id == android.R.id.home) {
-			mMenuController.showMenu();
+			mSlideMenuController.showMenu();
 			return true;
 		}
 		return false;
@@ -143,32 +143,12 @@ public class MainActivity extends ActionBarActivity implements BestOfTodayCallba
 		return mUser;
 	}
 	
-	public Product getDetail() {
-		return mDetail;
-	}
-	
-	public void setDetail(Product product) {
-		mDetail = product;
-	}
-	
-	public Category getCategory() {
-		return mCategory;
-	}
-	
-	public void setCategory(Category category) {
-		mCategory = category;
-	}
-
 	public Locale getCurrentLocale() {
 		return getResources().getConfiguration().locale;
 	}
 	
-	public TradeMark getTradeMark() {
-		return mTradeMark;
-	}
-	
-	public void setTradeMark(TradeMark tradeMark) {
-		mTradeMark = tradeMark;
+	public AppController getController() {
+		return mController;
 	}
 	
 	public boolean changeBase(String tag, Bundle args) {
@@ -186,7 +166,7 @@ public class MainActivity extends ActionBarActivity implements BestOfTodayCallba
 	
 	@Override
 	public void onBackPressed() {
-		if (mMenuController.onBackPressed())
+		if (mSlideMenuController.onBackPressed())
 			return;
 		if (getCurrentBase().popFragment())
 			return;
@@ -199,20 +179,12 @@ public class MainActivity extends ActionBarActivity implements BestOfTodayCallba
 	public BaseFragment getCurrentBase() {
 		return (BaseFragment) getSupportFragmentManager().findFragmentByTag(mBaseTag);
 	}
-
-	@Override
-	public void onItemClick(Product product) {
-		setDetail(product);
-		getCurrentBase().replaceFragment(new ProductTabHostFragment(), true);
-	}
-
-	@Override
-	public void onItemClick(Category category, int fashion) {
-		setCategory(category);
-		CategoryDetailFragment fragment = new CategoryDetailFragment();
-		Bundle bundle = new Bundle();
-		bundle.putInt(CategoryDetailFragment.ARG_FASHION, fashion);
-		fragment.setArguments(bundle);
-		getCurrentBase().replaceFragment(fragment, true);
+	
+	public void updateCartBadge(int number) {
+		mCartBadge.setText(number + "");
+		if (number > 0)
+			mCartBadge.show();
+		else
+			mCartBadge.hide();
 	}
 }

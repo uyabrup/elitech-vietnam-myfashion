@@ -76,5 +76,10 @@
         <item name="popupMenuStyle">@style/PopupMenu.Apptheme</item>
         <item name="dropDownListViewStyle">@style/DropDownListView.Apptheme</item>
     </style>
+    
+    <style name="SlideBottom">
+        <item name="android:windowEnterAnimation">@anim/slide_up_window</item>
+        <item name="android:windowExitAnimation">@anim/slide_down_window</item>
+    </style>
 
 </resources>

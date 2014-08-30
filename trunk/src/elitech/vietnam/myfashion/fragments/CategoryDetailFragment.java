@@ -21,6 +21,7 @@ public class CategoryDetailFragment extends AbstractFragment {
 	
 	FragmentTabHost mTabHost;
 	
+	CategoryDetailCallback mCallBack;
 	int mFashion;
 	Category mCategory;
 	
@@ -31,7 +32,8 @@ public class CategoryDetailFragment extends AbstractFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_category_tabshost, container, false);
 
-		mCategory = mActivity.getCategory();
+		mCallBack = mActivity.getController();
+		mCategory = mCallBack.getCategory();
 		mFashion = getArguments().getInt(ARG_FASHION);
 		
 		mTabHost = (FragmentTabHost) view.findViewById(android.R.id.tabhost);
@@ -50,5 +52,11 @@ public class CategoryDetailFragment extends AbstractFragment {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+	}
+	
+	public static interface CategoryDetailCallback {
+		void setCategory(Category category);
+		Category getCategory();
+		void onItemClick(Category category, int fashion);
 	}
 }

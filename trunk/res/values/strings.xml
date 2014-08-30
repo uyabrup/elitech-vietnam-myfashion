@@ -329,6 +329,16 @@
     <string name="winterfashion">Thu Đông</string>
     <string name="action_yourcart">Your cart</string>
     <string name="checkout">Checkout</string>
-    <string name="go_shopping">Go Shopping</string>
+    <string name="emptycart_goshopping">Your cart is empty\nClick to continue shopping</string>
+    <string name="addoptionnotetoseller">Add option note to seller</string>
+    <string name="itemtotal">Item total</string>
+    <string name="shippingtakesevendays">Shipping take up to 7 days to be completed</string>
+    <string name="agreetermofservices">By clicking Checkout, you agree with our Terms of Service</string>
+    <string name="youtcartempty">Your cart is empty</string>
+    <string name="item">item</string>
+    <string name="items">items</string>
+    <string name="fullname">Full Name</string>
+    <string name="contactinformation">Contact Information</string>
+    <string name="pleasewaitamoment">Please wait a moment...</string>
     
 </resources>
