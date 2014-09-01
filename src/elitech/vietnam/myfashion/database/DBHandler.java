@@ -126,7 +126,6 @@ public class DBHandler extends SQLiteOpenHelper {
 			
 			db.insert(TABLE_MENUITEM, null, values);
 		}
-		db.close();
 	}
 	
 	public List<TradeMark> loadMenuItem() {
@@ -147,7 +146,7 @@ public class DBHandler extends SQLiteOpenHelper {
 				result.add(item);
 			} while (c.moveToNext());
 		}
-		db.close();
+		c.close();
 		return result;
 	}
 	
@@ -163,7 +162,6 @@ public class DBHandler extends SQLiteOpenHelper {
 			
 			db.insert(TABLE_CITY, null, values);
 		}
-		db.close();
 	}
 	
 	public List<City> loadCities() {
@@ -181,7 +179,7 @@ public class DBHandler extends SQLiteOpenHelper {
 				result.add(item);
 			} while (c.moveToNext());
 		}
-		db.close();
+		c.close();
 		return result;
 	}
 	
@@ -198,7 +196,6 @@ public class DBHandler extends SQLiteOpenHelper {
 			
 			db.insert(TABLE_DISTRICT, null, values);
 		}
-		db.close();
 	}
 	
 	public List<District> loadDistricts() {
@@ -217,7 +214,51 @@ public class DBHandler extends SQLiteOpenHelper {
 				result.add(item);
 			} while (c.moveToNext());
 		}
-		db.close();
+		c.close();
+		return result;
+	}
+	
+	public List<District> getDistrictByCity(int cityId) {
+		SQLiteDatabase db = getReadableDatabase();
+		String query = "SELECT * FROM " + TABLE_DISTRICT + " WHERE " + TABLE_DISTRICT_IDCITY + " = " + cityId;
+		Cursor c = db.rawQuery(query, null);
+		List<District> result = new ArrayList<>();
+		if (c.moveToFirst()) {
+			do {
+				District item = new District();
+				item.Id = c.getInt(c.getColumnIndex(TABLE_DISTRICT_ID));
+				item.Name = c.getString(c.getColumnIndex(TABLE_DISTRICT_NAME));
+				item.Publish = c.getInt(c.getColumnIndex(TABLE_DISTRICT_IDCITY));
+				item.Order = c.getInt(c.getColumnIndex(TABLE_DISTRICT_POS));
+				item.Ship = c.getInt(c.getColumnIndex(TABLE_DISTRICT_SHIP));
+				result.add(item);
+			} while (c.moveToNext());
+		}
+		c.close();
+		return result;
+	}
+	
+	public int getDistrictCount() {
+		SQLiteDatabase db = getReadableDatabase();
+		String query = "SELECT COUNT(*) FROM " + TABLE_DISTRICT;
+		Cursor c = db.rawQuery(query, null);
+		int result = 0;
+		if (c.moveToFirst()) {
+			result = c.getInt(0);
+		}
+		c.close();
+		return result;
+	}
+	
+	public int getCityCount() {
+		SQLiteDatabase db = getReadableDatabase();
+		String query = "SELECT COUNT(*) FROM " + TABLE_CITY;
+		Cursor c = db.rawQuery(query, null);
+		int result = 0;
+		if (c.moveToFirst()) {
+			result = c.getInt(0);
+		}
+		c.close();
 		return result;
 	}
 	
@@ -229,7 +270,7 @@ public class DBHandler extends SQLiteOpenHelper {
 		if (c.moveToFirst()) {
 			result = Boolean.valueOf(c.getString(c.getColumnIndex(TABLE_CONFIG_VALUE)));
 		}
-		db.close();
+		c.close();
 		return result;
 	}
 	
@@ -238,6 +279,5 @@ public class DBHandler extends SQLiteOpenHelper {
 		ContentValues values = new ContentValues();
 		values.put(TABLE_CONFIG_VALUE, value + "");
 		db.update(TABLE_CONFIG, values, TABLE_CONFIG_KEY + " = ?", new String[] {"first_launch"});
-		db.close();
 	}
 }

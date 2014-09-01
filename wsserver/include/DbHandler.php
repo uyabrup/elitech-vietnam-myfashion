@@ -771,6 +771,34 @@ class DbHandler {
 		$stmt->close ();
 		return $data;
 	}
+	public function appTrack($device, $version, $api, $user, $day) {
+		$str = "UPDATE	`device`
+				SET		`launch_count`=`launch_count`+1,
+				`version`=?,
+				`api`=?"
+				. (($user != "") ? ", `last_user`='$user'" : "")
+				. ",
+				`last_try`=?
+				WHERE	`device_id`=?;";
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->bind_param ( "siss", $version, $api, $day, $device );
+		$stmt->execute ();
+		$data = $stmt->affected_rows;
+		$stmt->close ();
+		
+		return $data;
+	}
+	public function storeDevice($device, $gcmid) {
+		$str = "INSERT INTO	`device`	(`device_id`, `gcm_id`)
+				VALUES					(?, ?)
+				ON DUPLICATE KEY UPDATE `gcm_id`=?;";
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->bind_param ( "sss", $device, $gcmid, $gcmid );
+		$data = $stmt->execute ();
+		$stmt->close ();
+		
+		return (false === $data) ? 0 : 1;
+	}
 }
 
 ?>

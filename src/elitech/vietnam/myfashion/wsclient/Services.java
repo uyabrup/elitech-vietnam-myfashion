@@ -75,4 +75,8 @@ public interface Services {
 	
 	@GET("/districts")
 	void getDistricts(Callback<List<District>> callback);
+	
+	@FormUrlEncoded
+	@POST("/devices")
+	void storeDevice(@Field("device") String device, @Field("version") String version, @Field("api") int api, @Field("user") String user, @Field("day") String day, @Field("gcmid") String gcm, Callback<Integer> callback);
 }

@@ -685,7 +685,10 @@ $app->get ( '/category', function () use($app) {
 $app->get ( '/category/:id/products', function ($category) use($app) {
 	authenticate ();
 	verifyRequiredParams ( array (
-			'account' 
+			'account',
+			'fashion',
+			'start',
+			'count' 
 	) );
 	
 	$account = $app->request->get ( 'account' );
@@ -753,6 +756,33 @@ $app->get ( '/districts', function () {
 		array_push ( $response, $row );
 	
 	echoRespnse ( 200, $response );
+} );
+
+$app->post ( '/devices', function () use($app) {
+	authenticate ();
+	verifyRequiredParams ( array (
+			'device',
+			'version',
+			'api',
+			'user',
+			'day',
+			'gcmid' 
+	) );
+	
+	$device = $app->request->post ( 'device' );
+	$version = $app->request->post ( 'version' );
+	$api = $app->request->post ( 'api' );
+	$user = $app->request->post ( 'user' );
+	$day = $app->request->post ( 'day' );
+	$gcmid = $app->request->post ( 'gcmid' );
+	
+	$db = new DbHandler ();
+	$result = $db->storeDevice ( $device, $gcmid );
+	if ($result > 0) {
+		$result = $db->appTrack ( $device, $version, $api, $user, $day );
+	}
+	
+	echoRespnse ( 200, $result );
 } );
 
 /**

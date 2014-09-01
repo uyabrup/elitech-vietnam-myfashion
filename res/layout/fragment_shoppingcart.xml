@@ -225,8 +225,10 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/cart_edtPhone"
                         android:layout_marginTop="15dp"
+                        android:gravity="bottom"
                         android:hint="@string/addoptionnotetoseller"
                         android:inputType="textMultiLine|textCapSentences"
+                        android:lines="2"
                         android:maxLength="128" />
 
                     <Button
