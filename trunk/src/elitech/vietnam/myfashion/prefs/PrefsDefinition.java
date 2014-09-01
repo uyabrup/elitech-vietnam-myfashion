@@ -10,5 +10,6 @@ package elitech.vietnam.myfashion.prefs;
 public class PrefsDefinition {
 
 	public static final String FIRST_LOAD = "FIRSTLOAD_PREFERENCE";
+	public static final String UNIQUE_DEVICE_ID = "UNIQUE_DEVICE_ID";
 	
 }

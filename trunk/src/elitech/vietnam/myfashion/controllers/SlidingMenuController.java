@@ -7,13 +7,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -101,14 +97,13 @@ public class SlidingMenuController implements OnGroupClickListener, OnChildClick
 		mGroups.add(new TradeMark(4, mActivity.getString(R.string.winterfashion), 0, R.drawable.menuicon_best));
 		mGroups.add(new TradeMark(BRANDS_ID, mActivity.getString(R.string.menugroup_brands), 0, R.drawable.menuicon_best));
 		mBranches = new ArrayList<>();
-		mBranches.addAll(mActivity.getDatabase().loadMenuItem());
 		
 		mGroups.add(new TradeMark(5, mActivity.getString(R.string.myshopping), 2, R.drawable.menuicon_cart));
 		mGroups.add(new TradeMark(6, mActivity.getString(R.string.styler), 2, R.drawable.menuicon_styler));
 		mGroups.add(new TradeMark(7, mActivity.getString(R.string.mystyle), 2, R.drawable.menuicon_mystyle));
 		mGroups.add(new TradeMark(8, mActivity.getString(R.string.review), 2, R.drawable.menuicon_review));
 		mGroups.add(new TradeMark(9, mActivity.getString(R.string.setting), 2, R.drawable.menuicon_settings));
-		
+		// Dummy data for no-child groups
 		mEmpty = new ArrayList<>();
 		// Generate child map
 		mChilds = new HashMap<>();
@@ -118,27 +113,14 @@ public class SlidingMenuController implements OnGroupClickListener, OnChildClick
 		mMenuAdapter = new SlidingMenuAdapter(mActivity, mGroups, mChilds);
 		mMenuListView.setAdapter(mMenuAdapter);
 		// Get data from service
-		mActivity.getServices().getTradeMarks(new Callback<List<TradeMark>>() {
-			@Override
-			public void success(List<TradeMark> arg0, Response arg1) {
-				mBranches.clear();
-				mBranches.addAll(arg0);
-				mMenuAdapter.notifyDataSetChanged();
-				AsyncTask.execute(new Runnable() {
-					@Override
-					public void run() {
-						mActivity.getDatabase().saveMenuItem(mBranches);
-					}
-				});
-			}
-			@Override
-			public void failure(RetrofitError arg0) {
-				mBranches.clear();
-				mBranches.addAll(mActivity.getDatabase().loadMenuItem());
-			}
-		});
 		
 		mMenuListView.setSelection(0);
+	}
+	
+	public void loadBrandData(List<TradeMark> tradeMarks) {
+		mBranches.clear();
+		mBranches.addAll(tradeMarks);
+		mMenuAdapter.notifyDataSetChanged();
 	}
 
 	@Override

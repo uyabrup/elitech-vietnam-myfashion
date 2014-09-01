@@ -21,7 +21,6 @@ import elitech.vietnam.myfashion.controllers.SlidingMenuController;
 import elitech.vietnam.myfashion.database.DBHandler;
 import elitech.vietnam.myfashion.entities.Member;
 import elitech.vietnam.myfashion.fragments.BaseFragment;
-import elitech.vietnam.myfashion.prefs.PrefsDefinition;
 import elitech.vietnam.myfashion.wsclient.ServiceBuilder;
 import elitech.vietnam.myfashion.wsclient.Services;
 
@@ -41,7 +40,6 @@ public class MainActivity extends ActionBarActivity {
 	Member mUser;
 	
 	String mBaseTag;
-	boolean mFirstLaunch;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +57,6 @@ public class MainActivity extends ActionBarActivity {
 		mActionBar = getSupportActionBar();
 		mActionBar.setHomeButtonEnabled(true);
 
-		mFirstLaunch = mDBHandler.isFirstLaunch();
-
 		/*
 		 * Dummy user data
 		 */
@@ -70,11 +66,7 @@ public class MainActivity extends ActionBarActivity {
 		mSlideMenuController.setUp();
 		
 		if (savedInstanceState == null) {
-			if (mFirstLaunch) {
-				mBaseTag = BaseFragment.TAG_SPLASH;
-			} else {
-				mBaseTag = BaseFragment.TAG_BESTOFDAY;
-			}
+			mBaseTag = BaseFragment.TAG_SPLASH;
 			getSupportFragmentManager().beginTransaction().add(R.id.container, BaseFragment.newInstance(mBaseTag), mBaseTag).commit();
 		} else {
 			mBaseTag = savedInstanceState.getString(BaseFragment.TAG);
@@ -84,9 +76,9 @@ public class MainActivity extends ActionBarActivity {
 	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
 		Log.w("onSaveInstanceState", mBaseTag);
 		outState.putString(BaseFragment.TAG, mBaseTag);
-		super.onSaveInstanceState(outState);
 	}
 
 	@Override
@@ -149,6 +141,10 @@ public class MainActivity extends ActionBarActivity {
 	
 	public AppController getController() {
 		return mController;
+	}
+	
+	public SlidingMenuController getMenuController() {
+		return mSlideMenuController;
 	}
 	
 	public boolean changeBase(String tag, Bundle args) {
