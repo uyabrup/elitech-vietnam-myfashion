@@ -179,11 +179,38 @@
                             android:layout_weight="0.6" />
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:id="@+id/cart_layoutShipPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/cart_layoutDistrict"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.4"
+                            android:text="@string/shipping" />
+
+                        <TextView
+                            android:id="@+id/cart_txtShippingPrice"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.6"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:gravity="end"
+                            android:textColor="@color/red"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
                     <TextView
                         android:id="@+id/cart_txtContactLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/cart_layoutDistrict"
+                        android:layout_below="@+id/cart_layoutShipPrice"
                         android:layout_marginTop="15dp"
                         android:text="@string/contactinformation"
                         android:textColor="@color/green"
@@ -219,17 +246,40 @@
                         android:inputType="phone"
                         android:maxLength="16" />
 
+                    <LinearLayout
+                        android:id="@+id/cart_layoutPayment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/cart_edtPhone"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.4"
+                            android:text="@string/howyoullpay" />
+
+                        <Spinner
+                            android:id="@+id/cart_spinnerPayment"
+                            style="?android:attr/spinnerDropDownItemStyle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.6" />
+                    </LinearLayout>
+
                     <EditText
                         android:id="@+id/cart_edtNote"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/cart_edtPhone"
+                        android:layout_below="@+id/cart_layoutPayment"
                         android:layout_marginTop="15dp"
                         android:gravity="bottom"
                         android:hint="@string/addoptionnotetoseller"
                         android:inputType="textMultiLine|textCapSentences"
-                        android:lines="2"
-                        android:maxLength="128" />
+                        android:maxLength="128"
+                        android:minLines="2" />
 
                     <Button
                         android:id="@+id/cart_btnCheckout"

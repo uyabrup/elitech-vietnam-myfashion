@@ -10,6 +10,7 @@ import android.os.Bundle;
 import elitech.vietnam.myfashion.MainActivity;
 import elitech.vietnam.myfashion.entities.Category;
 import elitech.vietnam.myfashion.entities.Color;
+import elitech.vietnam.myfashion.entities.Order;
 import elitech.vietnam.myfashion.entities.OrderDetail;
 import elitech.vietnam.myfashion.entities.Product;
 import elitech.vietnam.myfashion.entities.Size;
@@ -36,7 +37,9 @@ public class AppController implements CategoryDetailCallback, ProductDetailCallb
 	List<OrderDetail> mOrderDetails;
 	TradeMark mTradeMark;
 	
+	Order mBill;
 	double mTotal = 0;
+	float mWeight = 0;
 	
 	public AppController(MainActivity activity) {
 		mActivity = activity;
@@ -85,6 +88,22 @@ public class AppController implements CategoryDetailCallback, ProductDetailCallb
 	public void setTotalPrice(double value) {
 		mTotal = value;
 	}
+	
+	public float getTotalWeight() {
+		return mWeight;
+	}
+	
+	public void setTotalWeight(float weight) {
+		mWeight = weight;
+	}
+	
+	public Order getBill() {
+		return mBill;
+	}
+	
+	public void setBill(Order order) {
+		mBill = order;
+	}
 
 	public void addToCart(Product product, Color color, Size size, int quantity) {
 		product.Color = color;
@@ -117,15 +136,24 @@ public class AppController implements CategoryDetailCallback, ProductDetailCallb
 		detail.Quantity = product.Quantity;
 		detail.Image = product.Image;
 		detail.SaleOff = product.SaleOff;
+		detail.Weight += product.Weight * product.Quantity;
 		
-		mTotal += detail.Quantity * detail.PriceVN;
 		for (OrderDetail d : mOrderDetails) {
 			if (d.ProductID == detail.ProductID
 					&& d.Size == detail.Size && d.Color == detail.Color) {
-				d.Quantity += detail.Quantity;
+				if (d.Quantity + detail.Quantity > 20) {
+					detail.Quantity = 20 - d.Quantity;
+					detail.Weight = product.Weight * detail.Quantity;
+				}
+				mTotal += detail.getAmountVN();
+				mWeight += detail.Weight;
+				d.Quantity = d.Quantity + detail.Quantity;
+				d.Weight += detail.Weight;
 				return;
 			}
 		}
+		mTotal += detail.getAmountVN();
+		mWeight += detail.Weight;
 		mOrderDetails.add(detail);
 		mActivity.updateCartBadge(mOrderDetails.size());
 	}
@@ -144,5 +172,22 @@ public class AppController implements CategoryDetailCallback, ProductDetailCallb
 	public void onItemClick(Product product) {
 		setProduct(product);
 		mActivity.getCurrentBase().replaceFragment(new ProductTabHostFragment(), true);
+	}
+
+	@Override
+	public Order createOrder(String address, String city, String district, String memo, String phone, String name,
+			String email, double shipping, int payment, List<OrderDetail> details) {
+		mBill = new Order();
+		mBill.Address = address;
+		mBill.City = city;
+		mBill.State = district;
+		mBill.Memo = memo;
+		mBill.Phone = phone;
+		mBill.Email = email;
+		mBill.Name = name;
+		mBill.Ship = shipping;
+		mBill.Payment = payment;
+		mBill.ListDetail = details;
+		return mBill;
 	}
 }

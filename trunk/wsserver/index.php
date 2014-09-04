@@ -785,6 +785,31 @@ $app->post ( '/devices', function () use($app) {
 	echoRespnse ( 200, $result );
 } );
 
+$app->get ( '/ships', function () {
+	authenticate ();
+	
+	$response = array ();
+	$db = new DbHandler ();
+	
+	$result = $db->getShip ();
+	while ( $row = $result->fetch_assoc () )
+		array_push ( $response, $row );
+	
+	echoRespnse ( 200, $response );
+});
+
+$app->get ( '/shipmore', function () {
+	authenticate ();
+
+	$response = array ();
+	$db = new DbHandler ();
+
+	$result = $db->getShipMore ();
+	while ( $row = $result->fetch_assoc () )
+		array_push ( $response, $row );
+
+	echoRespnse ( 200, $response );
+});
 /**
  * Test method
  */

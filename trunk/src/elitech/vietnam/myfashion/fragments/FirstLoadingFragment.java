@@ -28,6 +28,8 @@ import elitech.vietnam.myfashion.R;
 import elitech.vietnam.myfashion.entities.City;
 import elitech.vietnam.myfashion.entities.District;
 import elitech.vietnam.myfashion.entities.Member;
+import elitech.vietnam.myfashion.entities.Ship;
+import elitech.vietnam.myfashion.entities.ShipMore;
 import elitech.vietnam.myfashion.entities.TradeMark;
 import elitech.vietnam.myfashion.prefs.PrefsDefinition;
 import elitech.vietnam.myfashion.utilities.Tracker;
@@ -87,6 +89,46 @@ public class FirstLoadingFragment extends AbstractFragment {
 					mFailed = true;
 			}
 		});
+		if (mActivity.getDatabase().getShipCount() == 0) {
+			mTask += 1;
+			mActivity.getServices().getShip(new Callback<List<Ship>>() {
+				@Override
+				public void success(final List<Ship> arg0, Response arg1) {
+					onLoadingCompleted(true);
+					AsyncTask.execute(new Runnable() {
+						@Override
+						public void run() {
+							mActivity.getDatabase().saveShip(arg0);
+						}
+					});
+				}
+				@Override
+				public void failure(RetrofitError arg0) {
+					Log.w("RetrofitError", arg0.getMessage());
+					onLoadingCompleted(false);
+				}
+			});
+		}
+		if (mActivity.getDatabase().getShipMoreCount() == 0) {
+			mTask += 1;
+			mActivity.getServices().getShipMore(new Callback<List<ShipMore>>() {
+				@Override
+				public void success(final List<ShipMore> arg0, Response arg1) {
+					onLoadingCompleted(true);
+					AsyncTask.execute(new Runnable() {
+						@Override
+						public void run() {
+							mActivity.getDatabase().saveShipMore(arg0);
+						}
+					});
+				}
+				@Override
+				public void failure(RetrofitError arg0) {
+					Log.w("RetrofitError", arg0.getMessage());
+					onLoadingCompleted(false);
+				}
+			});
+		}
 		if (mActivity.getDatabase().getCityCount() == 0) {
 			mTask += 1;
 			mActivity.getServices().getCities(new Callback<List<City>>() {
@@ -136,7 +178,6 @@ public class FirstLoadingFragment extends AbstractFragment {
 			mTask -= 1;
 			if (mTask == 0) {
 				if (!mFailed) {
-					mActivity.getDatabase().updateFirstLaunch(false);
 					mActivity.getActionBar().show();
 					mActivity.changeBase(BaseFragment.TAG_BESTOFDAY, null);
 				} else {
