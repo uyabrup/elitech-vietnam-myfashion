@@ -799,6 +799,26 @@ class DbHandler {
 		
 		return (false === $data) ? 0 : 1;
 	}
+	public function getShip() {
+		$str = "SELECT		*
+				FROM		`ship`;";
+		
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->execute ();
+		$data = $stmt->get_result ();
+		$stmt->close ();
+		return $data;
+	}
+	public function getShipMore() {
+		$str = "SELECT		*
+				FROM		`ship_more`;";
+	
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->execute ();
+		$data = $stmt->get_result ();
+		$stmt->close ();
+		return $data;
+	}
 }
 
 ?>

@@ -69,4 +69,6 @@ public class OrderDetail {
 	
 	@SerializedName("status")
 	public int Status = 1;
+	
+	public float Weight;
 }

@@ -4,13 +4,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import com.google.gson.annotations.SerializedName;
 
 public class Order {
 //	public int TotalPrice;
-	public ArrayList<OrderDetail> ListDetail = new ArrayList<OrderDetail>();
+	public List<OrderDetail> ListDetail = new ArrayList<OrderDetail>();
 	public String Date;
 	public double ShippingFee;
 	

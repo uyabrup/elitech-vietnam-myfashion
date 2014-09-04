@@ -18,6 +18,8 @@ import elitech.vietnam.myfashion.entities.Color;
 import elitech.vietnam.myfashion.entities.Comment;
 import elitech.vietnam.myfashion.entities.District;
 import elitech.vietnam.myfashion.entities.Member;
+import elitech.vietnam.myfashion.entities.Ship;
+import elitech.vietnam.myfashion.entities.ShipMore;
 import elitech.vietnam.myfashion.entities.Size;
 import elitech.vietnam.myfashion.entities.TradeMark;
 import elitech.vietnam.myfashion.entities.Product;
@@ -79,4 +81,10 @@ public interface Services {
 	@FormUrlEncoded
 	@POST("/devices")
 	void storeDevice(@Field("device") String device, @Field("version") String version, @Field("api") int api, @Field("user") String user, @Field("day") String day, @Field("gcmid") String gcm, Callback<Integer> callback);
+	
+	@GET("/ships")
+	void getShip(Callback<List<Ship>> callback);
+	
+	@GET("/shipmore")
+	void getShipMore(Callback<List<ShipMore>> callback);
 }

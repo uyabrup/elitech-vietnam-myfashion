@@ -94,6 +94,9 @@ public class Product {
 	@SerializedName("comments")
 	public int Comments;
 	
+	@SerializedName("kg")
+	public float Weight;
+	
 	@SerializedName("color")
 	public String CategoryColor;
 	

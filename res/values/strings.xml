@@ -256,7 +256,7 @@
     <string name="enter_your_email_address">Enter your email address:</string>
     <string name="commit">Commit</string>
     <string name="forgotsuccess">New password was sent to your email.\\nPlease check email inbox or spam folder to get the password.</string>
-    <string name="payment">Payment:</string>
+    <string name="payment">Payment</string>
     <string name="tienmat">Cash</string>
     <string name="chuyenkhoan">Bank</string>
     <string name="selectpayment">Select payment...</string>
@@ -340,5 +340,20 @@
     <string name="fullname">Full Name</string>
     <string name="contactinformation">Contact Information</string>
     <string name="pleasewaitamoment">Please wait a moment...</string>
+    <string name="howyoullpay">How you\'ll pay?</string>
+    <string name="shippingprice">Shipping price</string>
+    <string name="addressisempty">Address is empty</string>
+    <string name="nameisempty">Name is empty</string>
+    <string name="emailisempty">Email is empty</string>
+    <string name="emailisinvalid">Email is invalid</string>
+    <string name="phoneisempty">Phone is empty</string>
+    <string name="removeitemtittle">Warning</string>
+    <string name="itemwilberemoved"><![CDATA[<font color="#046738"><b>%1$s</b></font> will be removed from your cart?]]></string>
+    <string name="weight">Weight</string>
+    <string name="itemprice">Item price</string>
+    <string name="orderreview">Order Review</string>
+    <string name="confirmorder">Confirm Order</string>
+    <string name="hotlinenumber">Hotline: (08) 35 144 598</string>
+    <string name="copyright">Copyright ©2014 by Elitech Co. Ltd.</string>
     
 </resources>

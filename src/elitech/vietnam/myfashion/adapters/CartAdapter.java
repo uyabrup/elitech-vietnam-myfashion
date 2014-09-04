@@ -23,6 +23,7 @@ import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import elitech.vietnam.myfashion.R;
 import elitech.vietnam.myfashion.config.Const;
+import elitech.vietnam.myfashion.dialogues.DeleteItemCartDialog;
 import elitech.vietnam.myfashion.entities.OrderDetail;
 import elitech.vietnam.myfashion.fragments.ShoppingCartFragment;
 import elitech.vietnam.myfashion.utilities.Utilities;
@@ -41,7 +42,7 @@ public class CartAdapter extends ArrayAdapter<OrderDetail> {
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		ViewHolder holder = null;
 		if (convertView == null) {
 			convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_cartdetail, parent, false);
@@ -88,13 +89,22 @@ public class CartAdapter extends ArrayAdapter<OrderDetail> {
 		holder.mQuantity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				int sub = (dummyHolder.QUANTITIES[position] - item.Quantity) * item.PriceVN;
+				int subPrice = (dummyHolder.QUANTITIES[position] - item.Quantity) * item.PriceVN;
+				float subWeight = (dummyHolder.QUANTITIES[position] - item.Quantity) * item.Weight;
 				item.Quantity = dummyHolder.QUANTITIES[position];
 				dummyHolder.mTotal.setText(Utilities.numberFormat(item.PriceVN * item.Quantity) + Const.CURRENCY_VN);
-				mFragment.onItemQuantityChanged(sub);
+				mFragment.onItemQuantityChanged(subPrice, subWeight);
 			}
 			@Override
 			public void onNothingSelected(AdapterView<?> parent) {
+			}
+		});
+		
+		holder.mDelete.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				DeleteItemCartDialog.newInstance(item.ProductName, position, 10, mFragment)
+				.show(mFragment.getFragmentManager());
 			}
 		});
 		

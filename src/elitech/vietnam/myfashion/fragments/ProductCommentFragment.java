@@ -119,12 +119,9 @@ public class ProductCommentFragment extends AbstractFragment implements ConfirmD
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.detail_comment_btnSend:
-			ConfirmDialog.createBuilder()
-			.setMessage("You are not logged in")
-			.setCallBack(this)
-			.build().show(getFragmentManager());
 			if (mActivity.getLoggedinUser() == null) {
 				// TODO: 
+				ConfirmDialog.newInstance(R.string.login, R.string.loginsignup, 0, this).show(getFragmentManager());
 			} else if (mEdtComment.getText().toString().length() == 0) {
 				Toast.makeText(mActivity, R.string.commentblank, Toast.LENGTH_SHORT).show();
 			} else {

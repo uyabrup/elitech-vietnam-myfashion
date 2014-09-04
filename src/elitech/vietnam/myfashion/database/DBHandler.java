@@ -8,6 +8,8 @@ import java.util.List;
 
 import elitech.vietnam.myfashion.entities.City;
 import elitech.vietnam.myfashion.entities.District;
+import elitech.vietnam.myfashion.entities.Ship;
+import elitech.vietnam.myfashion.entities.ShipMore;
 import elitech.vietnam.myfashion.entities.TradeMark;
 import android.content.ContentValues;
 import android.content.Context;
@@ -77,6 +79,28 @@ public class DBHandler extends SQLiteOpenHelper {
 			+ TABLE_DISTRICT_POS + " INTEGER, "
 			+ TABLE_DISTRICT_SHIP + " DOUBLE)";
 	private static final String DROP_TABLE_DISTRICT 	= "DROP TABLE IF EXISTS " + TABLE_DISTRICT;
+	
+	private static final String TABLE_SHIP				= "ship";
+	private static final String	TABLE_SHIP_ID			= "id";
+	private static final String	TABLE_SHIP_CODE			= "code";
+	private static final String	TABLE_SHIP_KG			= "kg";
+	private static final String	TABLE_SHIP_SHIP			= "ship";
+	private static final String	CREATE_TABLE_SHIP		= "CREATE TABLE " + TABLE_SHIP + "("
+			+ TABLE_SHIP_ID + " INTEGER PRIMARY KEY, "
+			+ TABLE_SHIP_CODE + " TEXT, "
+			+ TABLE_SHIP_KG + " REAL, "
+			+ TABLE_SHIP_SHIP + " REAL)";
+	private static final String DROP_TABLE_SHIP 		= "DROP TABLE IF EXISTS " + TABLE_SHIP;
+	
+	private static final String TABLE_SHIPMORE			= "ship_more";
+	private static final String	TABLE_SHIPMORE_ID		= "id";
+	private static final String	TABLE_SHIPMORE_CODE		= "code";
+	private static final String	TABLE_SHIPMORE_SHIP		= "ship";
+	private static final String	CREATE_TABLE_SHIPMORE	= "CREATE TABLE " + TABLE_SHIPMORE + "("
+			+ TABLE_SHIPMORE_ID + " INTEGER PRIMARY KEY, "
+			+ TABLE_SHIPMORE_CODE + " TEXT, "
+			+ TABLE_SHIPMORE_SHIP + " REAL)";
+	private static final String DROP_TABLE_SHIPMORE 		= "DROP TABLE IF EXISTS " + TABLE_SHIPMORE;
 
 	/**
 	 * @param context
@@ -94,12 +118,8 @@ public class DBHandler extends SQLiteOpenHelper {
 		db.execSQL(CREATE_TABLE_CITY);
 		db.execSQL(CREATE_TABLE_DISTRICT);
 		db.execSQL(CREATE_TABLE_CONFIG);
-		
-		ContentValues values = new ContentValues();
-		values.put(TABLE_CONFIG_ID, "0");
-		values.put(TABLE_CONFIG_KEY, "first_launch");
-		values.put(TABLE_CONFIG_VALUE, "true");
-		db.insert(TABLE_CONFIG, null, values);
+		db.execSQL(CREATE_TABLE_SHIP);
+		db.execSQL(CREATE_TABLE_SHIPMORE);
 	}
 
 	@Override
@@ -108,6 +128,8 @@ public class DBHandler extends SQLiteOpenHelper {
 		db.execSQL(DROP_TABLE_CITY);
 		db.execSQL(DROP_TABLE_DISTRICT);
 		db.execSQL(DROP_TABLE_CONFIG);
+		db.execSQL(DROP_TABLE_SHIP);
+		db.execSQL(DROP_TABLE_SHIPMORE);
 		onCreate(db);
 	}
 
@@ -261,23 +283,84 @@ public class DBHandler extends SQLiteOpenHelper {
 		c.close();
 		return result;
 	}
-	
-	public boolean isFirstLaunch() {
+
+	public int getShipCount() {
 		SQLiteDatabase db = getReadableDatabase();
-		String query = "SELECT " + TABLE_CONFIG_VALUE + " FROM " + TABLE_CONFIG + " WHERE " + TABLE_CONFIG_KEY + "='first_launch'";
+		String query = "SELECT COUNT(*) FROM " + TABLE_SHIP;
 		Cursor c = db.rawQuery(query, null);
-		boolean result = true;
+		int result = 0;
 		if (c.moveToFirst()) {
-			result = Boolean.valueOf(c.getString(c.getColumnIndex(TABLE_CONFIG_VALUE)));
+			result = c.getInt(0);
 		}
 		c.close();
 		return result;
 	}
 	
-	public void updateFirstLaunch(boolean value) {
+	public void saveShip(List<Ship> ships) {
 		SQLiteDatabase db = getWritableDatabase();
-		ContentValues values = new ContentValues();
-		values.put(TABLE_CONFIG_VALUE, value + "");
-		db.update(TABLE_CONFIG, values, TABLE_CONFIG_KEY + " = ?", new String[] {"first_launch"});
+		db.execSQL("DELETE FROM " + TABLE_SHIP);
+		for (Ship item : ships) {
+			ContentValues values = new ContentValues();
+			values.put(TABLE_SHIP_ID, item.Id);
+			values.put(TABLE_SHIP_CODE, item.Code);
+			values.put(TABLE_SHIP_KG, item.Kg);
+			values.put(TABLE_SHIP_SHIP, item.Ship);
+			
+			db.insert(TABLE_SHIP, null, values);
+		}
+	}
+	
+	public void saveShipMore(List<ShipMore> ships) {
+		SQLiteDatabase db = getWritableDatabase();
+		db.execSQL("DELETE FROM " + TABLE_SHIPMORE);
+		for (ShipMore item : ships) {
+			ContentValues values = new ContentValues();
+			values.put(TABLE_SHIPMORE_ID, item.Id);
+			values.put(TABLE_SHIPMORE_CODE, item.Code);
+			values.put(TABLE_SHIPMORE_SHIP, item.Ship);
+			
+			db.insert(TABLE_SHIPMORE, null, values);
+		}
+	}
+	
+	public double getShipping(String code, float weight, int districtId) {
+		SQLiteDatabase db = getReadableDatabase();
+		String query = "SELECT " + TABLE_SHIP_SHIP + " FROM " + TABLE_SHIP
+				+ " WHERE " + TABLE_SHIP_KG + " <= " + weight + " AND " + TABLE_SHIP_CODE + " = '" + code + "'"
+				+ " ORDER BY " + TABLE_SHIP_KG + " DESC "
+				+ " LIMIT 1;";
+		Cursor c = db.rawQuery(query, null);
+		double result = 0;
+		if (c.moveToFirst()) {
+			result = c.getDouble(0);
+		}
+		c.close();
+		return result;
+	}
+	
+	public double getShippingMore(String code) {
+		SQLiteDatabase db = getReadableDatabase();
+		String query = "SELECT " + TABLE_SHIPMORE_SHIP + " FROM " + TABLE_SHIPMORE
+				+ " WHERE " + TABLE_SHIPMORE_CODE + " = '" + code + "'"
+				+ " LIMIT 1;";
+		Cursor c = db.rawQuery(query, null);
+		double result = 0;
+		if (c.moveToFirst()) {
+			result = c.getDouble(0);
+		}
+		c.close();
+		return result;
+	}
+	
+	public int getShipMoreCount() {
+		SQLiteDatabase db = getReadableDatabase();
+		String query = "SELECT COUNT(*) FROM " + TABLE_SHIPMORE;
+		Cursor c = db.rawQuery(query, null);
+		int result = 0;
+		if (c.moveToFirst()) {
+			result = c.getInt(0);
+		}
+		c.close();
+		return result;
 	}
 }
