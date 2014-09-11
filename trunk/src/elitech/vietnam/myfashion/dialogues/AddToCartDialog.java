@@ -71,10 +71,6 @@ public class AddToCartDialog extends DialogFragment implements View.OnClickListe
 	
 	int mRequest, mPosition, mTask = 0;
 	
-	public static AddToCartDialog newInstance() {
-		return null;
-	}
-	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

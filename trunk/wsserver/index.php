@@ -5,6 +5,7 @@ require 'libs/Slim/Slim.php';
 
 define ( 'API_KEY', '89a7f77b5a13635f5d6707d694c22a71' );
 
+date_default_timezone_set("Asia/Saigon");
 \Slim\Slim::registerAutoloader ();
 
 $app = new \Slim\Slim ();
@@ -796,20 +797,57 @@ $app->get ( '/ships', function () {
 		array_push ( $response, $row );
 	
 	echoRespnse ( 200, $response );
-});
+} );
 
 $app->get ( '/shipmore', function () {
 	authenticate ();
-
+	
 	$response = array ();
 	$db = new DbHandler ();
-
+	
 	$result = $db->getShipMore ();
 	while ( $row = $result->fetch_assoc () )
 		array_push ( $response, $row );
-
+	
 	echoRespnse ( 200, $response );
-});
+} );
+
+$app->post ( '/order', function () use($app) {
+	authenticate ();
+	verifyRequiredParams ( array (
+			'account',
+			'email',
+			'name',
+			'address',
+			'city',
+			'state',
+			'phone',
+			'payment',
+			'ship',
+			'shipprice',
+			'memo',
+			'detail' 
+	) );
+	
+	$account = $app->request->post ( 'account' );
+	$email = $app->request->post ( 'email' );
+	$name = $app->request->post ( 'name' );
+	$address = $app->request->post ( 'address' );
+	$city = $app->request->post ( 'city' );
+	$state = $app->request->post ( 'state' );
+	$phone = $app->request->post ( 'phone' );
+	$payment = $app->request->post ( 'payment' );
+	$ship = $app->request->post ( 'ship' );
+	$shipprice = $app->request->post ( 'shipprice' );
+	$memo = $app->request->post ( 'memo' );
+	$detail = $app->request->post ( 'detail' );
+	
+	$db = new DbHandler ();
+	
+	$code = 'OD_APP_' . $db->getOrderCode();
+	$date = date("Y-m-d H:i:s");
+	
+} );
 /**
  * Test method
  */

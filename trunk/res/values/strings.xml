@@ -355,5 +355,7 @@
     <string name="confirmorder">Confirm Order</string>
     <string name="hotlinenumber">Hotline: (08) 35 144 598</string>
     <string name="copyright">Copyright ©2014 by Elitech Co. Ltd.</string>
+    <string name="thankyou">Thank you</string>
+    <string name="okaygotit">Okay. Got It!</string>
     
 </resources>

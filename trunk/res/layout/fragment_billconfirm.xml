@@ -46,7 +46,6 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
-                android:text="Vo Chi Cong"
                 android:typeface="serif" />
 
             <TextView
@@ -56,7 +55,6 @@
                 android:layout_below="@+id/bill_txtName"
                 android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
-                android:text="Email: congvo88qn@gmail.com"
                 android:typeface="serif" />
 
             <TextView
@@ -66,7 +64,6 @@
                 android:layout_below="@+id/bill_txtEmail"
                 android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
-                android:text="Phone: 01222 000 357"
                 android:typeface="serif" />
 
             <View
@@ -95,7 +92,6 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
-                android:text="54/12/6 Chien Luoc, Phuong Binh Tri Dong"
                 android:typeface="serif" />
 
             <TextView
@@ -105,7 +101,6 @@
                 android:layout_below="@+id/bill_txtAddress"
                 android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
-                android:text="Quan Binh Tan, Ho Chi Minh"
                 android:typeface="serif" />
 
             <View
@@ -132,7 +127,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/bill_txtOrderLabel"
                 android:gravity="end"
-                android:text="5 items"
                 android:textStyle="bold"
                 android:typeface="serif" />
 
@@ -169,7 +163,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:text="10 Kg"
                     android:typeface="serif" />
             </LinearLayout>
 
@@ -195,7 +188,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:text="1000.000"
                     android:typeface="serif" />
             </LinearLayout>
 
@@ -221,7 +213,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:text="1000.000"
                     android:typeface="serif" />
             </LinearLayout>
 
@@ -247,7 +238,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:text="Bank"
                     android:typeface="serif" />
             </LinearLayout>
 
@@ -268,7 +258,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/bill_dividerTotalPrice"
                 android:gravity="end"
-                android:text="Total: 1000.000"
                 android:textColor="@color/red"
                 android:textStyle="bold"
                 android:typeface="serif" />
@@ -284,7 +273,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Customer\&apos;s note"
+                    android:text="@string/note"
                     android:textColor="@color/green"
                     android:textStyle="bold" />
 
@@ -295,14 +284,12 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="5dp"
-                    android:text="Lorem ispul dolo hosir tekaleum Lorem ispul dolo hosir tekaleum Lorem ispul dolo hosir tekaleum Lorem ispul dolo hosir tekaleum Lorem ispul dolo hosir tekaleum "
                     android:textStyle="italic"
                     android:typeface="serif" />
             </LinearLayout>
 
-            <Button
-                android:id="@+id/bill_btnCheckout"
-                style="?android:attr/textAppearanceLarge"
+            <RelativeLayout
+                android:id="@+id/bill_layoutBtnCheckout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/bill_layoutNote"
@@ -313,15 +300,43 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/bg_button_checkout"
-                android:text="@string/confirmorder"
-                android:textColor="@color/white"
-                android:textStyle="bold" />
+                android:padding="1dp" >
+
+                <Button
+                    android:id="@+id/bill_btnCheckout"
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_button_checkout"
+                    android:text="@string/confirmorder"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <ProgressBar
+                    android:id="@+id/bill_prgConfirm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:visibility="invisible" />
+
+                <Button
+                    android:id="@+id/bill_txtSuccess"
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:clickable="false"
+                    android:text="@string/success"
+                    android:textColor="@color/btn_checkout_press"
+                    android:textStyle="bold"
+                    android:visibility="invisible" />
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/bill_txtCopyRight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/bill_btnCheckout"
+                android:layout_below="@+id/bill_layoutBtnCheckout"
                 android:gravity="center_horizontal"
                 android:text="@string/copyright"
                 android:textColor="@color/gray" />
@@ -360,11 +375,11 @@
                 <View
                     android:layout_width="2dp"
                     android:layout_height="1dp"
+                    android:layout_gravity="center"
                     android:layout_marginEnd="5dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_marginStart="5dp"
-                    android:layout_gravity="center"
                     android:background="@color/gray" />
 
                 <TextView

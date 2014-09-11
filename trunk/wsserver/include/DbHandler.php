@@ -775,9 +775,7 @@ class DbHandler {
 		$str = "UPDATE	`device`
 				SET		`launch_count`=`launch_count`+1,
 				`version`=?,
-				`api`=?"
-				. (($user != "") ? ", `last_user`='$user'" : "")
-				. ",
+				`api`=?" . (($user != "") ? ", `last_user`='$user'" : "") . ",
 				`last_try`=?
 				WHERE	`device_id`=?;";
 		$stmt = $this->conn->prepare ( $str );
@@ -812,12 +810,30 @@ class DbHandler {
 	public function getShipMore() {
 		$str = "SELECT		*
 				FROM		`ship_more`;";
-	
+		
 		$stmt = $this->conn->prepare ( $str );
 		$stmt->execute ();
 		$data = $stmt->get_result ();
 		$stmt->close ();
 		return $data;
+	}
+	public function getOrderCode() {
+		$str = "SELECT	`name`
+				 FROM	`rate`
+				 WHERE	`id`=4;";
+		$stmt = $this->conn->prepare ( $str );
+		$name = 0;
+		if ($stmt->execute ()) {
+			$stmt->bind_result ( $id, $name, $data );
+			$stmt->fetch ();
+		}
+		$stmt->close ();
+		return $name;
+	}
+	public function addOrder($code, $account, $address, $city, $state, $phone, $payment, $shipprice, $memo, $date, $email, $name) {
+		$str = "INSERT INTO `order`	(`code_order`, `id_account`, `total`, `totalVN`, `address`, `city`, `state`, `phone`, `payment`, `ship`, `memo`, `date`, `status`, `email`, `name`)
+				VALUES					(?, ?, 0, 0, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?);";
+		
 	}
 }
 
