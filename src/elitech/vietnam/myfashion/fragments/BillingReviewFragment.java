@@ -3,16 +3,19 @@
  */
 package elitech.vietnam.myfashion.fragments;
 
-import elitech.vietnam.myfashion.R;
-import elitech.vietnam.myfashion.controllers.AppController;
-import elitech.vietnam.myfashion.entities.Order;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import elitech.vietnam.myfashion.R;
+import elitech.vietnam.myfashion.config.Const;
+import elitech.vietnam.myfashion.controllers.AppController;
+import elitech.vietnam.myfashion.entities.Order;
+import elitech.vietnam.myfashion.utilities.Utilities;
 
 /**
  * @author Cong
@@ -25,7 +28,8 @@ public class BillingReviewFragment extends AbstractFragment implements View.OnCl
 	
 	TextView mTxtName, mTxtEmail, mTxtPhone, mTxtAddress, mTxtCity, mTxtCount, mTxtWeight, mTxtPrice, mTxtShip, mTxtPay, mTxtTotal, mTxtNote, mBtnHotline, mBtnShipping, mBtnPayment;
 	LinearLayout mLayoutNote;
-	Button mBtnConfirm;
+	Button mBtnConfirm, mTxtSuccess;
+	ProgressBar mPrgConfirm;
 	
 	public BillingReviewFragment() {
 	}
@@ -53,6 +57,8 @@ public class BillingReviewFragment extends AbstractFragment implements View.OnCl
 		mBtnPayment = (TextView) view.findViewById(R.id.bill_txtPaymentInfo);
 		mLayoutNote = (LinearLayout) view.findViewById(R.id.bill_layoutNote);
 		mBtnConfirm = (Button) view.findViewById(R.id.bill_btnCheckout);
+		mTxtSuccess = (Button) view.findViewById(R.id.bill_txtSuccess);
+		mPrgConfirm = (ProgressBar) view.findViewById(R.id.bill_prgConfirm);
 		
 		mBtnConfirm.setOnClickListener(this);
 		mBtnShipping.setOnClickListener(this);
@@ -64,19 +70,37 @@ public class BillingReviewFragment extends AbstractFragment implements View.OnCl
 	
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onViewCreated(view, savedInstanceState);
+		mTxtName.setText(mOrder.Name);
+		mTxtEmail.setText(mOrder.Email);
+		mTxtPhone.setText(mOrder.Phone);
+		mTxtAddress.setText(mOrder.Address);
+		mTxtCity.setText(mOrder.State + ", " + mOrder.City);
+		mTxtCount.setText(mOrder.ListDetail.size() + " " + getString(mOrder.ListDetail.size() > 1 ? R.string.items : R.string.item));
+		mTxtWeight.setText(mController.getTotalWeight() + " Kg");
+		mTxtPrice.setText(Utilities.numberFormat(mController.getTotalPrice()) + Const.CURRENCY_VN);
+		mTxtShip.setText(Utilities.numberFormat(mOrder.Ship) + Const.CURRENCY_VN);
+		mTxtPay.setText(mOrder.Payment > 0 ? R.string.tienmat : R.string.chuyenkhoan);
+		mTxtTotal.setText(Utilities.numberFormat(mController.getTotalPrice() + mOrder.Ship) + Const.CURRENCY_VN);
+		mTxtNote.setText(mOrder.Memo);
 	}
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case 1:
-			
+		case R.id.bill_btnCheckout:
+			mPrgConfirm.setVisibility(View.VISIBLE);
 			break;
-
+		case R.id.bill_txtHotLine:
+			break;
+		case R.id.bill_txtShippingInfo:
+			break;
+		case R.id.bill_txtPaymentInfo:
+			break;
 		default:
 			break;
 		}
 	}
 }
+
+

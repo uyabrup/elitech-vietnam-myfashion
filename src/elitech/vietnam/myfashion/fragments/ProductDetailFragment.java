@@ -26,15 +26,19 @@ import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import elitech.vietnam.myfashion.ImageViewActivity;
 import elitech.vietnam.myfashion.R;
 import elitech.vietnam.myfashion.config.Const;
+import elitech.vietnam.myfashion.dialogues.AddToCartDialog;
+import elitech.vietnam.myfashion.dialogues.AddToCartDialog.AddToCartCallBack;
+import elitech.vietnam.myfashion.entities.Color;
 import elitech.vietnam.myfashion.entities.Product;
 import elitech.vietnam.myfashion.entities.ProductDetail;
+import elitech.vietnam.myfashion.entities.Size;
 import elitech.vietnam.myfashion.utilities.Utilities;
 import elitech.vietnam.myfashion.widgets.rdimgview.RoundedImageView;
 
 /**
  * @author Cong
  */
-public class ProductDetailFragment extends AbstractFragment implements View.OnClickListener {
+public class ProductDetailFragment extends AbstractFragment implements View.OnClickListener, AddToCartCallBack {
 
 	RoundedImageView			mImage;
 	TextView					mTxtName, mTxtPrice, mTxtSalePrice, mTxtBrand;
@@ -154,8 +158,13 @@ public class ProductDetailFragment extends AbstractFragment implements View.OnCl
 			}
 			break;
 		case R.id.btnCart:
+			Bundle args = new Bundle();
+			args.putInt(AddToCartDialog.ARG_POSITION, 10);
+			AddToCartDialog dialog = new AddToCartDialog();
+			dialog.setArguments(args);
+			dialog.setTargetFragment(this, 100);
+			dialog.show(getFragmentManager());
 			break;
-
 		default:
 			break;
 		}
@@ -234,4 +243,19 @@ public class ProductDetailFragment extends AbstractFragment implements View.OnCl
 		void setProduct(Product product);
 	}
 	//TODO: click thumb zoom image
+
+	@Override
+	public void yesClick(int request, int position, Color color, Size size, int quantity) {
+		mActivity.getController().addToCart(mProduct, color, size, quantity);
+	}
+
+	@Override
+	public void noClick(int request, int position) {
+		
+	}
+
+	@Override
+	public Product getData(int request, int position) {
+		return mProduct;
+	}
 }

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp" >
+
+    <TextView
+        android:id="@+id/thank_txtHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Thank you for choosing our services!"
+        android:textColor="@color/green"
+        android:textStyle="bold|italic" />
+
+    <TextView
+        android:id="@+id/thank_txtContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/thank_txtHeader"
+        android:layout_marginTop="10dp"
+        android:text="We will call you soon to confirm this order and Loren bla bla"
+        android:typeface="serif" />
+
+    <TextView
+        android:id="@+id/thank_txtNoteTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/thank_txtContent"
+        android:layout_marginTop="10dp"
+        android:text="Please note:"
+        android:textColor="@color/teal"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/thank_txtNoteContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/thank_txtNoteTitle"
+        android:text=" -- Shipping from Korea may take up to 7 day to be completed\n -- You can review your order status in account settings "
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:typeface="serif" />
+
+    <View
+        android:id="@+id/thank_dividerNote"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/thank_txtNoteContent"
+        android:layout_marginTop="5dp"
+        android:background="@android:drawable/divider_horizontal_bright" />
+
+    <TextView
+        android:id="@+id/thank_txtContactMemo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/thank_dividerNote"
+        android:layout_marginTop="10dp"
+        android:text="Conact us:"
+        android:textColor="@color/teal"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/thank_txtAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/thank_txtContactMemo"
+        android:background="@drawable/bg_button_simple"
+        android:drawablePadding="5dp"
+        android:text="Elitech Co. Ltd.\n132-134 D2, Binh Thanh, Ho Chi Minh"
+        android:typeface="serif" />
+
+    <TextView
+        android:id="@+id/thank_txtPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/thank_txtAddress"
+        android:background="@drawable/bg_button_simple"
+        android:drawableLeft="@drawable/ic_hotline"
+        android:drawablePadding="5dp"
+        android:drawableStart="@drawable/ic_hotline"
+        android:text="@string/hotlinenumber"
+        android:typeface="serif" />
+
+    <TextView
+        android:id="@+id/thank_txtEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/thank_txtPhone"
+        android:background="@drawable/bg_button_simple"
+        android:drawableLeft="@drawable/ic_hotline"
+        android:drawablePadding="5dp"
+        android:drawableStart="@drawable/ic_hotline"
+        android:text="@string/email"
+        android:typeface="serif" />
+
+    <Button
+        android:id="@+id/thank_btnOk"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/thank_txtEmail"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/bg_button_dialog"
+        android:text="@string/okaygotit"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
+</RelativeLayout>

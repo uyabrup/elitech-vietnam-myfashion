@@ -30,7 +30,6 @@ import elitech.vietnam.myfashion.entities.Category;
 import elitech.vietnam.myfashion.entities.Color;
 import elitech.vietnam.myfashion.entities.Product;
 import elitech.vietnam.myfashion.entities.Size;
-import elitech.vietnam.myfashion.fragments.BestOfTodayFragment.BestOfTodayCallback;
 import elitech.vietnam.myfashion.widgets.QuickReturnGridView;
 
 /**
@@ -151,7 +150,7 @@ public class TradeMarkContentFragment extends AbstractFragment implements OnRefr
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		((BestOfTodayCallback) mActivity).onItemClick(mProducts.get(position));
+		mActivity.getController().onItemClick(mProducts.get(position));
 	}
 
 	@Override
