@@ -190,4 +190,12 @@ public class AppController implements CategoryDetailCallback, ProductDetailCallb
 		mBill.ListDetail = details;
 		return mBill;
 	}
+	
+	public void resetCart() {
+		mOrderDetails = new ArrayList<>();
+		mBill = null;
+		mTotal = 0;
+		mWeight = 0;
+		mActivity.updateCartBadge(0);
+	}
 }

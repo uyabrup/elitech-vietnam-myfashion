@@ -95,6 +95,8 @@ public class BaseFragment extends Fragment {
 				fragment = new TradeMarkDetailFragment();
 			if (mTag.equals(TAG_MYSHOPPING))
 				fragment = new ShoppingCartFragment();
+			if (mTag.equals(TAG_STYLER))
+				fragment = new StylerTabHostFragment();
 			
 			getChildFragmentManager().beginTransaction().add(R.id.base_container, fragment, mTag).commit();
 		} else

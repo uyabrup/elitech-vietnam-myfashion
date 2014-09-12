@@ -3,7 +3,14 @@
  */
 package elitech.vietnam.myfashion.fragments;
 
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
+import com.google.gson.Gson;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +21,7 @@ import android.widget.TextView;
 import elitech.vietnam.myfashion.R;
 import elitech.vietnam.myfashion.config.Const;
 import elitech.vietnam.myfashion.controllers.AppController;
+import elitech.vietnam.myfashion.dialogues.ThanksDialog;
 import elitech.vietnam.myfashion.entities.Order;
 import elitech.vietnam.myfashion.utilities.Utilities;
 
@@ -90,6 +98,31 @@ public class BillingReviewFragment extends AbstractFragment implements View.OnCl
 		switch (v.getId()) {
 		case R.id.bill_btnCheckout:
 			mPrgConfirm.setVisibility(View.VISIBLE);
+			mActivity.getServices().addOrder(
+					mActivity.getLoggedinUser() != null ? mActivity.getLoggedinUser().Id : 0, 
+					Utilities.encodeString(mOrder.Email), 
+					Utilities.encodeString(mOrder.Name), 
+					Utilities.encodeString(mOrder.Address), 
+					Utilities.encodeString(mOrder.City), 
+					Utilities.encodeString(mOrder.State), 
+					mOrder.Phone, 
+					mOrder.Payment, 
+					mOrder.Ship, 
+					mOrder.ShippingFee, 
+					Utilities.encodeString(mOrder.Memo), 
+					Utilities.encodeString(new Gson().toJson(mOrder.ListDetail)), 
+					new Callback<Integer>() {
+				@Override
+				public void failure(RetrofitError arg0) {
+					Log.w("RetrofitError", arg0.getMessage());
+					mPrgConfirm.setVisibility(View.INVISIBLE);
+				}
+				@Override
+				public void success(Integer arg0, Response arg1) {
+					mTxtSuccess.setVisibility(View.VISIBLE);
+					mController.resetCart();
+					ThanksDialog.newInstance().show(getFragmentManager());
+				}});
 			break;
 		case R.id.bill_txtHotLine:
 			break;

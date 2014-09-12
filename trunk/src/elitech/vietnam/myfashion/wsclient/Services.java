@@ -87,4 +87,8 @@ public interface Services {
 	
 	@GET("/shipmore")
 	void getShipMore(Callback<List<ShipMore>> callback);
+	
+	@FormUrlEncoded
+	@POST("/order")
+	void addOrder(@Field("account") int account, @Field("email") String email, @Field("name") String name, @Field("address") String address, @Field("city") String city, @Field("state") String state, @Field("phone") String phone, @Field("payment") int payment, @Field("ship") double ship, @Field("shipprice") double shipprice, @Field("memo") String memo, @Field("detail") String detail, Callback<Integer> callback);
 }
