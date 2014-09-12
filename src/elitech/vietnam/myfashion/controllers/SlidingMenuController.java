@@ -155,6 +155,9 @@ public class SlidingMenuController implements OnGroupClickListener, OnChildClick
 			case 6:
 				mActivity.changeBase(BaseFragment.TAG_MYSHOPPING, null);
 				break;
+			case 7:
+				mActivity.changeBase(BaseFragment.TAG_STYLER, null);
+				break;
 			default:
 				break;
 			}

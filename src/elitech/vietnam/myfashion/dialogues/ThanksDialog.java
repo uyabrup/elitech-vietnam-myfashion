@@ -28,6 +28,7 @@ public class ThanksDialog extends DialogFragment implements View.OnClickListener
 		Bundle args = new Bundle();
 		ThanksDialog dialog = new ThanksDialog();
 		dialog.setArguments(args);
+		dialog.setCancelable(false);
 		return dialog;
 	}
 	
@@ -58,7 +59,7 @@ public class ThanksDialog extends DialogFragment implements View.OnClickListener
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.dialog_warning_btnOk:
+		case R.id.thank_btnOk:
 			dismiss();
 			((MainActivity) getActivity()).changeBase(BaseFragment.TAG_BESTOFDAY, null);
 			break;

@@ -825,28 +825,33 @@ $app->post ( '/order', function () use($app) {
 			'payment',
 			'ship',
 			'shipprice',
-			'memo',
 			'detail' 
 	) );
 	
 	$account = $app->request->post ( 'account' );
-	$email = $app->request->post ( 'email' );
-	$name = $app->request->post ( 'name' );
-	$address = $app->request->post ( 'address' );
-	$city = $app->request->post ( 'city' );
-	$state = $app->request->post ( 'state' );
+	$email = urldecode($app->request->post ( 'email' ));
+	$name = urldecode($app->request->post ( 'name' ));
+	$address = urldecode($app->request->post ( 'address' ));
+	$city = urldecode($app->request->post ( 'city' ));
+	$state = urldecode($app->request->post ( 'state' ));
 	$phone = $app->request->post ( 'phone' );
 	$payment = $app->request->post ( 'payment' );
 	$ship = $app->request->post ( 'ship' );
 	$shipprice = $app->request->post ( 'shipprice' );
-	$memo = $app->request->post ( 'memo' );
-	$detail = $app->request->post ( 'detail' );
+	$memo = urldecode($app->request->post ( 'memo' ));
+	$detail = urldecode($app->request->post ( 'detail' ));
+	$details = json_decode($detail, true);
 	
 	$db = new DbHandler ();
-	
 	$code = 'OD_APP_' . $db->getOrderCode();
 	$date = date("Y-m-d H:i:s");
+	$orderid = $db->addOrder($code, $account, $address, $city, $state, $phone, $payment, $shipprice, $memo, $date, $email, $name);
+	if ($orderid > 0)
+		$result = $db->addOrderDetails($orderid, $details);
+	else 
+		$result = -1;
 	
+	echoRespnse( 200, $result );
 } );
 /**
  * Test method

@@ -824,7 +824,7 @@ class DbHandler {
 		$stmt = $this->conn->prepare ( $str );
 		$name = 0;
 		if ($stmt->execute ()) {
-			$stmt->bind_result ( $id, $name, $data );
+			$stmt->bind_result ( $name );
 			$stmt->fetch ();
 		}
 		$stmt->close ();
@@ -833,7 +833,36 @@ class DbHandler {
 	public function addOrder($code, $account, $address, $city, $state, $phone, $payment, $shipprice, $memo, $date, $email, $name) {
 		$str = "INSERT INTO `order`	(`code_order`, `id_account`, `total`, `totalVN`, `address`, `city`, `state`, `phone`, `payment`, `ship`, `memo`, `date`, `status`, `email`, `name`)
 				VALUES					(?, ?, 0, 0, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?);";
-		
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->bind_param ( "sissssiissss", $code, $account, $address, $city, $state, $phone, $payment, $shipprice, $memo, $date, $email, $name );
+		if (!$stmt->execute ())
+			$result = -1;
+		else 
+			$result = $stmt->insert_id;
+		$stmt->close ();
+		return $result;
+	}
+	/**
+	 * 
+	 * @param unknown $orderid integer
+	 * @param unknown $details array
+	 * @return number
+	 */
+	public function addOrderDetails($orderid, $details) {
+		$str = "INSERT INTO 	`order_detail`	(`id_order`, `id_product`, `color`, `size`, `price`, `priceVN`, `commission`, `quantity`) VALUES ";
+		for ($i=0, $size=sizeof($details); $i<$size; $i++) {
+			$item = $details[$i];
+			$str .= "({$orderid}, {$item['id_product']}, {$item['color']}, {$item['size']}, {$item['price']}, {$item['priceVN']}, {$item['commission']}, {$item['quantity']})";
+			if ($i < $size-1)
+				$str .= ", ";
+			else
+				$str .= ";";
+		}
+		$stmt = $this->conn-> prepare ($str);
+		if (!$stmt->execute ())
+			$orderid = -1;
+		$stmt->close ();
+		return $orderid;
 	}
 }
 
