@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/elitech.vietnam.myfashion"
+    android:id="@+id/stylerbest_refreshLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#d3d6db" >
+
+    <com.etsy.android.grid.StaggeredGridView
+        android:id="@+id/stylerbest_gridView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:column_count="2"
+        app:grid_paddingBottom="8dp"
+        app:grid_paddingTop="8dp"
+        app:item_margin="8dp" />
+
+</android.support.v4.widget.SwipeRefreshLayout>

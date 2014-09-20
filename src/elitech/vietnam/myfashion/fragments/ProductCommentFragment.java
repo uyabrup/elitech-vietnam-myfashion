@@ -152,7 +152,6 @@ public class ProductCommentFragment extends AbstractFragment implements ConfirmD
 					}
 					@Override
 					public void failure(RetrofitError arg0) {
-						Toast.makeText(mActivity, "", Toast.LENGTH_SHORT).show();
 						mBtnSend.setEnabled(true);
 					}
 				});
@@ -168,12 +167,10 @@ public class ProductCommentFragment extends AbstractFragment implements ConfirmD
 	@Override
 	public void yesClick(int requestCode) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void noClick(int requestCode) {
 		// TODO Auto-generated method stub
-		
 	}
 }

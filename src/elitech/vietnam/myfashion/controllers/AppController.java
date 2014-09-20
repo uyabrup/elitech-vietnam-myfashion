@@ -12,15 +12,20 @@ import elitech.vietnam.myfashion.entities.Category;
 import elitech.vietnam.myfashion.entities.Color;
 import elitech.vietnam.myfashion.entities.Order;
 import elitech.vietnam.myfashion.entities.OrderDetail;
+import elitech.vietnam.myfashion.entities.Post;
 import elitech.vietnam.myfashion.entities.Product;
 import elitech.vietnam.myfashion.entities.Size;
 import elitech.vietnam.myfashion.entities.TradeMark;
 import elitech.vietnam.myfashion.fragments.BestOfTodayFragment.BestOfTodayCallback;
 import elitech.vietnam.myfashion.fragments.CategoryDetailFragment;
 import elitech.vietnam.myfashion.fragments.CategoryDetailFragment.CategoryDetailCallback;
+import elitech.vietnam.myfashion.fragments.MemberInfoFragment;
 import elitech.vietnam.myfashion.fragments.ProductDetailFragment.ProductDetailCallback;
 import elitech.vietnam.myfashion.fragments.ProductTabHostFragment;
 import elitech.vietnam.myfashion.fragments.ShoppingCartFragment.ShoppingCartCallback;
+import elitech.vietnam.myfashion.fragments.StyleDetailFragment;
+import elitech.vietnam.myfashion.fragments.StyleDetailFragment.StyleDetailCallback;
+import elitech.vietnam.myfashion.fragments.StylerBestTopFragment.StylerBestCallback;
 import elitech.vietnam.myfashion.fragments.TradeMarkDetailFragment.TrademarkDetailCallback;
 
 /**
@@ -28,12 +33,13 @@ import elitech.vietnam.myfashion.fragments.TradeMarkDetailFragment.TrademarkDeta
  *
  */
 public class AppController implements CategoryDetailCallback, ProductDetailCallback, ShoppingCartCallback, 
-			TrademarkDetailCallback, BestOfTodayCallback {
+			TrademarkDetailCallback, BestOfTodayCallback, StylerBestCallback, StyleDetailCallback {
 
 	MainActivity mActivity;
 	
 	Category mCategory;
 	Product mProduct;
+	Post mPost;
 	List<OrderDetail> mOrderDetails;
 	TradeMark mTradeMark;
 	
@@ -55,7 +61,7 @@ public class AppController implements CategoryDetailCallback, ProductDetailCallb
 	public Category getCategory() {
 		return mCategory;
 	}
-
+	
 	@Override
 	public void onItemClick(Category category, int fashion) {
 		setCategory(category);
@@ -198,4 +204,26 @@ public class AppController implements CategoryDetailCallback, ProductDetailCallb
 		mWeight = 0;
 		mActivity.updateCartBadge(0);
 	}
+
+	@Override
+	public void onItemClick(Post post) {
+		setPost(post);
+		mActivity.getCurrentBase().replaceFragment(new StyleDetailFragment(), true);
+	}
+
+	@Override
+	public Post getPost() {
+		return mPost;
+	}
+
+	@Override
+	public void setPost(Post post) {
+		mPost = post;
+	}
+
+	@Override
+	public void openMemberPage(int member) {
+		mActivity.getCurrentBase().replaceFragment(MemberInfoFragment.newInstance(member), true);
+	}
+	
 }

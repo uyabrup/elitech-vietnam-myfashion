@@ -357,5 +357,8 @@
     <string name="copyright">Copyright ©2014 by Elitech Co. Ltd.</string>
     <string name="thankyou">Thank you</string>
     <string name="okaygotit">Okay. Got It!</string>
+    <string name="follow">Follow</string>
+    <string name="writecomment">Write comment...</string>
+    <string name="nocommentyet">No comment yet</string>
     
 </resources>

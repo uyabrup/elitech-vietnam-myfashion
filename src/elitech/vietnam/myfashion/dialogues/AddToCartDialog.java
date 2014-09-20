@@ -212,7 +212,7 @@ public class AddToCartDialog extends DialogFragment implements View.OnClickListe
 	}
 	
 	public void show(FragmentManager manager) {
-		super.show(manager, getClass().getName());
+		super.show(manager, "Dialog");
 	}
 	
 	public interface AddToCartCallBack {

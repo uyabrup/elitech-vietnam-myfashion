@@ -21,9 +21,30 @@ public class Post {
 	@SerializedName("title")
 	public String Title;
 	
+	@SerializedName("account")
+	public Member Account;
+//	
+//	@SerializedName("avatar")
+//	public String Avatar;
+//	
+//	@SerializedName("profile")
+//	public String Profile;
+//
+//	@SerializedName("name")
+//	public String Name;
+//
+//	@SerializedName("nick_name")
+//	public String NickName;
+//	
 	@SerializedName("image")
 	public String image_url;
-	
+//	
+//	@SerializedName("followed")
+//	public int Followed;
+//	
+//	@SerializedName("follow_count")
+//	public int FollowCount;
+//	
 	@SerializedName("content")
 	public String Content;
 	

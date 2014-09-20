@@ -35,7 +35,7 @@ public class ServiceBuilder {
 		}
 		return new RestAdapter.Builder()
 				.setEndpoint(Const.SERVICE_NAMESPACE)
-				.setRequestInterceptor(new Interceptor())
+				.setRequestInterceptor(new Interceptor(mActivity))
 				.setLogLevel(LogLevel.FULL)
 				.setClient(new OkClient(okHttpClient)).build().create(Services.class);
 	}
