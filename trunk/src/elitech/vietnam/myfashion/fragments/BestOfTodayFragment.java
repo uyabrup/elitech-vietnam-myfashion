@@ -67,6 +67,7 @@ public class BestOfTodayFragment extends AbstractFragment implements OnRefreshLi
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+		mLayoutRefresh.setRefreshing(true);
 		getData();
 	}
 

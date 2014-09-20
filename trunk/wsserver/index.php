@@ -5,7 +5,7 @@ require 'libs/Slim/Slim.php';
 
 define ( 'API_KEY', '89a7f77b5a13635f5d6707d694c22a71' );
 
-date_default_timezone_set("Asia/Saigon");
+date_default_timezone_set ( "Asia/Saigon" );
 \Slim\Slim::registerAutoloader ();
 
 $app = new \Slim\Slim ();
@@ -454,7 +454,19 @@ $app->get ( '/styler', function () use($app) {
 	
 	// looping through result and preparing tasks array
 	while ( $row = $result->fetch_assoc () ) {
-		array_push ( $response, $row );
+		$r1 = new stdClass ();
+		$r2 = new stdClass ();
+		foreach ($row as $key => $value) {
+			if ( substr ( $key, 0, 2 ) == 'a.' ) {
+				$str = explode ( '.', $key );
+				$var = $str[1];
+				$r2->{$var} = $value;
+			} else {
+				$r1->{$key} = $value;
+			}
+		}
+		$r1->account = $r2;
+		array_push ( $response, $r1 );
 	}
 	
 	echoRespnse ( 200, $response );
@@ -829,29 +841,75 @@ $app->post ( '/order', function () use($app) {
 	) );
 	
 	$account = $app->request->post ( 'account' );
-	$email = urldecode($app->request->post ( 'email' ));
-	$name = urldecode($app->request->post ( 'name' ));
-	$address = urldecode($app->request->post ( 'address' ));
-	$city = urldecode($app->request->post ( 'city' ));
-	$state = urldecode($app->request->post ( 'state' ));
+	$email = urldecode ( $app->request->post ( 'email' ) );
+	$name = urldecode ( $app->request->post ( 'name' ) );
+	$address = urldecode ( $app->request->post ( 'address' ) );
+	$city = urldecode ( $app->request->post ( 'city' ) );
+	$state = urldecode ( $app->request->post ( 'state' ) );
 	$phone = $app->request->post ( 'phone' );
 	$payment = $app->request->post ( 'payment' );
 	$ship = $app->request->post ( 'ship' );
 	$shipprice = $app->request->post ( 'shipprice' );
-	$memo = urldecode($app->request->post ( 'memo' ));
-	$detail = urldecode($app->request->post ( 'detail' ));
-	$details = json_decode($detail, true);
+	$memo = urldecode ( $app->request->post ( 'memo' ) );
+	$detail = urldecode ( $app->request->post ( 'detail' ) );
+	$details = json_decode ( $detail, true );
 	
 	$db = new DbHandler ();
-	$code = 'OD_APP_' . $db->getOrderCode();
-	$date = date("Y-m-d H:i:s");
-	$orderid = $db->addOrder($code, $account, $address, $city, $state, $phone, $payment, $shipprice, $memo, $date, $email, $name);
+	$code = 'OD_APP_' . $db->getOrderCode ();
+	$date = date ( "Y-m-d H:i:s" );
+	$orderid = $db->addOrder ( $code, $account, $address, $city, $state, $phone, $payment, $shipprice, $memo, $date, $email, $name );
 	if ($orderid > 0)
-		$result = $db->addOrderDetails($orderid, $details);
-	else 
-		$result = -1;
+		$result = $db->addOrderDetails ( $orderid, $details );
+	else
+		$result = - 1;
 	
-	echoRespnse( 200, $result );
+	echoRespnse ( 200, $result );
+} );
+
+$app->post ( '/follow', function () use($app) {
+	authenticate ();
+	verifyRequiredParams ( array (
+			'idmem',
+			'idfollow' 
+	) );
+	
+	$idmem = $app->request->post ( 'idmem' );
+	$idfollow = $app->request->post ( 'idfollow' );
+	
+	$db = new DbHandler ();
+	$result = $db->follow ( $idmem, $idfollow );
+	
+	echoRespnse ( 200, $result );
+} );
+
+$app->post ( '/unfollow', function () use($app) {
+	authenticate ();
+	verifyRequiredParams ( array (
+			'idmem',
+			'idfollow'
+	) );
+
+	$idmem = $app->request->post ( 'idmem' );
+	$idfollow = $app->request->post ( 'idfollow' );
+
+	$db = new DbHandler ();
+	$result = $db->unFollow ( $idmem, $idfollow );
+
+	echoRespnse ( 200, $result );
+} );
+
+$app->get ( '/account/:id', function ($id) use ($app) {
+	authenticate ();
+	verifyRequiredParams ( array (
+		'account',
+	) );
+	
+	$account = $app->request->get ( 'account' );
+	
+	$db = new DbHandler ();
+	$result = $db->getMemberById ( $id, $account );
+	
+	echoRespnse ( 200, $result );
 } );
 /**
  * Test method
@@ -866,6 +924,8 @@ $app->post ( '/test', function () use($app) {
 	
 	echoRespnse ( 200, $db->checkLikeError ( $product, $account, $liked, $type ) );
 } );
+
+
 
 $app->run ();
 ?>

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#d3d6db"
+    android:padding="5dp" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <RelativeLayout
+            android:id="@+id/styledetail_layoutMember"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="5dp" >
+
+            <elitech.vietnam.myfashion.widgets.CircularImageView
+                android:id="@+id/styledetail_imgAvatar"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/ok"
+                android:scaleType="centerCrop"
+                android:src="@drawable/no_avatar" />
+
+            <TextView
+                android:id="@+id/styledetail_txtName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_toEndOf="@+id/styledetail_imgAvatar"
+                android:layout_toLeftOf="@+id/styledetail_btnFollow"
+                android:layout_toRightOf="@+id/styledetail_imgAvatar"
+                android:layout_toStartOf="@+id/styledetail_btnFollow"
+                android:lines="1"
+                android:textColor="@color/green"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/styledetail_txtSlogan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/styledetail_txtName"
+                android:layout_marginEnd="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/styledetail_imgAvatar"
+                android:layout_toLeftOf="@+id/styledetail_btnFollow"
+                android:layout_toRightOf="@+id/styledetail_imgAvatar"
+                android:layout_toStartOf="@+id/styledetail_btnFollow"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/gray"
+                android:typeface="serif" />
+
+            <TextView
+                android:id="@+id/styledetail_btnFollow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_button_follow"
+                android:drawableLeft="@drawable/ic_follow"
+                android:drawablePadding="5dp"
+                android:drawableStart="@drawable/ic_follow"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/follow" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/styledetail_layoutButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/styledetail_layoutMember"
+            android:layout_marginTop="5dp"
+            android:background="@color/white"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:padding="5dp" >
+
+            <LinearLayout
+                android:id="@+id/styledetail_btnLike"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_button_simple"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <Button
+                    android:id="@+id/styledetail_btnFLike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:clickable="false"
+                    android:drawableLeft="@drawable/ic_fav_inactive"
+                    android:drawableStart="@drawable/ic_fav_inactive"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/actionbarcolor" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@android:drawable/divider_horizontal_bright" />
+
+            <LinearLayout
+                android:id="@+id/styledetail_btnComment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_button_simple"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <Button
+                    android:id="@+id/styledetail_btnFComment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:clickable="false"
+                    android:drawableLeft="@drawable/ic_comments"
+                    android:drawableStart="@drawable/ic_comments"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/actionbarcolor" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@android:drawable/divider_horizontal_bright" />
+
+            <LinearLayout
+                android:id="@+id/styledetail_btnShare"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_button_simple"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <Button
+                    android:id="@+id/styledetail_btnFShare"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:clickable="false"
+                    android:drawableLeft="@drawable/ic_menu_share"
+                    android:drawableStart="@drawable/ic_menu_share"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/actionbarcolor" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/styledetail_dividerButtons"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/styledetail_layoutButtons"
+            android:background="@android:drawable/divider_horizontal_bright"
+            android:paddingTop="10dp" />
+
+        <TextView
+            android:id="@+id/styledetail_txtDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/styledetail_dividerButtons"
+            android:background="@color/white"
+            android:paddingEnd="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/gray"
+            android:textSize="12sp"
+            android:typeface="serif" />
+
+        <TextView
+            android:id="@+id/styledetail_txtContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/styledetail_txtDate"
+            android:background="@color/white"
+            android:padding="10dp"
+            android:typeface="serif" />
+
+        <elitech.vietnam.myfashion.widgets.ScaleImageView
+            android:id="@+id/styledetail_imgContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/styledetail_txtContent"
+            android:adjustViewBounds="true"
+            android:background="@color/white"
+            android:contentDescription="@string/ok"
+            android:padding="5dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/no_avatar" />
+    </RelativeLayout>
+
+</ScrollView>

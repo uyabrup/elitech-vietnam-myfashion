@@ -18,6 +18,7 @@ import elitech.vietnam.myfashion.entities.Color;
 import elitech.vietnam.myfashion.entities.Comment;
 import elitech.vietnam.myfashion.entities.District;
 import elitech.vietnam.myfashion.entities.Member;
+import elitech.vietnam.myfashion.entities.Post;
 import elitech.vietnam.myfashion.entities.Ship;
 import elitech.vietnam.myfashion.entities.ShipMore;
 import elitech.vietnam.myfashion.entities.Size;
@@ -91,4 +92,18 @@ public interface Services {
 	@FormUrlEncoded
 	@POST("/order")
 	void addOrder(@Field("account") int account, @Field("email") String email, @Field("name") String name, @Field("address") String address, @Field("city") String city, @Field("state") String state, @Field("phone") String phone, @Field("payment") int payment, @Field("ship") double ship, @Field("shipprice") double shipprice, @Field("memo") String memo, @Field("detail") String detail, Callback<Integer> callback);
+	
+	@GET("/styler")
+	void getStylerBest(@Query("account") int account, @Query("start") int start, @Query("count") int count, Callback<List<Post>> callback);
+	
+	@FormUrlEncoded
+	@POST("/follow")
+	void follow(@Field("idmem") int member, @Field("idfollow") int follower, Callback<Integer> callback);
+	
+	@FormUrlEncoded
+	@POST("/unfollow")
+	void unFollow(@Field("idmem") int member, @Field("idfollow") int follower, Callback<Integer> callback);
+	
+	@GET("/account/{id}")
+	void getMemberById(@Path("id") int member, @Query("account") int account, Callback<Member> callback);
 }

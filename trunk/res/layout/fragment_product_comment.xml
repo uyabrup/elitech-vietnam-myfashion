@@ -35,12 +35,15 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/detail_comment_btnSend"
+                android:layout_toStartOf="@+id/detail_comment_btnSend"
+                android:hint="@string/writecomment"
                 android:inputType="textCapSentences|textMultiLine" />
 
             <ImageButton
                 android:id="@+id/detail_comment_btnSend"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:background="@null"

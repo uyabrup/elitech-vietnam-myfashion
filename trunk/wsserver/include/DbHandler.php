@@ -413,17 +413,50 @@ class DbHandler {
 		return $num_affected_rows > 0;
 	}
 	public function getStyler($account, $start, $count) {
-		$str = "SELECT		p.*,	IFNULL((	SELECT	SUM(l.`like`)
-												FROM	`like` l
-												WHERE	l.`id_account`=? AND l.`id_product`=p.`id` AND l.`type`=2
-											), 0) AS `liked`
+		$str = "SELECT		p.*,	
+							IFNULL((	SELECT	SUM(l.`like`)
+										FROM	`like` l
+										WHERE	l.`id_account`=? AND l.`id_product`=p.`id` AND l.`type`=2
+									), 0) 		AS `liked`,
+							a.`id`				AS `a.id`,
+							a.`name`			AS `a.name`,
+							a.`nick_name`		AS `a.nick_name`,
+							a.`email`			AS `a.email`,
+							a.`password`		AS `a.password`,
+							a.`image`			AS `a.image`,
+							a.`sex`				AS `a.sex`,
+							a.`phone`			AS `a.phone`,
+							a.`address`			AS `a.address`,
+							a.`district`		AS `a.district`,
+							a.`city`			AS `a.city`,
+							a.`profile`			AS `a.profile`,
+							a.`area`			AS `a.area`,
+							a.`join_day`		AS `a.join_day`,
+							a.`point`			AS `a.point`,
+							a.`web`				AS `a.web`,
+							a.`status`			AS `a.status`,
+							a.`sendmail`		AS `a.sendmail`,
+							a.`send_mail`		AS `a.send_mail`,
+							a.`gcm_id`			AS `a.gcm_id`,
+							IFNULL((	SELECT	COUNT(*)
+										FROM	`follower` f
+										WHERE	f.`id_follow`=a.`id` AND
+												f.`id_mem`=?
+									), 0) 		AS `a.followed`,
+							(	SELECT 		COUNT(*)
+								FROM		`follower` f1
+								INNER JOIN	`account` a1
+								ON			f1.`id_mem`=a1.`id`
+								WHERE		f1.`id_follow`=a.`id`) AS `a.follow_count`
 				FROM		`post` p
+				INNER JOIN	`account` a
+				ON			a.`id`=p.`id_account`
 				WHERE		p.`status`=1
 				ORDER BY	p.`create_day` 	DESC
 				LIMIT		?, ?;";
 		
 		$stmt = $this->conn->prepare ( $str );
-		$stmt->bind_param ( "iii", $account, $start, $count );
+		$stmt->bind_param ( "iiii", $account, $account, $start, $count );
 		$stmt->execute ();
 		$data = $stmt->get_result ();
 		$stmt->close ();
@@ -832,37 +865,86 @@ class DbHandler {
 	}
 	public function addOrder($code, $account, $address, $city, $state, $phone, $payment, $shipprice, $memo, $date, $email, $name) {
 		$str = "INSERT INTO `order`	(`code_order`, `id_account`, `total`, `totalVN`, `address`, `city`, `state`, `phone`, `payment`, `ship`, `memo`, `date`, `status`, `email`, `name`)
-				VALUES					(?, ?, 0, 0, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?);";
+				VALUES				(?, ?, 0, 0, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?);";
 		$stmt = $this->conn->prepare ( $str );
 		$stmt->bind_param ( "sissssiissss", $code, $account, $address, $city, $state, $phone, $payment, $shipprice, $memo, $date, $email, $name );
-		if (!$stmt->execute ())
-			$result = -1;
-		else 
+		if (! $stmt->execute ())
+			$result = - 1;
+		else
 			$result = $stmt->insert_id;
 		$stmt->close ();
 		return $result;
 	}
 	/**
-	 * 
-	 * @param unknown $orderid integer
-	 * @param unknown $details array
+	 *
+	 * @param unknown $orderid
+	 *        	integer
+	 * @param unknown $details
+	 *        	array
 	 * @return number
 	 */
 	public function addOrderDetails($orderid, $details) {
 		$str = "INSERT INTO 	`order_detail`	(`id_order`, `id_product`, `color`, `size`, `price`, `priceVN`, `commission`, `quantity`) VALUES ";
-		for ($i=0, $size=sizeof($details); $i<$size; $i++) {
-			$item = $details[$i];
+		for($i = 0, $size = sizeof ( $details ); $i < $size; $i ++) {
+			$item = $details [$i];
 			$str .= "({$orderid}, {$item['id_product']}, {$item['color']}, {$item['size']}, {$item['price']}, {$item['priceVN']}, {$item['commission']}, {$item['quantity']})";
-			if ($i < $size-1)
+			if ($i < $size - 1)
 				$str .= ", ";
 			else
 				$str .= ";";
 		}
-		$stmt = $this->conn-> prepare ($str);
-		if (!$stmt->execute ())
-			$orderid = -1;
+		$stmt = $this->conn->prepare ( $str );
+		if (! $stmt->execute ())
+			$orderid = - 1;
 		$stmt->close ();
 		return $orderid;
+	}
+	public function follow($idmem, $idfriend) {
+		$date = date ( "Y-m-d H:i:s" );
+		$str = "INSERT INTO `follower`	(`id_mem`, `id_follow`, `type`, `status`, `create_date`)
+				VALUES					(?, ?, 1, 1, ?);";
+		
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->bind_param ( "iis", $idmem, $idfriend, $date );
+		$result = 1;
+		if (! $stmt->execute ())
+			$result = 0;
+		$stmt->close ();
+		return $result;
+	}
+	public function unFollow($idmem, $idfollow) {
+		$str = "DELETE FROM `follower`
+				WHERE		`id_mem`=? AND `id_follow`=?;";
+			
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->bind_param ( "ii", $idmem, $idfollow );
+		$result = 1;
+		if (! $stmt->execute ())
+			$result = 0;
+		$stmt->close ();
+		return $result;
+	}
+	public function getMemberById($idmem, $account) {
+		$str = "SELECT		a.*, 
+							IFNULL((	SELECT	COUNT(*)
+										FROM	`follower` f
+										WHERE	f.`id_follow`=a.`id` AND
+												f.`id_mem`=?
+									), 0) AS `followed`,
+							(	SELECT 		COUNT(*)
+								FROM		`follower` f1
+								INNER JOIN	`account` a1
+								ON			f1.`id_mem`=a1.`id`
+								WHERE		f1.`id_follow`=?) AS `follow_count`
+				FROM 		`account` a
+				WHERE  		`id`=?;";
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->bind_param ( "iii", $account, $idmem, $idmem );
+		$stmt->execute ();
+		$result = $stmt->get_result ();
+		$data = $result->fetch_object ();
+		$stmt->close ();
+		return $data;
 	}
 }
 
