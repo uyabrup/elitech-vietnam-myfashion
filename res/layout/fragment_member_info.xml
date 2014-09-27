@@ -20,6 +20,33 @@
             android:scaleType="centerCrop"
             android:src="@drawable/no_avatar" />
 
+        <ImageButton
+            android:id="@+id/memInfo_btnEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/memInfo_imgAvatar"
+            android:layout_toEndOf="@+id/memInfo_imgAvatar"
+            android:layout_toRightOf="@+id/memInfo_imgAvatar"
+            android:adjustViewBounds="true"
+            android:background="@drawable/bg_button_follow"
+            android:contentDescription="@string/ok"
+            android:padding="5dp"
+            android:src="@drawable/ic_edit"
+            android:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/memInfo_btnFollow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/memInfo_imgAvatar"
+            android:layout_toEndOf="@+id/memInfo_imgAvatar"
+            android:layout_toRightOf="@+id/memInfo_imgAvatar"
+            android:adjustViewBounds="true"
+            android:background="@drawable/bg_button_follow"
+            android:contentDescription="@string/ok"
+            android:padding="5dp"
+            android:src="@drawable/ic_follow" />
+
         <TextView
             android:id="@+id/memInfo_txtName"
             android:layout_width="wrap_content"
@@ -27,7 +54,6 @@
             android:layout_below="@+id/memInfo_imgAvatar"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:text="Võ Chí Công"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/green"
             android:textStyle="bold" />
@@ -42,7 +68,6 @@
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:layout_marginStart="30dp"
-            android:text="Alone in the dark"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/gray"
             android:typeface="serif" />
@@ -57,9 +82,11 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginStart="10dp"
-            android:text="Bình Tân, Hồ Chí Minh"
+            android:drawableLeft="@drawable/ic_location"
+            android:drawableStart="@drawable/ic_location"
+            android:gravity="center_vertical"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/gray"
+            android:textColor="@color/green"
             android:typeface="serif" />
 
         <LinearLayout
@@ -72,10 +99,10 @@
             android:padding="10dp" >
 
             <Button
+                android:id="@+id/memInfo_btnFollower"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_button_simple"
-                android:text="110\nFollower"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <View
@@ -85,21 +112,37 @@
                 android:background="@android:drawable/divider_horizontal_bright" />
 
             <Button
+                android:id="@+id/memInfo_btnFollowing"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_button_simple"
-                android:text="110\nFollowing"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
         </LinearLayout>
+
+        <Button
+            android:id="@+id/memInfo_btnPurchaseHistory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/memInfo_layoutButtonFollow"
+            android:layout_marginEnd="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_button_follow"
+            android:text="@string/viewpurchasehistory"
+            android:textColor="@color/green"
+            android:textStyle="bold"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/memInfo_txtStyleLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/memInfo_layoutButtonFollow"
+            android:layout_below="@+id/memInfo_btnPurchaseHistory"
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
-            android:text="Styles"
+            android:text="@string/style"
             android:textColor="@color/green"
             android:textStyle="bold" />
 
@@ -114,12 +157,13 @@
             android:padding="15dp" >
 
             <TextView
+                android:id="@+id/memInfo_txtStyleNoData"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center_horizontal"
-                android:text="No style"
+                android:text="@string/nothaveyet"
                 android:textColor="@color/gray" />
         </LinearLayout>
 
@@ -130,7 +174,7 @@
             android:layout_below="@+id/memInfo_layoutStyleContent"
             android:layout_marginLeft="15dp"
             android:layout_marginStart="15dp"
-            android:text="Favorite"
+            android:text="@string/favorite"
             android:textColor="@color/green"
             android:textStyle="bold" />
 
@@ -145,15 +189,16 @@
             android:padding="15dp" >
 
             <TextView
+                android:id="@+id/memInfo_txtFavoriteNoData"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center_horizontal"
-                android:text="No style"
+                android:text="@string/nothaveyet"
                 android:textColor="@color/gray" />
         </LinearLayout>
-        
+
         <TextView
             android:id="@+id/memInfo_txtSuggestLabel"
             android:layout_width="wrap_content"
@@ -161,7 +206,7 @@
             android:layout_below="@+id/memInfo_layoutFavoriteContent"
             android:layout_marginLeft="15dp"
             android:layout_marginStart="15dp"
-            android:text="Suggests"
+            android:text="@string/suggest"
             android:textColor="@color/green"
             android:textStyle="bold" />
 
@@ -176,15 +221,16 @@
             android:padding="15dp" >
 
             <TextView
+                android:id="@+id/memInfo_txtSuggestNoData"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center_horizontal"
-                android:text="No style"
+                android:text="@string/nothaveyet"
                 android:textColor="@color/gray" />
         </LinearLayout>
-        
+
         <TextView
             android:id="@+id/memInfo_txtReviewLabel"
             android:layout_width="wrap_content"
@@ -192,7 +238,7 @@
             android:layout_below="@+id/memInfo_layoutSuggestContent"
             android:layout_marginLeft="15dp"
             android:layout_marginStart="15dp"
-            android:text="Review"
+            android:text="@string/review"
             android:textColor="@color/green"
             android:textStyle="bold" />
 
@@ -207,12 +253,13 @@
             android:padding="15dp" >
 
             <TextView
+                android:id="@+id/memInfo_txtReviewNoData"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center_horizontal"
-                android:text="No style"
+                android:text="@string/nothaveyet"
                 android:textColor="@color/gray" />
         </LinearLayout>
     </RelativeLayout>

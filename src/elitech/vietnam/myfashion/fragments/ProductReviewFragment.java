@@ -73,7 +73,6 @@ public class ProductReviewFragment extends AbstractFragment implements OnItemCli
 
 	@Override
 	public void onRefresh() {
-		mReviews.clear();
 		getData();
 	}
 
@@ -86,6 +85,7 @@ public class ProductReviewFragment extends AbstractFragment implements OnItemCli
 		mActivity.getServices().getProductReviews(mProduct.Id, mReviews.size(), LOADMORE, new Callback<List<Review>>() {
 			@Override
 			public void success(List<Review> arg0, Response arg1) {
+				mReviews.clear();
 				mReviews.addAll(arg0);
 				mAdapter.notifyDataSetChanged();
 				mRefresh.setRefreshing(false);

@@ -115,8 +115,8 @@ class DbHandler {
 	 *        	email to check in db
 	 * @return boolean
 	 */
-	private function isUserExists($email) {
-		$stmt = $this->conn->prepare ( "SELECT id from users WHERE email = ?" );
+	public function isUserExists($email) {
+		$stmt = $this->conn->prepare ( "SELECT id from account WHERE email = ?" );
 		$stmt->bind_param ( "s", $email );
 		$stmt->execute ();
 		$stmt->store_result ();
@@ -522,17 +522,51 @@ class DbHandler {
 		return $num_affected_rows;
 	}
 	public function getStyle($member, $account, $start, $count) {
-		$str = "SELECT		p.*,	IFNULL((	SELECT	SUM(l.`like`)
-												FROM	`like` l
-												WHERE	l.`id_account`=? AND l.`id_product`=p.`id` AND l.`type`=2
-											), 0) AS `liked`
+		$str = "SELECT		p.*,	
+							IFNULL((	SELECT	SUM(l.`like`)
+										FROM	`like` l
+										WHERE	l.`id_account`=? AND l.`id_product`=p.`id` AND l.`type`=2
+									), 0) 		AS `liked`,
+							a.`id`				AS `a.id`,
+							a.`name`			AS `a.name`,
+							a.`nick_name`		AS `a.nick_name`,
+							a.`email`			AS `a.email`,
+							a.`password`		AS `a.password`,
+							a.`image`			AS `a.image`,
+							a.`sex`				AS `a.sex`,
+							a.`phone`			AS `a.phone`,
+							a.`address`			AS `a.address`,
+							a.`district`		AS `a.district`,
+							a.`city`			AS `a.city`,
+							a.`profile`			AS `a.profile`,
+							a.`area`			AS `a.area`,
+							a.`join_day`		AS `a.join_day`,
+							a.`point`			AS `a.point`,
+							a.`web`				AS `a.web`,
+							a.`status`			AS `a.status`,
+							a.`sendmail`		AS `a.sendmail`,
+							a.`send_mail`		AS `a.send_mail`,
+							a.`gcm_id`			AS `a.gcm_id`,
+							IFNULL((	SELECT	COUNT(*)
+										FROM	`follower` f
+										WHERE	f.`id_follow`=a.`id` AND
+												f.`id_mem`=?
+									), 0) 		AS `a.followed`,
+							(	SELECT 		COUNT(*)
+								FROM		`follower` f1
+								INNER JOIN	`account` a1
+								ON			f1.`id_mem`=a1.`id`
+								WHERE		f1.`id_follow`=a.`id`) AS `a.follow_count`
 				FROM		`post` p
-				WHERE		p.`id_account`=? AND p.`status`=1
+				INNER JOIN	`account` a
+				ON			a.`id`=p.`id_account`
+				WHERE		p.`status`=1 AND 
+							p.`id_account`=?
 				ORDER BY	p.`create_day` 	DESC
 				LIMIT		?, ?;";
 		
 		$stmt = $this->conn->prepare ( $str );
-		$stmt->bind_param ( "iiii", $account, $member, $start, $count );
+		$stmt->bind_param ( "iiiii", $account, $account, $member, $start, $count );
 		$stmt->execute ();
 		$data = $stmt->get_result ();
 		$stmt->close ();
@@ -933,16 +967,197 @@ class DbHandler {
 									), 0) AS `followed`,
 							(	SELECT 		COUNT(*)
 								FROM		`follower` f1
-								INNER JOIN	`account` a1
-								ON			f1.`id_mem`=a1.`id`
-								WHERE		f1.`id_follow`=?) AS `follow_count`
+								WHERE		f1.`id_follow`=?) AS `follow_count`,
+							(	SELECT 		COUNT(*)
+								FROM		`follower` f2
+								WHERE		f2.`id_mem`=?) AS `following_count`
 				FROM 		`account` a
-				WHERE  		`id`=?;";
+				WHERE  		a.`id`=?;";
 		$stmt = $this->conn->prepare ( $str );
-		$stmt->bind_param ( "iii", $account, $idmem, $idmem );
+		$stmt->bind_param ( "iiii", $account, $idmem, $idmem, $idmem );
 		$stmt->execute ();
 		$result = $stmt->get_result ();
 		$data = $result->fetch_object ();
+		$stmt->close ();
+		return $data;
+	}
+	public function getLikedProduct($idmem, $account, $start, $count) {
+		$str = "SELECT		p.*,	
+							IFNULL((	SELECT	SUM(l.`like`)
+										FROM	`like` l
+										WHERE	l.`id_account`=? AND l.`id_product`=p.`id` AND l.`type`=1
+									), 0) 		AS `liked`,
+							SUBSTRING_INDEX(	TRIM(	LEADING	'shop.' 
+												FROM 	TRIM(	LEADING	'www.'
+																FROM 	TRIM(	LEADING	'http://' 
+																				FROM 	p.`url`))), '.', 1)	AS	`brand`,
+							c.`nameEN`	AS	`category_name_en`,
+							c.`nameKR`	AS	`category_name_kr`,
+							c.`nameVN`	AS	`category_name_vn`,
+							c.`color`	AS	`color`,
+							p.`priceVN`	AS	`price_vn`
+				FROM		`product` p
+				INNER JOIN	`category` c
+				ON			c.`id`=p.`id_category`
+				INNER JOIN	`like` l1
+				ON			l1.`id_product`=p.`id`	AND
+							l1.`type`=1				AND
+							l1.`id_account`=?
+				WHERE		p.`status`=1 AND
+							p.`quantity`=1
+				ORDER BY	l1.`datetime`	DESC,
+							p.`likes`		DESC,
+							p.`create_day`	DESC
+				LIMIT		?, ?;";
+		
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->bind_param("iiii", $account, $idmem, $start, $count);
+		$stmt->execute ();
+		$data = $stmt->get_result ();
+		$stmt->close ();
+		return $data;
+	}
+	public function getLikedStyle($idmem, $account, $start, $count) {
+		$str = "SELECT		p.*,	
+							IFNULL((	SELECT	SUM(l.`like`)
+										FROM	`like` l
+										WHERE	l.`id_account`=? AND l.`id_product`=p.`id` AND l.`type`=2
+									), 0) 		AS `liked`,
+							a.`id`				AS `a.id`,
+							a.`name`			AS `a.name`,
+							a.`nick_name`		AS `a.nick_name`,
+							a.`email`			AS `a.email`,
+							a.`password`		AS `a.password`,
+							a.`image`			AS `a.image`,
+							a.`sex`				AS `a.sex`,
+							a.`phone`			AS `a.phone`,
+							a.`address`			AS `a.address`,
+							a.`district`		AS `a.district`,
+							a.`city`			AS `a.city`,
+							a.`profile`			AS `a.profile`,
+							a.`area`			AS `a.area`,
+							a.`join_day`		AS `a.join_day`,
+							a.`point`			AS `a.point`,
+							a.`web`				AS `a.web`,
+							a.`status`			AS `a.status`,
+							a.`sendmail`		AS `a.sendmail`,
+							a.`send_mail`		AS `a.send_mail`,
+							a.`gcm_id`			AS `a.gcm_id`,
+							IFNULL((	SELECT	COUNT(*)
+										FROM	`follower` f
+										WHERE	f.`id_follow`=a.`id` AND
+												f.`id_mem`=?
+									), 0) 		AS `a.followed`,
+							(	SELECT 		COUNT(*)
+								FROM		`follower` f1
+								INNER JOIN	`account` a1
+								ON			f1.`id_mem`=a1.`id`
+								WHERE		f1.`id_follow`=a.`id`) AS `a.follow_count`
+				FROM		`post` p
+				INNER JOIN	`account` a
+				ON			a.`id`=p.`id_account`
+				INNER JOIN	`like` l1
+				ON			l1.`id_product`=p.`id`	AND
+							l1.`type`=2				AND
+							l1.`id_account`=?
+				WHERE		p.`status`=1
+				ORDER BY	l1.`datetime`	DESC,
+							p.`likes`		DESC,
+							p.`create_day`	DESC
+				LIMIT		?, ?;";
+		
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->bind_param("iiiii", $account, $account, $idmem, $start, $count);
+		$stmt->execute ();
+		$data = $stmt->get_result ();
+		$stmt->close ();
+		return $data;
+	}
+	public function getReviewById($idmem, $start, $count) {
+		$str = "SELECT		r.*,
+							a.`image`		AS	`aimage`,
+							a.`name`		AS	`aname`,
+							a.`nick_name`	AS	`anickname`,
+							p.`name`		AS	`pname`,
+							p.`image`		AS	`pimage`
+				FROM		`review` r
+				INNER JOIN	`account` a
+				ON			a.`id`=r.`id_account`
+				INNER JOIN	`product` p
+				ON			p.`id`=r.`id_product`
+				WHERE		r.`status`=1	AND
+							r.`id_account`=?
+				ORDER BY	r.`date`	DESC
+				LIMIT		?, ?;";
+		
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->bind_param("iii", $idmem, $start, $count);
+		$stmt->execute ();
+		$data = $stmt->get_result ();
+		$stmt->close ();
+		return $data;
+	}
+	public function getFollower($idmem, $idaccount, $start, $count) {
+		$str = "SELECT		a.*, 
+							IFNULL((	SELECT	COUNT(*)
+										FROM	`follower` f
+										WHERE	f.`id_follow`=a.`id` AND
+												f.`id_mem`=?
+									), 0) AS `followed`,
+							(	SELECT 		COUNT(*)
+								FROM		`follower` f1
+								WHERE		f1.`id_follow`=a.`id`) AS `follow_count`,
+							(	SELECT 		COUNT(*)
+								FROM		`follower` f2
+								WHERE		f2.`id_mem`=a.`id`) AS `following_count`
+				FROM 		`follower` f3
+				INNER JOIN	`account` a
+				ON			f3.`id_mem`=a.`id`
+				WHERE  		f3.`id_follow`=?
+				ORDER BY	a.`name`	ASC
+				LIMIT		?, ?;";
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->bind_param("iiii", $idaccount, $idmem, $start, $count);
+		$stmt->execute ();
+		$data = $stmt->get_result ();
+		$stmt->close ();
+		return $data;
+	}
+	public function getFollowing($idmem, $idaccount, $start, $count) {
+		$str = "SELECT		a.*, 
+							IFNULL((	SELECT	COUNT(*)
+										FROM	`follower` f
+										WHERE	f.`id_follow`=a.`id` AND
+												f.`id_mem`=?
+									), 0) AS `followed`,
+							(	SELECT 		COUNT(*)
+								FROM		`follower` f1
+								WHERE		f1.`id_follow`=a.`id`) AS `follow_count`,
+							(	SELECT 		COUNT(*)
+								FROM		`follower` f2
+								WHERE		f2.`id_mem`=a.`id`) AS `following_count`
+				FROM 		`follower` f3
+				INNER JOIN	`account` a
+				ON			f3.`id_follow`=a.`id`
+				WHERE  		f3.`id_mem`=?
+				ORDER BY	a.`name`	ASC
+				LIMIT		?, ?;";
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->bind_param("iiii", $idaccount, $idmem, $start, $count);
+		$stmt->execute ();
+		$data = $stmt->get_result ();
+		$stmt->close ();
+		return $data;
+	}
+	public function getUserLogin($email, $password) {
+		$str = "SELECT		*
+				FROM		`account`
+				WHERE		`email`=?		AND
+							`password`=?;";
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->bind_param("ss", $email, $password);
+		$stmt->execute ();
+		$data = $stmt->get_result ();
 		$stmt->close ();
 		return $data;
 	}

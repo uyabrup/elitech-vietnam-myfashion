@@ -19,7 +19,7 @@ import elitech.vietnam.myfashion.entities.TradeMark;
 import elitech.vietnam.myfashion.fragments.BestOfTodayFragment.BestOfTodayCallback;
 import elitech.vietnam.myfashion.fragments.CategoryDetailFragment;
 import elitech.vietnam.myfashion.fragments.CategoryDetailFragment.CategoryDetailCallback;
-import elitech.vietnam.myfashion.fragments.MemberInfoFragment;
+import elitech.vietnam.myfashion.fragments.MemberBaseFragment;
 import elitech.vietnam.myfashion.fragments.ProductDetailFragment.ProductDetailCallback;
 import elitech.vietnam.myfashion.fragments.ProductTabHostFragment;
 import elitech.vietnam.myfashion.fragments.ShoppingCartFragment.ShoppingCartCallback;
@@ -223,7 +223,6 @@ public class AppController implements CategoryDetailCallback, ProductDetailCallb
 
 	@Override
 	public void openMemberPage(int member) {
-		mActivity.getCurrentBase().replaceFragment(MemberInfoFragment.newInstance(member), true);
+		mActivity.getCurrentBase().replaceFragment(MemberBaseFragment.newInstance(member), true);
 	}
-	
 }

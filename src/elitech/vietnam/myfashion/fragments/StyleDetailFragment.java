@@ -6,6 +6,7 @@ package elitech.vietnam.myfashion.fragments;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -83,21 +84,26 @@ public class StyleDetailFragment extends AbstractFragment implements View.OnClic
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		
-		mBtnFollow.setEnabled(false);
 		int n = mActivity.getLoggedinUser() != null ? mActivity.getLoggedinUser().Id : -1;
-		mActivity.getServices().getMemberById(mPost.IdAccount, n, new Callback<Member>() {
-			@Override
-			public void success(Member arg0, Response arg1) {
-				mPost.Account = arg0;
-				mBtnFollow.setCompoundDrawablesWithIntrinsicBounds(mPost.Account.Followed > 0 ? R.drawable.ic_following : R.drawable.ic_follow, 0, 0, 0);
-				mBtnFollow.setEnabled(true);
-			}
-			@Override
-			public void failure(RetrofitError arg0) {
-				Log.w("RetrofitError", arg0.getMessage());
-				mBtnFollow.setVisibility(View.INVISIBLE);
-			}
-		});
+		mBtnFollow.setEnabled(false);
+		mBtnFollow.setVisibility(n == -1 ? View.GONE : View.VISIBLE);
+		if (mPost.IdAccount != n)
+			mActivity.getServices().getMemberById(mPost.IdAccount, n, new Callback<Member>() {
+				@Override
+				public void success(Member arg0, Response arg1) {
+					mPost.Account = arg0;
+					mBtnFollow.setCompoundDrawablesWithIntrinsicBounds(mPost.Account.Followed > 0 ? R.drawable.ic_following : R.drawable.ic_follow, 0, 0, 0);
+					mBtnFollow.setEnabled(true);
+				}
+				@Override
+				public void failure(RetrofitError arg0) {
+					Log.w("RetrofitError", arg0.getMessage());
+					mBtnFollow.setVisibility(View.INVISIBLE);
+				}
+			});
+		else
+			mBtnFollow.setVisibility(View.INVISIBLE);
+		
 		UrlImageViewHelper.setUrlDrawable(mAvatar, Const.SERVER_IMAGE_URL + mPost.Account.Image, R.drawable.no_avatar);
 		UrlImageViewHelper.setUrlDrawable(mImage, Const.SERVER_IMAGE_URL + mPost.image_url);
 		mTxtName.setText(mPost.Account.NickName.length() == 0 ? mPost.Account.Name : mPost.Account.NickName);
@@ -146,6 +152,10 @@ public class StyleDetailFragment extends AbstractFragment implements View.OnClic
 			CommentDialog.newInstance(this, REQ_DIALOG_COMMENT).show(getFragmentManager());
 			break;
 		case R.id.styledetail_btnShare:
+			Intent share = new Intent(Intent.ACTION_SEND);
+			share.setType("image/jpeg"); // might be text, sound, whatever
+			share.putExtra(Intent.EXTRA_STREAM, Const.SERVER_IMAGE_URL + mPost.image_url);
+			startActivity(Intent.createChooser(share, "share"));
 			break;
 		case R.id.styledetail_btnFollow:
 			if (mActivity.getLoggedinUser() == null) {
@@ -166,7 +176,7 @@ public class StyleDetailFragment extends AbstractFragment implements View.OnClic
 						@Override
 						public void failure(RetrofitError arg0) {
 							Log.w("RetrofitError", arg0.getMessage());
-							mBtnLike.setEnabled(true);
+							mBtnFollow.setEnabled(true);
 						}
 					});
 				else 
@@ -182,7 +192,7 @@ public class StyleDetailFragment extends AbstractFragment implements View.OnClic
 						@Override
 						public void failure(RetrofitError arg0) {
 							Log.w("RetrofitError", arg0.getMessage());
-							mBtnLike.setEnabled(true);
+							mBtnFollow.setEnabled(true);
 						}
 					});
 			}

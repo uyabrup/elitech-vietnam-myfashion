@@ -202,8 +202,7 @@
             android:background="@color/white"
             android:contentDescription="@string/ok"
             android:padding="5dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/no_avatar" />
+            android:scaleType="fitCenter" />
     </RelativeLayout>
 
 </ScrollView>

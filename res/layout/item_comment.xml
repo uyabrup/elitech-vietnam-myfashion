@@ -7,8 +7,8 @@
 
     <elitech.vietnam.myfashion.widgets.rdimgview.RoundedImageView
         android:id="@+id/detail_comment_imgAvatar"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginEnd="3dp"
         android:layout_marginRight="3dp"
         android:contentDescription="@string/ok"

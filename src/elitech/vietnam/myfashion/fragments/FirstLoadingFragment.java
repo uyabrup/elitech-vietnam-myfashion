@@ -17,12 +17,14 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.gson.Gson;
 
 import elitech.vietnam.myfashion.R;
 import elitech.vietnam.myfashion.entities.City;
@@ -169,6 +171,31 @@ public class FirstLoadingFragment extends AbstractFragment {
 				}
 			});
 		}
+		String user = mActivity.getPreferences().getString(PrefsDefinition.LOGGEDIN_MEMBER, "");
+		if (user.length() > 0) {
+			Member member = new Gson().fromJson(user, Member.class);
+			if (member != null) {
+				mTask += 1;
+				mActivity.getServices().getMemberById(member.Id, member.Id, new Callback<Member>() {
+					@Override
+					public void success(final Member arg0, Response arg1) {
+						onLoadingCompleted(true);
+						final Member m = arg0;
+						AsyncTask.execute(new Runnable() {
+							@Override
+							public void run() {
+								mActivity.getPreferences().edit().putString(PrefsDefinition.LOGGEDIN_MEMBER, new Gson().toJson(m)).commit();
+							}
+						});
+					}
+					@Override
+					public void failure(RetrofitError arg0) {
+						Log.w("RetrofitError", arg0.getMessage());
+						onLoadingCompleted(false);
+					}
+				});
+			}
+		}
 	}
 	
 	private void onLoadingCompleted(boolean done) {
@@ -178,8 +205,13 @@ public class FirstLoadingFragment extends AbstractFragment {
 			mTask -= 1;
 			if (mTask == 0) {
 				if (!mFailed) {
-					mActivity.getActionBar().show();
-					mActivity.changeBase(BaseFragment.TAG_BESTOFDAY, null);
+					new Handler().postDelayed(new Runnable() {
+						@Override
+						public void run() {
+							mActivity.getActionBar().show();
+							mActivity.changeBase(BaseFragment.TAG_BESTOFDAY, null);
+						}
+					}, 500);
 				} else {
 					// TODO: implement loading failed callback
 					Log.e("Initialize", "Initialize failed! Now exitting. (1)");
