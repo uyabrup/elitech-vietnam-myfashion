@@ -283,6 +283,41 @@ public class DBHandler extends SQLiteOpenHelper {
 		c.close();
 		return result;
 	}
+	
+	public District getDistrictById(int id) {
+		SQLiteDatabase db = getReadableDatabase();
+		String query = "SELECT * FROM " + TABLE_DISTRICT + " WHERE " + TABLE_DISTRICT_ID + " = " + id;
+		Cursor c = db.rawQuery(query, null);
+		District item = new District();
+		if (c.moveToFirst()) {
+			do {
+				item.Id = c.getInt(c.getColumnIndex(TABLE_DISTRICT_ID));
+				item.Name = c.getString(c.getColumnIndex(TABLE_DISTRICT_NAME));
+				item.Publish = c.getInt(c.getColumnIndex(TABLE_DISTRICT_IDCITY));
+				item.Order = c.getInt(c.getColumnIndex(TABLE_DISTRICT_POS));
+				item.Ship = c.getInt(c.getColumnIndex(TABLE_DISTRICT_SHIP));
+			} while (c.moveToNext());
+		}
+		c.close();
+		return item;
+	}
+	
+	public City getCityById(int id) {
+		SQLiteDatabase db = getReadableDatabase();
+		String query = "SELECT * FROM " + TABLE_CITY + " WHERE " + TABLE_CITY_ID + " = " + id;
+		Cursor c = db.rawQuery(query, null);
+		City item = new City();
+		if (c.moveToFirst()) {
+			do {
+				item.Id = c.getInt(c.getColumnIndex(TABLE_CITY_ID));
+				item.Name = c.getString(c.getColumnIndex(TABLE_CITY_NAME));
+				item.Code = c.getString(c.getColumnIndex(TABLE_CITY_CODE));
+				item.Order = c.getInt(c.getColumnIndex(TABLE_CITY_POS));
+			} while (c.moveToNext());
+		}
+		c.close();
+		return item;
+	}
 
 	public int getShipCount() {
 		SQLiteDatabase db = getReadableDatabase();

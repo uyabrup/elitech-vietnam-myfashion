@@ -251,7 +251,7 @@ public class ProductDetailFragment extends AbstractFragment implements View.OnCl
 
 	@Override
 	public void noClick(int request, int position) {
-		
+		// Do nothing
 	}
 
 	@Override

@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.gson.Gson;
 import com.readystatesoftware.viewbadger.BadgeView;
 
 import elitech.vietnam.myfashion.config.Config;
@@ -21,6 +22,7 @@ import elitech.vietnam.myfashion.controllers.SlidingMenuController;
 import elitech.vietnam.myfashion.database.DBHandler;
 import elitech.vietnam.myfashion.entities.Member;
 import elitech.vietnam.myfashion.fragments.BaseFragment;
+import elitech.vietnam.myfashion.prefs.PrefsDefinition;
 import elitech.vietnam.myfashion.wsclient.ServiceBuilder;
 import elitech.vietnam.myfashion.wsclient.Services;
 
@@ -60,8 +62,7 @@ public class MainActivity extends ActionBarActivity {
 		/*
 		 * Dummy user data
 		 */
-		mUser = new Member();
-		mUser.Id = 8;
+		mUser = new Gson().fromJson(mPrefs.getString(PrefsDefinition.LOGGEDIN_MEMBER, ""), Member.class);
 
 		mSlideMenuController.setUp();
 		
@@ -133,6 +134,10 @@ public class MainActivity extends ActionBarActivity {
 	
 	public Member getLoggedinUser() {
 		return mUser;
+	}
+	
+	public void setLoggedinUser(Member member) {
+		mUser = member;
 	}
 	
 	public Locale getCurrentLocale() {

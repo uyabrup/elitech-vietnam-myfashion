@@ -34,10 +34,11 @@ public class BaseFragment extends Fragment {
 	public static final String	TAG_MYSTYLE			= "TAG_MYSTYLE";
 	public static final String	TAG_REVIEW			= "TAG_REVIEW";
 	public static final String	TAG_SETTINGS		= "TAG_SETTINGS";
+	public static final String	TAG_NETWORKERROR	= "TAG_NETWORKERROR";
 
 	MainActivity				mActivity;
 
-	String						mTag;
+	String						mTag, mCurrent = "";
 	int							mPos;
 	
 	public static BaseFragment newInstance(String tag) {
@@ -97,6 +98,12 @@ public class BaseFragment extends Fragment {
 				fragment = new ShoppingCartFragment();
 			if (mTag.equals(TAG_STYLER))
 				fragment = new StylerBestTopFragment();
+			// my style
+			// reviews
+			if (mTag.equals(TAG_SETTINGS))
+				fragment = new SettingsFragment();
+			if (mTag.equals(TAG_NETWORKERROR))
+				fragment = new SettingsFragment();
 			
 			getChildFragmentManager().beginTransaction().add(R.id.base_container, fragment, mTag).commit();
 		} else
@@ -104,12 +111,13 @@ public class BaseFragment extends Fragment {
 	}
 	
 	public boolean popFragment() {
-		boolean isPop = false;
+		if (popChildFragment())
+			return true;
 		if (getChildFragmentManager().getBackStackEntryCount() > 0) {
-			isPop = true;
 			getChildFragmentManager().popBackStack();
+			return true;
 		}
-		return isPop;
+		return false;
 	}
 	
 	public boolean popAllFragment() {
@@ -119,7 +127,24 @@ public class BaseFragment extends Fragment {
 		return false;
 	}
 	
+	/**
+	 * Define child fragment that can host other fragments as its children
+	 * @return
+	 */
+	public boolean popChildFragment() {
+		Fragment f = getChildFragmentManager().findFragmentByTag(mCurrent);
+		if (f != null && f instanceof ChildBaseFragment) {
+			return ((ChildBaseFragment) f).popFragment();
+		}
+		return false;
+	}
+	
+	public ChildBaseFragment getCurrentChildBase() {
+		return (ChildBaseFragment) getChildFragmentManager().findFragmentByTag(mCurrent);
+	}
+	
 	public void replaceFragment(Fragment fragment, boolean addToBackStack) {
+		mCurrent = fragment.getClass().getName();
 		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 		if (addToBackStack) {
 			transaction.addToBackStack(fragment.getClass().getName());

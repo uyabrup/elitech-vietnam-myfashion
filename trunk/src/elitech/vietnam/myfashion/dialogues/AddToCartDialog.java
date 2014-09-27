@@ -181,7 +181,7 @@ public class AddToCartDialog extends DialogFragment implements View.OnClickListe
 		case R.id.atc_btnOk:
 			if (mClick != null) {
 				Color color = mColors.size() > 0 ? mColors.get(mColor.getSelectedItemPosition()) : null;
-				Size size = mSizes.size() > 0 ? mSizes.get(mColor.getSelectedItemPosition()) : null;
+				Size size = mSizes.size() > 0 ? mSizes.get(mSize.getSelectedItemPosition()) : null;
 				mClick.yesClick(mRequest, mPosition, color, size, QUANTITY[mQuantity.getSelectedItemPosition()]);
 			}
 			break;

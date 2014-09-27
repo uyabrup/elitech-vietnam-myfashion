@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="facebook_app_id">645507365565201</string>
     <string name="app_name">Korea Style</string>
     <string name="hello_world">Hello world!</string>
     
     <string name="action_settings">SETTINGS</string>
-    <string name="login">LOGIN</string>
+    <string name="login">Login</string>
     <string name="or">Or</string>
-    <string name="signup">SIGN UP</string>
+    <string name="signup">Sign up</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="confirmpassword">Confirm password</string>
@@ -124,7 +125,7 @@
     <string name="confirmpassworddifferent">Your password and confirm password are different</string>
     <string name="signupsuccessful">Sign up successful</string>
     <string name="loading">Please wait ...</string>
-    <string name="signout">SIGN OUT</string>
+    <string name="signout">Sign out</string>
     <string name="shippingwarn">You must fill all shipping infomations</string>
     <string name="confirmdeletebill">Do you want to delete this order?</string>
     <string name="ordersuccessful">Ordering successful</string>
@@ -360,5 +361,17 @@
     <string name="follow">Follow</string>
     <string name="writecomment">Write comment...</string>
     <string name="nocommentyet">No comment yet</string>
+    <string name="style">Style</string>
+    <string name="nothaveyet">Not have yet</string>
+    <string name="favorite">Favorite product</string>
+    <string name="suggest">Suggested style</string>
+    <string name="num_follower">follower</string>
+    <string name="num_followers">followers</string>
+    <string name="num_following">following</string>
+    <string name="num_followings">following</string>
+    <string name="viewpurchasehistory">View Purchase History</string>
+    <string name="account">Account</string>
+    <string name="about">About</string>
+    <string name="loginorsignup">Login or Signup</string>
     
 </resources>

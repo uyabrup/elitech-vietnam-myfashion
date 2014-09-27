@@ -51,6 +51,9 @@ public class Member {
 	@SerializedName("follow_count")
 	public int FollowCount;
 	
+	@SerializedName("following_count")
+	public int FollowingCount;
+	
 	@SerializedName("followed")
 	public int Followed;
 	

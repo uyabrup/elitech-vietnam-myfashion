@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants"
+    android:padding="5dp" >
+
+    <elitech.vietnam.myfashion.widgets.CircularImageView
+        android:id="@+id/item_memberfollow_imgAvatar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/ok"
+        android:scaleType="centerCrop"
+        android:src="@drawable/no_avatar" />
+
+    <TextView
+        android:id="@+id/item_memberfollow_txtName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@+id/item_memberfollow_imgAvatar"
+        android:layout_toLeftOf="@+id/item_memberfollow_btnFollow"
+        android:layout_toRightOf="@+id/item_memberfollow_imgAvatar"
+        android:layout_toStartOf="@+id/item_memberfollow_btnFollow"
+        android:textColor="@color/green"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/item_memberfollow_txtFollowCount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_memberfollow_txtName"
+        android:layout_marginEnd="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@+id/item_memberfollow_imgAvatar"
+        android:layout_toLeftOf="@+id/item_memberfollow_btnFollow"
+        android:layout_toRightOf="@+id/item_memberfollow_imgAvatar"
+        android:layout_toStartOf="@+id/item_memberfollow_btnFollow"
+        android:textColor="@color/gray"
+        android:textSize="12sp"
+        android:typeface="serif" />
+
+    <TextView
+        android:id="@+id/item_memberfollow_btnFollow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/bg_button_follow"
+        android:drawablePadding="5dp"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="@string/follow" />
+
+</RelativeLayout>

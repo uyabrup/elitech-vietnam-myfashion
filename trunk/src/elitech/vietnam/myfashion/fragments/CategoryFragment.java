@@ -16,7 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.GridView;
+import android.widget.ListView;
 import elitech.vietnam.myfashion.R;
 import elitech.vietnam.myfashion.adapters.CategoryAdapter;
 import elitech.vietnam.myfashion.entities.Category;
@@ -33,7 +33,7 @@ public class CategoryFragment extends AbstractFragment implements OnItemClickLis
 	public static final String	TAG_MEN		= "TAG_MEN";
 	public static final String	TAG_WINTER	= "TAG_WINTER";
 	
-	GridView mGrid;
+	ListView mGrid;
 	CategoryAdapter mAdapter;
 	
 	List<Category> mCategories = new ArrayList<>();
@@ -63,9 +63,9 @@ public class CategoryFragment extends AbstractFragment implements OnItemClickLis
 		if (mTag.equals(TAG_WINTER))
 			mFashion = 3;
 		
-		View view = inflater.inflate(R.layout.fragment_category, container, false);
+		View view = inflater.inflate(R.layout.fragment_category_list, container, false);
 
-		mGrid = (GridView) view.findViewById(R.id.category_grvCategory);
+		mGrid = (ListView) view.findViewById(R.id.category_grvCategory);
 		mAdapter = new CategoryAdapter(mActivity, R.layout.item_category, mCategories, mFashion);
 		mGrid.setAdapter(mAdapter);
 		

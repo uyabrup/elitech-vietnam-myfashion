@@ -61,6 +61,9 @@ public class Review {
 	@SerializedName("aimage")
 	public String MemImage;
 	
+	@SerializedName("pimage")
+	public String ProductImage;
+	
 	@SerializedName("pname")
 	public String ProductName;
 	

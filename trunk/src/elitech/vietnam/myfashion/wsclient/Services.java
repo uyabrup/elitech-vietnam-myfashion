@@ -6,6 +6,7 @@ package elitech.vietnam.myfashion.wsclient;
 import java.util.List;
 
 import retrofit.Callback;
+import retrofit.client.Response;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
@@ -44,8 +45,9 @@ public interface Services {
 	void doLikes(@Field("product") int product, @Field("account") int account, @Field("liked") int liked,
 			@Field("type") int type, Callback<Integer> callback);
 	
-	@GET("/login")
-	void login(@Query("user") String username, @Query("pass") String password, Callback<Member> callback);
+	@FormUrlEncoded
+	@POST("/login")
+	void login(@Field("email") String username, @Field("password") String password, Callback<Member> callback);
 	
 	@GET("/product/{id}/details")
 	void getProductDetails(@Path("id") int id, Callback<List<ProductDetail>> callback);
@@ -104,6 +106,24 @@ public interface Services {
 	@POST("/unfollow")
 	void unFollow(@Field("idmem") int member, @Field("idfollow") int follower, Callback<Integer> callback);
 	
-	@GET("/account/{id}")
+	@GET("/member/{id}")
 	void getMemberById(@Path("id") int member, @Query("account") int account, Callback<Member> callback);
+	
+	@GET("/member/{id}/style")
+	void getStyleById(@Path("id") int member, @Query("account") int account, @Query("start") int start, @Query("count") int count, Callback<List<Post>> callback);
+	
+	@GET("/member/{id}/likedProduct")
+	void getLikedProduct(@Path("id") int member, @Query("account") int account, @Query("start") int start, @Query("count") int count, Callback<List<Product>> callback);
+	
+	@GET("/member/{id}/likedStyle")
+	void getLikedStyle(@Path("id") int member, @Query("account") int account, @Query("start") int start, @Query("count") int count, Callback<List<Post>> callback);
+	
+	@GET("/member/{id}/reviews")
+	void getReviewById(@Path("id") int member, @Query("start") int start, @Query("count") int count, Callback<List<Review>> callback);
+	
+	@GET("/member/{id}/follower")
+	void getFollower(@Path("id") int member, @Query("account") int account, @Query("start") int start, @Query("count") int count, Callback<List<Member>> callback);
+	
+	@GET("/member/{id}/following")
+	void getFollowing(@Path("id") int member, @Query("account") int account, @Query("start") int start, @Query("count") int count, Callback<List<Member>> callback);
 }

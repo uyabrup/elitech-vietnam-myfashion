@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/elitech.vietnam.myfashion"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp" >
+
+    <elitech.vietnam.myfashion.widgets.rdimgview.RoundedImageView
+        android:id="@+id/item_memberreview_imgProduct"
+        android:layout_width="60dp"
+        android:layout_height="90dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/sample_midu"
+        app:corner_radius="5dp" />
+
+    <TextView
+        android:id="@+id/item_memberreview_txtName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@+id/item_memberreview_imgProduct"
+        android:layout_toRightOf="@+id/item_memberreview_imgProduct"
+        android:textColor="@color/green"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/item_memberreview_vNameSeparator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/item_memberreview_txtName"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@+id/item_memberreview_imgProduct"
+        android:layout_toRightOf="@+id/item_memberreview_imgProduct"
+        android:background="@android:drawable/divider_horizontal_bright" />
+
+    <TextView
+        android:id="@+id/item_memberreview_txtTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_memberreview_vNameSeparator"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@+id/item_memberreview_imgProduct"
+        android:layout_toRightOf="@+id/item_memberreview_imgProduct"
+        android:textColor="@color/green"
+        android:typeface="serif" />
+
+    <RatingBar
+        android:id="@+id/item_memberreview_rtbRating"
+        style="?android:attr/ratingBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_memberreview_txtTitle"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@+id/item_memberreview_imgProduct"
+        android:layout_toRightOf="@+id/item_memberreview_imgProduct"
+        android:rating="2" />
+
+    <TextView
+        android:id="@+id/item_memberreview_txtTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_memberreview_rtbRating"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@+id/item_memberreview_imgProduct"
+        android:layout_toRightOf="@+id/item_memberreview_imgProduct"
+        android:textColor="@color/gray"
+        android:textSize="12sp" />
+
+</RelativeLayout>
