@@ -108,7 +108,7 @@ public class MemberInfoFragment extends AbstractFragment implements View.OnClick
 		mMemberId = getArguments().getInt(ARG_MEMBERID, 0);
 		final int n = mActivity.getLoggedinUser() == null ? -1 : mActivity.getLoggedinUser().Id;
 		mBtnFollow.setEnabled(false);
-		mBtnFollow.setVisibility(n == -1 ? View.GONE : View.VISIBLE);
+		mBtnFollow.setVisibility(n == -1 || mMemberId == n ? View.GONE : View.VISIBLE);
 		mBtnEdit.setVisibility(n == mMemberId ? View.VISIBLE : View.GONE);
 		mBtnPurchased.setVisibility(n == mMemberId ? View.VISIBLE : View.GONE);
 		mActivity.getServices().getMemberById(mMemberId, n, new Callback<Member>() {

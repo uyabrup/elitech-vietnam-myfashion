@@ -3,6 +3,7 @@
  */
 package elitech.vietnam.myfashion.fragments;
 
+import elitech.vietnam.myfashion.R;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +28,8 @@ public class AccountInfoFragment extends AbstractFragment implements OnClickList
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return super.onCreateView(inflater, container, savedInstanceState);
+		View view = inflater.inflate(R.layout.fragment_account_info, container, false);
+		return view;
 	}
 	
 	@Override

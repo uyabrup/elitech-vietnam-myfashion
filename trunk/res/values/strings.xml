@@ -373,5 +373,7 @@
     <string name="account">Account</string>
     <string name="about">About</string>
     <string name="loginorsignup">Login or Signup</string>
+    <string name="google">Google</string>
+    <string name="logout">Logout</string>
     
 </resources>

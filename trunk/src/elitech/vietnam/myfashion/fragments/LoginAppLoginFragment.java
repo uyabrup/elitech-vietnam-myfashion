@@ -3,6 +3,8 @@
  */
 package elitech.vietnam.myfashion.fragments;
 
+import com.google.gson.Gson;
+
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -12,10 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import elitech.vietnam.myfashion.R;
 import elitech.vietnam.myfashion.entities.Member;
 import elitech.vietnam.myfashion.entities.RestError;
+import elitech.vietnam.myfashion.prefs.PrefsDefinition;
 import elitech.vietnam.myfashion.utilities.Utilities;
 
 /**
@@ -26,6 +30,7 @@ public class LoginAppLoginFragment extends AbstractFragment implements View.OnCl
 
 	EditText mEdtUsername, mEdtPassword;
 	Button mBtnSubmit;
+	TextView mBtnForgot, mBtnRegister;
 	
 	public static LoginAppLoginFragment newInstance() {
 		LoginAppLoginFragment f = new LoginAppLoginFragment();
@@ -42,8 +47,12 @@ public class LoginAppLoginFragment extends AbstractFragment implements View.OnCl
 		mEdtUsername = (EditText) view.findViewById(R.id.login_edtLoginEmail);
 		mEdtPassword = (EditText) view.findViewById(R.id.login_edtLoginPassword);
 		mBtnSubmit = (Button) view.findViewById(R.id.login_btnLoginSubmit);
+		mBtnForgot = (TextView) view.findViewById(R.id.login_btnLoginForgotPassword);
+		mBtnRegister = (TextView) view.findViewById(R.id.login_btnLoginRegister);
 		
 		mBtnSubmit.setOnClickListener(this);
+		mBtnForgot.setOnClickListener(this);
+		mBtnRegister.setOnClickListener(this);
 		
 		return view;
 	}
@@ -56,6 +65,11 @@ public class LoginAppLoginFragment extends AbstractFragment implements View.OnCl
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+		case R.id.login_btnLoginForgotPassword:
+			break;
+		case R.id.login_btnLoginRegister:
+			mActivity.getCurrentBase().getCurrentChildBase().replaceFragment(LoginRegisterFragment.newInstance(), R.id.login_layoutContainer, true);
+			break;
 		case R.id.login_btnLoginSubmit:
 			if (validate()) {
 				String pass = Utilities.getMD5(mEdtPassword.getText().toString().trim() + "orchipro");
@@ -64,6 +78,8 @@ public class LoginAppLoginFragment extends AbstractFragment implements View.OnCl
 					public void success(Member arg0, Response arg1) {
 						mActivity.setLoggedinUser(arg0);
 						mActivity.getCurrentBase().popAllFragment();
+						mActivity.getMenuController().changeLoggedState(true);
+						mActivity.getPreferences().edit().putString(PrefsDefinition.LOGGEDIN_MEMBER, new Gson().toJson(arg0)).commit();
 					}
 					@Override
 					public void failure(RetrofitError arg0) {

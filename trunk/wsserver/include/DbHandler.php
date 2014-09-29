@@ -1161,6 +1161,18 @@ class DbHandler {
 		$stmt->close ();
 		return $data;
 	}
+	public function registerUser($name, $email, $password, $gcmid) {
+		$str = "INSERT INTO `account`	(`name`, `email`, `password`, `join_day`, `web`, `gcm_id`)
+				VALUES					('$name', '$email', '$password', '$date', 0, '$gcmid');";
+		$date = date("Y-m-d H:i:s");
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->bind_param("sssss", $name, $email, $password, $date, $gcmid);
+		$result = 1;
+		if (! $stmt->execute ())
+			$result = 0;
+		$stmt->close ();
+		return $result;
+	}
 }
 
 ?>
