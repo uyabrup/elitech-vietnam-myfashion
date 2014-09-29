@@ -4,12 +4,32 @@
     android:layout_height="wrap_content" >
 
     <EditText
+        android:id="@+id/login_edtRegisterUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:background="@color/white"
+        android:drawableLeft="@drawable/icon_user"
+        android:drawablePadding="5dp"
+        android:drawableStart="@drawable/icon_user"
+        android:ems="10"
+        android:hint="@string/username"
+        android:inputType="textCapWords"
+        android:padding="6dp"
+        android:textColor="@color/gray" />
+    
+    <EditText
         android:id="@+id/login_edtRegisterEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:layout_below="@+id/login_edtRegisterUser"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:background="@color/white"
@@ -62,31 +82,11 @@
         android:padding="6dp"
         android:textColor="@color/gray" />
 
-    <EditText
-        android:id="@+id/login_edtRegisterUser"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/login_edtRegisterPasswordRetype"
-        android:layout_marginEnd="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:background="@color/white"
-        android:drawableLeft="@drawable/icon_user"
-        android:drawablePadding="5dp"
-        android:drawableStart="@drawable/icon_user"
-        android:ems="10"
-        android:hint="@string/username"
-        android:inputType="textCapWords"
-        android:padding="6dp"
-        android:textColor="@color/gray" />
-
     <Button
         android:id="@+id/login_btnRegisterSubmit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/login_edtRegisterUser"
+        android:layout_below="@+id/login_edtRegisterPasswordRetype"
         android:layout_marginEnd="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"

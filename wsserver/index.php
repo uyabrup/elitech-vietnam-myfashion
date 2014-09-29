@@ -852,6 +852,28 @@ $app->post ( '/login', function () use($app) {
 	
 	echoRespnse ( 200,  $r3[0] );
 } );
+
+$app->post ( '/register', function () use($app) {
+	authenticate ();
+	$name = $app->request->post ( 'name' );
+	$email = $app->request->post ( 'email' );
+	$password = $app->request->post ( 'password' );
+	$gcmid = $app->request->post ( 'gcmid' );
+	
+	$db = new DbHandler ();
+	$response = array();
+	
+	$r1 = $db->isUserExists($email);
+	if (true === $r1) {
+		$response['code'] = 3;
+		$response['message'] = 'Email exists!!';
+		echoRespnse ( 400,  $response );
+		return;
+	}
+	
+	$r2 = $db->registerUser ($name, $email, $password, $gcmid);
+	echoRespnse ( 200,  $r2 );
+} );
 /**
  * Test method
  */

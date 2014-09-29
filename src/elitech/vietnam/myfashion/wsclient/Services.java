@@ -6,7 +6,6 @@ package elitech.vietnam.myfashion.wsclient;
 import java.util.List;
 
 import retrofit.Callback;
-import retrofit.client.Response;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
@@ -20,13 +19,13 @@ import elitech.vietnam.myfashion.entities.Comment;
 import elitech.vietnam.myfashion.entities.District;
 import elitech.vietnam.myfashion.entities.Member;
 import elitech.vietnam.myfashion.entities.Post;
+import elitech.vietnam.myfashion.entities.Product;
+import elitech.vietnam.myfashion.entities.ProductDetail;
+import elitech.vietnam.myfashion.entities.Review;
 import elitech.vietnam.myfashion.entities.Ship;
 import elitech.vietnam.myfashion.entities.ShipMore;
 import elitech.vietnam.myfashion.entities.Size;
 import elitech.vietnam.myfashion.entities.TradeMark;
-import elitech.vietnam.myfashion.entities.Product;
-import elitech.vietnam.myfashion.entities.ProductDetail;
-import elitech.vietnam.myfashion.entities.Review;
 
 /**
  * @author Cong
@@ -126,4 +125,8 @@ public interface Services {
 	
 	@GET("/member/{id}/following")
 	void getFollowing(@Path("id") int member, @Query("account") int account, @Query("start") int start, @Query("count") int count, Callback<List<Member>> callback);
+	
+	@FormUrlEncoded
+	@POST("/register")
+	void register(@Field("name") String name, @Field("email") String email, @Field("password") String password, @Field("gcmid") String gcmId, Callback<Integer> callback);
 }

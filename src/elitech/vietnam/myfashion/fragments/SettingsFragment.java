@@ -6,11 +6,13 @@ package elitech.vietnam.myfashion.fragments;
 import elitech.vietnam.myfashion.R;
 import elitech.vietnam.myfashion.dialogues.ConfirmDialog;
 import elitech.vietnam.myfashion.dialogues.ConfirmDialog.ConfirmDialogClick;
+import elitech.vietnam.myfashion.prefs.PrefsDefinition;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 /**
  * @author Cong
@@ -67,7 +69,7 @@ public class SettingsFragment extends AbstractFragment implements View.OnClickLi
 			if (mActivity.getLoggedinUser() == null) {
 				mActivity.getCurrentBase().replaceFragment(LoginBaseFragment.newInstance(), true);
 			} else {
-				ConfirmDialog.newInstance(R.string.login, R.string.logoutconfirm, 1, this).show(getFragmentManager());
+				ConfirmDialog.newInstance(R.string.logout, R.string.logoutconfirm, 1, this).show(getFragmentManager());
 			}
 			break;
 		default:
@@ -79,6 +81,9 @@ public class SettingsFragment extends AbstractFragment implements View.OnClickLi
 	public void yesClick(int requestCode) {
 		mActivity.setLoggedinUser(null);
 		mBtnLogin.setText(R.string.loginorsignup);
+		mActivity.getPreferences().edit().putString(PrefsDefinition.LOGGEDIN_MEMBER, "").commit();
+		mActivity.getMenuController().changeLoggedState(false);
+		Toast.makeText(mActivity, R.string.logoutsuccess, Toast.LENGTH_SHORT).show();
 	}
 
 	@Override

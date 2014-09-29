@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_darkgray" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp" >
+
+            <TextView
+                android:id="@+id/accountinfo_txtName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="Cong Vo"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/green"
+                android:textStyle="bold" />
+
+            <elitech.vietnam.myfashion.widgets.CircularImageView
+                android:id="@+id/accountinfo_imgAvatar"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_below="@+id/accountinfo_txtName"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/ok"
+                android:scaleType="centerCrop"
+                android:src="@drawable/no_avatar" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/accountinfo_btnChangePassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/facebook_button_grey"
+            android:drawableLeft="@drawable/icon_pass"
+            android:drawableStart="@drawable/icon_pass"
+            android:gravity="center_vertical"
+            android:paddingEnd="10dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="10dp"
+            android:paddingStart="5dp"
+            android:text="Change Password"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/gray" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/facebook_button_grey_normal"
+            android:padding="10dp" >
+
+            <LinearLayout
+                android:id="@+id/accountinfo_layoutBasicInfoTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/accountinfo_txtBasicInfoLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Basic Information"
+                    android:textColor="@color/green"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/accountinfo_btnEditBasicInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_button_simple"
+                    android:drawableLeft="@drawable/ic_edit"
+                    android:drawablePadding="5dp"
+                    android:drawableStart="@drawable/ic_edit"
+                    android:text="Edit"
+                    android:textColor="@color/gray" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/accountinfo_dividerBasicInfo"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/accountinfo_layoutBasicInfoTitle"
+                android:layout_marginTop="5dp"
+                android:background="@android:drawable/divider_horizontal_bright" />
+
+            <LinearLayout
+                android:id="@+id/accountinfo_layoutNickName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/accountinfo_dividerBasicInfo"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/accountinfo_txtNickNameLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="Name"
+                    android:textColor="@color/gray" />
+
+                <TextView
+                    android:id="@+id/accountinfo_txtNickName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="Cong Vo"
+                    android:textColor="@color/green" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/accountinfo_layoutStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/accountinfo_layoutNickName"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/accountinfo_txtStatusLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="Status"
+                    android:textColor="@color/gray" />
+
+                <TextView
+                    android:id="@+id/accountinfo_txtStatus"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="Just another day..."
+                    android:textColor="@color/green"
+                    android:textStyle="italic"
+                    android:typeface="serif" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/accountinfo_layoutGender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/accountinfo_layoutStatus"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/accountinfo_txtGenderLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="Gender"
+                    android:textColor="@color/gray" />
+
+                <TextView
+                    android:id="@+id/accountinfo_txtGender"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="Male"
+                    android:textColor="@color/green" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/facebook_button_grey_normal"
+            android:padding="10dp" >
+
+            <LinearLayout
+                android:id="@+id/accountinfo_layoutShippingTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/accountinfo_txtShippingLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Shipping detail"
+                    android:textColor="@color/green"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/accountinfo_btnEditShipping"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_button_simple"
+                    android:drawableLeft="@drawable/ic_edit"
+                    android:drawablePadding="5dp"
+                    android:drawableStart="@drawable/ic_edit"
+                    android:text="Edit"
+                    android:textColor="@color/gray" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/accountinfo_dividerShipping"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/accountinfo_layoutShippingTitle"
+                android:layout_marginTop="5dp"
+                android:background="@android:drawable/divider_horizontal_bright" />
+
+            <LinearLayout
+                android:id="@+id/accountinfo_layoutAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/accountinfo_dividerShipping"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/accountinfo_txtAddressLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="Address"
+                    android:textColor="@color/gray" />
+
+                <TextView
+                    android:id="@+id/accountinfo_txtAddress"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="11/1 Tây Sơn, tổ 18, khu vực 4 phường Ghềnh Ráng"
+                    android:textColor="@color/green" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/accountinfo_layoutDistrict"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/accountinfo_layoutAddress"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/accountinfo_txtDistrictLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="Quận"
+                    android:textColor="@color/gray" />
+
+                <TextView
+                    android:id="@+id/accountinfo_txtDistrict"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="Quy Nhơn"
+                    android:textColor="@color/green" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/accountinfo_layoutCity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/accountinfo_layoutDistrict"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/accountinfo_txtCityLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="Thành phố"
+                    android:textColor="@color/gray" />
+
+                <TextView
+                    android:id="@+id/accountinfo_txtCity"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="Bình Định"
+                    android:textColor="@color/green" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/accountinfo_layoutPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/accountinfo_layoutCity"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/accountinfo_txtPhoneLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="Phone"
+                    android:textColor="@color/gray" />
+
+                <TextView
+                    android:id="@+id/accountinfo_txtPhone"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="01222000357"
+                    android:textColor="@color/green" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/accountinfo_txtMail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:text="Email: congvo88qn@gmail.com"
+            android:textColor="@color/gray"
+            android:typeface="serif" />
+
+        <TextView
+            android:id="@+id/accountinfo_txtJoinDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:text="Join date: 01/01/2014"
+            android:textColor="@color/gray"
+            android:typeface="serif" />
+    </LinearLayout>
+
+</ScrollView>

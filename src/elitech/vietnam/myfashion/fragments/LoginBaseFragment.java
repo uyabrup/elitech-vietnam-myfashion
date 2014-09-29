@@ -34,8 +34,8 @@ public class LoginBaseFragment extends ChildBaseFragment {
 		super.onViewCreated(view, savedInstanceState);
 		getChildFragmentManager().beginTransaction()
 		.add(R.id.login_layoutContainer, 
-				LoginSocialFragment.newInstance(), 
-				LoginSocialFragment.class.getName())
+				LoginAppLoginFragment.newInstance(), 
+				LoginAppLoginFragment.class.getName())
 		.commit();
 	}
 }
