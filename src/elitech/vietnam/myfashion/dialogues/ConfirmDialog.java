@@ -4,9 +4,7 @@
 package elitech.vietnam.myfashion.dialogues;
 
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +16,7 @@ import elitech.vietnam.myfashion.R;
  * @author Cong
  *
  */
-public class ConfirmDialog extends DialogFragment implements View.OnClickListener {
+public class ConfirmDialog extends AbstractDialogFragment implements View.OnClickListener {
 	
 	public static final String ARG_MESSAGE = "ARG_MESSAGE";
 	public static final String ARG_TITLE = "ARG_TITLE";
@@ -90,16 +88,6 @@ public class ConfirmDialog extends DialogFragment implements View.OnClickListene
 			break;
 		}
 		dismiss();
-	}
-	
-	@Deprecated
-	@Override
-	public void show(FragmentManager manager, String tag) {
-		super.show(manager, tag);
-	}
-	
-	public void show(FragmentManager manager) {
-		super.show(manager, "Dialog");
 	}
 	
 	public interface ConfirmDialogClick {

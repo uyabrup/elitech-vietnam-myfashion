@@ -164,7 +164,7 @@
     <string name="confirm_exit">Confirm exit</string>
     <string name="do_you_want_to_exit_">Do you want to exit?</string>
     <string name="invalidimage">Invalid image</string>
-    <string name="cropimage">Eli Crop image</string>
+    <string name="cropimage">Crop image</string>
     <string name="newstyler">Post your style</string>
     <string name="takeimage">Take image from</string>
     <string name="camera">Camera</string>
@@ -375,5 +375,21 @@
     <string name="loginorsignup">Login or Signup</string>
     <string name="google">Google</string>
     <string name="logout">Logout</string>
+    <string name="nickname">Nick name</string>
+    <string name="joindate">Join date</string>
+    <string name="basicinformation">Basic Information</string>
+    <string name="gender">Gender</string>
+    <string name="phone">Phone</string>
+    <string name="gender_female">Female</string>
+    <string name="gender_male">Male</string>
+    <string name="gender_others">Others</string>
+    <string name="what_s_inyourmind">What\'s in your mind?</string>
+    <string name="your_status_was_updated">Your status was updated!</string>
+    <string name="can_not_update_status">Can not update your status\nPlease try again</string>
+    <string name="cantupdateprofile">Can not update your profile\nPlease try again</string>
+    <string name="changepassfailed">Failed to change password\nPlease try again</string>
+    <string name="updateavatarfailed">Update avatar failed\nPlease try again</string>
+    <string name="writesomthingaboutthisphoto">Write somthing about this photo</string>
+    <string name="upload_aphoto">Upload a photo</string>
     
 </resources>

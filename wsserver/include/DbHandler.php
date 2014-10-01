@@ -1163,7 +1163,7 @@ class DbHandler {
 	}
 	public function registerUser($name, $email, $password, $gcmid) {
 		$str = "INSERT INTO `account`	(`name`, `email`, `password`, `join_day`, `web`, `gcm_id`)
-				VALUES					('$name', '$email', '$password', '$date', 0, '$gcmid');";
+				VALUES					(?, ?, ?, ?, 0, ?);";
 		$date = date("Y-m-d H:i:s");
 		$stmt = $this->conn->prepare ( $str );
 		$stmt->bind_param("sssss", $name, $email, $password, $date, $gcmid);
@@ -1172,6 +1172,58 @@ class DbHandler {
 			$result = 0;
 		$stmt->close ();
 		return $result;
+	}
+	public function updateMemberStatus($memid, $status) {
+		$str = "UPDATE	`account`
+				SET		`profile`=?
+				WHERE	`id`=?;";
+				
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->bind_param("si", $status, $memid);
+		$stmt->execute();
+		$num_affected_rows = $stmt->affected_rows;
+		$stmt->close ();
+		return $num_affected_rows;
+	}
+	public function updateMemberBasicInfo($memid, $nickname, $gender) {
+		$str = "UPDATE	`account`
+				SET		`nick_name`=?,
+						`sex`=?
+				WHERE	`id`=?;";
+				
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->bind_param("sii", $nickname, $gender, $memid);
+		$stmt->execute();
+		$num_affected_rows = $stmt->affected_rows;
+		$stmt->close ();
+		return $num_affected_rows;
+	}
+	public function updateMemberShippingAddress($id, $address, $district, $city, $phone) {
+		$str = "UPDATE	`account`
+				SET		`address`=?,
+						`district`=?,
+						`city`=?,
+						`phone`=?
+				WHERE	`id`=?;";
+				
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->bind_param("siisi", $address, $district, $city, $phone, $id);
+		$stmt->execute();
+		$num_affected_rows = $stmt->affected_rows;
+		$stmt->close ();
+		return $num_affected_rows;
+	}
+	public function changeAvatar($account, $image) {
+		$str = "UPDATE	`account`
+				SET		`image`=?
+				WHERE	`id`=?;";
+		
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->bind_param ( "si", $image, $account );
+		$stmt->execute ();
+		$num_affected_rows = $stmt->affected_rows;
+		$stmt->close ();
+		return $num_affected_rows;
 	}
 }
 

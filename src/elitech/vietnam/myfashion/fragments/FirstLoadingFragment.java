@@ -27,6 +27,7 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.gson.Gson;
 
 import elitech.vietnam.myfashion.R;
+import elitech.vietnam.myfashion.config.Options;
 import elitech.vietnam.myfashion.entities.City;
 import elitech.vietnam.myfashion.entities.District;
 import elitech.vietnam.myfashion.entities.Member;
@@ -184,6 +185,7 @@ public class FirstLoadingFragment extends AbstractFragment {
 						AsyncTask.execute(new Runnable() {
 							@Override
 							public void run() {
+								mActivity.setLoggedinUser(arg0);
 								mActivity.getPreferences().edit().putString(PrefsDefinition.LOGGEDIN_MEMBER, new Gson().toJson(m)).commit();
 							}
 						});
@@ -196,6 +198,18 @@ public class FirstLoadingFragment extends AbstractFragment {
 				});
 			}
 		}
+		AsyncTask.execute(new Runnable() {
+			@Override
+			public void run() {
+				Options options = mActivity.getOptions();
+				if (options == null) {
+					options = new Options();
+					mActivity.setOptions(options);
+					mActivity.getPreferences().edit().putString(PrefsDefinition.OPTION_SETTINGS, 
+							new Gson().toJson(options)).commit();
+				}
+			}
+		});
 	}
 	
 	private void onLoadingCompleted(boolean done) {
@@ -211,7 +225,7 @@ public class FirstLoadingFragment extends AbstractFragment {
 							mActivity.getActionBar().show();
 							mActivity.changeBase(BaseFragment.TAG_BESTOFDAY, null);
 						}
-					}, 500);
+					}, 1000);
 				} else {
 					// TODO: implement loading failed callback
 					Log.e("Initialize", "Initialize failed! Now exitting. (1)");

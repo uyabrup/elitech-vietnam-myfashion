@@ -12,8 +12,6 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +40,7 @@ import elitech.vietnam.myfashion.utilities.Utilities;
  * @author Cong
  *
  */
-public class AddToCartDialog extends DialogFragment implements View.OnClickListener {
+public class AddToCartDialog extends AbstractDialogFragment implements View.OnClickListener {
 	
 	private static final int TASKS = 2;
 	
@@ -203,16 +201,6 @@ public class AddToCartDialog extends DialogFragment implements View.OnClickListe
 				mLoading.setVisibility(View.GONE);
 			}
 		}
-	}
-	
-	@Deprecated
-	@Override
-	public void show(FragmentManager manager, String tag) {
-		super.show(manager, tag);
-	}
-	
-	public void show(FragmentManager manager) {
-		super.show(manager, "Dialog");
 	}
 	
 	public interface AddToCartCallBack {

@@ -10,6 +10,7 @@ import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
 import retrofit.http.POST;
+import retrofit.http.PUT;
 import retrofit.http.Path;
 import retrofit.http.Query;
 import elitech.vietnam.myfashion.entities.Category;
@@ -129,4 +130,24 @@ public interface Services {
 	@FormUrlEncoded
 	@POST("/register")
 	void register(@Field("name") String name, @Field("email") String email, @Field("password") String password, @Field("gcmid") String gcmId, Callback<Integer> callback);
+	
+	@FormUrlEncoded
+	@POST("/member/{id}/status")
+	void updateMemberStatus(@Path("id") int member, @Field("status") String status, Callback<Integer> callback);
+	
+	@FormUrlEncoded
+	@POST("/member/{id}/basicInfo")
+	void updateMemberBasicInfo(@Path("id") int member, @Field("nickname") String nickName, @Field("gender") int gender, Callback<Integer> callback);
+	
+	@FormUrlEncoded
+	@POST("/member/{id}/shippingAddress")
+	void updateMemberShippingAddress(@Path("id") int member, @Field("address") String address, @Field("district") int district, @Field("city") int city, @Field("phone") String phone, Callback<Integer> callback);
+	
+	@FormUrlEncoded
+	@PUT("/member/{id}/changePassword")
+	void changePassword(@Path("id") int member, @Field("password") String password, Callback<Integer> callback);
+	
+	@FormUrlEncoded
+	@PUT("/member/{id}/avatar")
+	void updateAvatar(@Path("id") int member, @Field("image") String image, Callback<Integer> callback);
 }

@@ -2,8 +2,12 @@ package elitech.vietnam.myfashion;
 
 import java.util.Locale;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
@@ -17,6 +21,7 @@ import com.google.gson.Gson;
 import com.readystatesoftware.viewbadger.BadgeView;
 
 import elitech.vietnam.myfashion.config.Config;
+import elitech.vietnam.myfashion.config.Options;
 import elitech.vietnam.myfashion.controllers.AppController;
 import elitech.vietnam.myfashion.controllers.SlidingMenuController;
 import elitech.vietnam.myfashion.database.DBHandler;
@@ -40,6 +45,7 @@ public class MainActivity extends ActionBarActivity {
 	AppController mController;
 	
 	Member mUser;
+	Options mOptions;
 	
 	String mBaseTag;
 	
@@ -63,6 +69,7 @@ public class MainActivity extends ActionBarActivity {
 		 * Dummy user data
 		 */
 		mUser = new Gson().fromJson(mPrefs.getString(PrefsDefinition.LOGGEDIN_MEMBER, ""), Member.class);
+		mOptions = new Gson().fromJson(mPrefs.getString(PrefsDefinition.OPTION_SETTINGS, ""), Options.class);
 
 		mSlideMenuController.setUp();
 		
@@ -187,5 +194,39 @@ public class MainActivity extends ActionBarActivity {
 			mCartBadge.show();
 		else
 			mCartBadge.hide();
+	}
+	
+	public Options getOptions() {
+		return mOptions;
+	}
+	
+	public void setOptions(Options options) {
+		mOptions = options;
+	}
+
+	/**
+	 * Get the image path from uri. Used after received result from ACTION_PICK intent
+	 * @param contentUri
+	 * @return
+	 */
+	public String getRealPathFromURI(Uri contentUri) {
+		String path = null;
+		String[] proj = { MediaStore.MediaColumns.DATA };
+		Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
+		if (cursor.moveToFirst()) {
+			int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+			path = cursor.getString(column_index);
+		}
+		cursor.close();
+		return path;
+	}
+
+	@Override
+	protected void onActivityResult(int arg0, int arg1, Intent arg2) {
+		mController.onActivityResult(arg0, arg1, arg2);
+	}
+	
+	public interface ResultListener {
+		boolean onResult(int request, int result, Intent data);
 	}
 }
