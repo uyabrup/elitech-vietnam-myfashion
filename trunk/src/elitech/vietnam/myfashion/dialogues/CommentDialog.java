@@ -13,8 +13,6 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.util.Log;
@@ -28,7 +26,6 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-import elitech.vietnam.myfashion.MainActivity;
 import elitech.vietnam.myfashion.R;
 import elitech.vietnam.myfashion.adapters.CommentDialogAdapter;
 import elitech.vietnam.myfashion.entities.Comment;
@@ -38,11 +35,10 @@ import elitech.vietnam.myfashion.fragments.StyleDetailFragment;
  * @author Cong
  *
  */
-public class CommentDialog extends DialogFragment implements View.OnClickListener, OnRefreshListener {
+public class CommentDialog extends AbstractDialogFragment implements View.OnClickListener, OnRefreshListener {
 
 	private static final int LOADMORE = 20;
 	
-	MainActivity mActivity;
 	CommentDialogCallback mCallback;
 	
 	SwipeRefreshLayout mRefresh;
@@ -65,7 +61,6 @@ public class CommentDialog extends DialogFragment implements View.OnClickListene
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mActivity = (MainActivity) getActivity();
 		mCallback = (CommentDialogCallback) getTargetFragment();
 	}
 	
@@ -97,16 +92,6 @@ public class CommentDialog extends DialogFragment implements View.OnClickListene
 		super.onViewCreated(view, savedInstanceState);
 		mPostId = mCallback.getPostId();
 		getData();
-	}
-	
-	@Deprecated
-	@Override
-	public void show(FragmentManager manager, String tag) {
-		super.show(manager, tag);
-	}
-	
-	public void show(FragmentManager manager) {
-		super.show(manager, "Dialog");
 	}
 
 	@Override

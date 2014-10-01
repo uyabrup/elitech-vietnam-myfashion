@@ -4,13 +4,10 @@
 package elitech.vietnam.myfashion.dialogues;
 
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import elitech.vietnam.myfashion.MainActivity;
 import elitech.vietnam.myfashion.R;
 import elitech.vietnam.myfashion.fragments.BaseFragment;
 
@@ -18,7 +15,7 @@ import elitech.vietnam.myfashion.fragments.BaseFragment;
  * @author Cong
  *
  */
-public class ThanksDialog extends DialogFragment implements View.OnClickListener {
+public class ThanksDialog extends AbstractDialogFragment implements View.OnClickListener {
 
 	Button mBtnOk;
 	
@@ -46,22 +43,12 @@ public class ThanksDialog extends DialogFragment implements View.OnClickListener
 		return view;
 	}
 	
-	@Deprecated
-	@Override
-	public void show(FragmentManager manager, String tag) {
-		super.show(manager, tag);
-	}
-
-	public void show(FragmentManager manager) {
-		super.show(manager, "Dialog");
-	}
-	
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.thank_btnOk:
 			dismiss();
-			((MainActivity) getActivity()).changeBase(BaseFragment.TAG_BESTOFDAY, null);
+			mActivity.changeBase(BaseFragment.TAG_BESTOFDAY, null);
 			break;
 		default:
 			break;

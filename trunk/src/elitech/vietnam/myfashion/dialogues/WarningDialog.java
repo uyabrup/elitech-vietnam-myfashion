@@ -4,8 +4,6 @@
 package elitech.vietnam.myfashion.dialogues;
 
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +15,7 @@ import elitech.vietnam.myfashion.R;
  * @author Cong
  *
  */
-public class WarningDialog extends DialogFragment implements View.OnClickListener {
+public class WarningDialog extends AbstractDialogFragment implements View.OnClickListener {
 
 	public static final String ARG_MESSAGE = "ARG_MESSAGE";
 	
@@ -55,16 +53,6 @@ public class WarningDialog extends DialogFragment implements View.OnClickListene
 		super.onViewCreated(view, savedInstanceState);
 		mMessage = getArguments().getString(ARG_MESSAGE);
 		mTxtContent.setText(mMessage);
-	}
-	
-	@Deprecated
-	@Override
-	public void show(FragmentManager manager, String tag) {
-		super.show(manager, tag);
-	}
-
-	public void show(FragmentManager manager) {
-		super.show(manager, "Dialog");
 	}
 	
 	@Override

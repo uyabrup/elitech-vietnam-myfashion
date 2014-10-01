@@ -23,6 +23,9 @@ public class Member {
 	
 	@SerializedName("password")
 	public String Password;
+
+	@SerializedName("sex")
+	public int Sex;
 	
 	@SerializedName("image")
 	public String Image;

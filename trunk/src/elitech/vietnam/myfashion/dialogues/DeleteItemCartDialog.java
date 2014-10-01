@@ -4,9 +4,7 @@
 package elitech.vietnam.myfashion.dialogues;
 
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +17,7 @@ import elitech.vietnam.myfashion.R;
  * @author Cong
  *
  */
-public class DeleteItemCartDialog extends DialogFragment implements View.OnClickListener {
+public class DeleteItemCartDialog extends AbstractDialogFragment implements View.OnClickListener {
 	
 	public static final String ARG_ITEMNAME = "ARG_ITEMNAME";
 	public static final String ARG_ITEMPOSITION = "ARG_ITEMPOSITION";
@@ -92,16 +90,6 @@ public class DeleteItemCartDialog extends DialogFragment implements View.OnClick
 			break;
 		}
 		dismiss();
-	}
-	
-	@Deprecated
-	@Override
-	public void show(FragmentManager manager, String tag) {
-		super.show(manager, tag);
-	}
-	
-	public void show(FragmentManager manager) {
-		super.show(manager, "Dialog");
 	}
 	
 	public interface DeleteItemDialogClick {

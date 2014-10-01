@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp" >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" >
+
+            <elitech.vietnam.myfashion.widgets.ScaleImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/ok"
+                android:visibility="gone" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/bg_button_simple"
+                android:drawablePadding="10dp"
+                android:drawableTop="@drawable/orca_attach_photo_normal"
+                android:padding="5dp"
+                android:text="@string/upload_aphoto"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/gray" />
+        </FrameLayout>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/textfield_default_holo_light"
+            android:gravity="top"
+            android:hint="@string/writesomthingaboutthisphoto"
+            android:inputType="textMultiLine|textCapSentences"
+            android:lines="4"
+            android:maxLines="8"
+            android:padding="5dp" />
+    </LinearLayout>
+
+</ScrollView>

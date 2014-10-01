@@ -294,14 +294,12 @@ $app->post ( '/doComment', function ($product) use($app) {
 	echoRespnse ( 200, $response );
 } );
 
-$app->put ( '/changePassword', function () use($app) {
+$app->put ( '/member/:id/changePassword', function ($account) use($app) {
 	authenticate ();
 	verifyRequiredParams ( array (
-			'account',
 			'password' 
 	) );
 	
-	$account = $app->request->put ( 'account' );
 	$password = $app->request->put ( 'password' );
 	
 	$response = array ();
@@ -309,9 +307,7 @@ $app->put ( '/changePassword', function () use($app) {
 	
 	$result = $db->changePassword ( $account, $password );
 	
-	$response = $result;
-	
-	echoRespnse ( 200, $response );
+	echoRespnse ( 200, $result );
 } );
 
 $app->get ( '/member/:id/style', function ($member) use($app) {
@@ -873,6 +869,53 @@ $app->post ( '/register', function () use($app) {
 	
 	$r2 = $db->registerUser ($name, $email, $password, $gcmid);
 	echoRespnse ( 200,  $r2 );
+} );
+
+$app->post ( '/member/:id/status', function ($id) use($app) {
+	authenticate ();
+	$status = $app->request->post ( 'status' );
+	
+	$db = new DbHandler ();
+	$rs = $db->updateMemberStatus($id, $status);
+	echoRespnse ( 200,  $rs );
+} );
+
+$app->post ( '/member/:id/basicInfo', function ($id) use($app) {
+	authenticate ();
+	$nickname = $app->request->post ( 'nickname' );
+	$gender = $app->request->post ( 'gender' );
+	
+	$db = new DbHandler ();
+	$rs = $db->updateMemberBasicInfo($id, $nickname, $gender);
+	echoRespnse ( 200,  $rs );
+} );
+
+$app->post ( '/member/:id/shippingAddress', function ($id) use($app) {
+	authenticate ();
+	$address = $app->request->post ( 'address' );
+	$district = $app->request->post ( 'district' );
+	$city = $app->request->post ( 'city' );
+	$phone = $app->request->post ( 'phone' );
+	
+	$db = new DbHandler ();
+	$rs = $db->updateMemberShippingAddress($id, $address, $district, $city, $phone);
+	echoRespnse ( 200,  $rs );
+} );
+
+$app->put ( '/member/:id/avatar', function ($account) use($app) {
+	authenticate ();
+	verifyRequiredParams ( array (
+			'image' 
+	) );
+	
+	$image = $app->request->put ( 'image' );
+	
+	$response = array ();
+	$db = new DbHandler ();
+	
+	$result = $db->changeAvatar ( $account, $image );
+	
+	echoRespnse ( 200, $result );
 } );
 /**
  * Test method

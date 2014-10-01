@@ -6,8 +6,10 @@ package elitech.vietnam.myfashion.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
 import elitech.vietnam.myfashion.MainActivity;
+import elitech.vietnam.myfashion.MainActivity.ResultListener;
 import elitech.vietnam.myfashion.entities.Category;
 import elitech.vietnam.myfashion.entities.Color;
 import elitech.vietnam.myfashion.entities.Order;
@@ -42,6 +44,7 @@ public class AppController implements CategoryDetailCallback, ProductDetailCallb
 	Post mPost;
 	List<OrderDetail> mOrderDetails;
 	TradeMark mTradeMark;
+	ResultListener mResultListener;
 	
 	Order mBill;
 	double mTotal = 0;
@@ -224,5 +227,14 @@ public class AppController implements CategoryDetailCallback, ProductDetailCallb
 	@Override
 	public void openMemberPage(int member) {
 		mActivity.getCurrentBase().replaceFragment(MemberBaseFragment.newInstance(member), true);
+	}
+	
+	public void onActivityResult(int request, int result, Intent data) {
+		if (mResultListener != null)
+			mResultListener.onResult(request, result, data);
+	}
+	
+	public void setResultListener(ResultListener listener) {
+		mResultListener = listener;
 	}
 }

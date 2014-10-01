@@ -14,6 +14,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -68,6 +70,11 @@ public class StylerBestTopFragment extends AbstractFragment implements OnRefresh
 		super.onViewCreated(view, savedInstanceState);
 		mRefresh.setRefreshing(true);
 		getData();
+	}
+	
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
 	}
 	
 	private void getData() {

@@ -3,18 +3,16 @@
  */
 package elitech.vietnam.myfashion.dialogues;
 
-import elitech.vietnam.myfashion.R;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
+import elitech.vietnam.myfashion.R;
 
 /**
  * @author Cong
  *
  */
-public class LoadingDialog extends DialogFragment {
+public class LoadingDialog extends AbstractDialogFragment {
 
 	public static final String ARG_TITLE = "ARG_TITLE";
 	public static final String ARG_MESSAGE = "ARG_MESSAGE";
@@ -41,10 +39,5 @@ public class LoadingDialog extends DialogFragment {
 		dialog.setCancelable(false);
 		
 		return dialog;
-	}
-	
-	@Override
-	public void show(FragmentManager manager, String tag) {
-		super.show(manager, "Dialog");
 	}
 }
