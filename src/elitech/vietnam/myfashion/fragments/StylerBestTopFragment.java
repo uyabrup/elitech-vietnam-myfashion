@@ -10,12 +10,14 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -75,6 +77,33 @@ public class StylerBestTopFragment extends AbstractFragment implements OnRefresh
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
+		if (mActivity.getLoggedinUser() != null) {
+			inflater.inflate(R.menu.style, menu);
+			final MenuItem camera = menu.findItem(R.id.action_createPost);
+			View view = MenuItemCompat.getActionView(camera).findViewById(R.id.menuitem_action_takePhoto);
+		    view.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					onOptionsItemSelected(camera);
+				}
+			});
+		}
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_createPost:
+			mActivity.getCurrentBase().replaceFragment(CreatePostFragment.newInstance(mActivity.getLoggedinUser().Id), true);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+	
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
 	}
 	
 	private void getData() {

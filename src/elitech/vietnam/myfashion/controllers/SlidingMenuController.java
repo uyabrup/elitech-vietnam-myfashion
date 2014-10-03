@@ -80,7 +80,7 @@ public class SlidingMenuController implements OnGroupClickListener, OnChildClick
 		
 		setUpHeaders();
 		
-		mMenuListView.addHeaderView((mActivity.getLoggedinUser() != null) ? mMemberLayout : mIntroLayout);
+//		mMenuListView.addHeaderView((mActivity.getLoggedinUser() != null) ? mMemberLayout : mIntroLayout);
 		mMenuListView.setOnGroupClickListener(this);
 		mMenuListView.setOnChildClickListener(this);
 		loadMenuData();
@@ -229,12 +229,12 @@ public class SlidingMenuController implements OnGroupClickListener, OnChildClick
 	}
 	
 	public void changeLoggedState(boolean loggedIn) {
-		if (loggedIn) {
-			mMenuListView.removeHeaderView(mIntroLayout);
-			mMenuListView.addHeaderView(mMemberLayout);
-		} else {
-			mMenuListView.removeHeaderView(mMemberLayout);
-			mMenuListView.addHeaderView(mIntroLayout);
-		}
+//		if (loggedIn) {
+//			mMenuListView.removeHeaderView(mIntroLayout);
+//			mMenuListView.addHeaderView(mMemberLayout);
+//		} else {
+//			mMenuListView.removeHeaderView(mMemberLayout);
+//			mMenuListView.addHeaderView(mIntroLayout);
+//		}
 	}
 }

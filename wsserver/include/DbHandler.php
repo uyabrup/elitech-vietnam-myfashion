@@ -1225,6 +1225,47 @@ class DbHandler {
 		$stmt->close ();
 		return $num_affected_rows;
 	}
+	public function newStyle($id, $title, $image, $content, $ip) {
+		$date = date("Y-m-d H:i:s");
+		$str = "INSERT INTO `post`	(`id_account`, `date`, `title`, `image`, `content`, `create_day`, `status`, `likes`, `comments`, `ip`)
+				VALUES				(?, ?, ?, ?, ?, ?, 1, 0, 0, ?);";
+				
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->bind_param ( "issssss", $id, $date, $title, $image, $content, $date, $ip );
+		$result = $stmt->execute ();
+		$data = 0;
+		if (!$result)
+			$data = 0;
+		else
+			$data = $stmt->insert_id;
+			
+		$stmt->close ();
+		return $data;
+	}
+	public function deleteStyle($id) {
+		$str = "UPDATE	`post`
+				SET		`status`=2
+				WHERE	`id`=?;";
+				
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->bind_param ( "i", $id);
+		$stmt->execute ();
+		$num_affected_rows = $stmt->affected_rows;
+		$stmt->close ();
+		return $num_affected_rows;
+	}
+	public function updateStyleContent($id, $content) {
+		$str = "UPDATE	`post`
+				SET		`content`=?
+				WHERE	`id`=?;";
+				
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->bind_param ( "si", $content, $id);
+		$stmt->execute ();
+		$num_affected_rows = $stmt->affected_rows;
+		$stmt->close ();
+		return $num_affected_rows;
+	}
 }
 
 ?>

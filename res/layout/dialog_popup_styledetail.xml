@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/abs__menu_dropdown_panel_holo_light"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/dialog_popupStyleDetail_btnEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_button_simple"
+        android:drawableLeft="@drawable/ic_action_content_edit"
+        android:drawablePadding="5dp"
+        android:drawableStart="@drawable/ic_action_content_edit"
+        android:gravity="start|center_vertical"
+        android:text="@string/edit"
+        android:textColor="@color/green" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:drawable/divider_horizontal_bright" />
+
+    <Button
+        android:id="@+id/dialog_popupStyleDetail_btnDelete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_button_simple"
+        android:drawableLeft="@drawable/ic_action_discard"
+        android:drawablePadding="5dp"
+        android:drawableStart="@drawable/ic_action_discard"
+        android:gravity="start|center_vertical"
+        android:text="@string/delete"
+        android:textColor="@color/green" />
+
+</LinearLayout>

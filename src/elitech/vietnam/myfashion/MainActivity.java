@@ -93,17 +93,25 @@ public class MainActivity extends ActionBarActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
-		final MenuItem item = menu.findItem(R.id.action_settings);
-	    View view = MenuItemCompat.getActionView(item).findViewById(R.id.menuitem_action_cart);
+		
+		final MenuItem cartItem = menu.findItem(R.id.action_settings);
+		View view = MenuItemCompat.getActionView(cartItem).findViewById(R.id.menuitem_action_cart);
 	    view.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				onOptionsItemSelected(item);
+				onOptionsItemSelected(cartItem);
 			}
 		});
 		mCartBadge = new BadgeView(this, view);
 		mCartBadge.setBadgePosition(BadgeView.POSITION_TOP_RIGHT);
+		updateCartBadge(mController.getOrders().size());
+		
 		return true;
+	}
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		return super.onPrepareOptionsMenu(menu);
 	}
 
 	@Override

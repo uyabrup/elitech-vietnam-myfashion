@@ -121,7 +121,7 @@
     <string name="emailinvalid">Your email is invalid</string>
     <string name="passinvalid">Your password must have at least 4 characters</string>
     <string name="passwrong">Wrong password</string>
-    <string name="connecterror">Connection error, Please try again</string>
+    <string name="connecterror">Connection error. Please try again</string>
     <string name="confirmpassworddifferent">Your password and confirm password are different</string>
     <string name="signupsuccessful">Sign up successful</string>
     <string name="loading">Please wait ...</string>
@@ -215,7 +215,7 @@
     <string name="noproducts">No products yet</string>
     <string name="backexit">Press back again to exit</string>
     <string name="product_name">Product Name</string>
-    <string name="delete">delete</string>
+    <string name="delete">Delete</string>
     <string name="pricewithoutcolon">Price</string>
     <string name="close">Close</string>
     <string name="shipping">Shipping</string>
@@ -329,6 +329,7 @@
     <string name="no">No</string>
     <string name="winterfashion">Thu Đông</string>
     <string name="action_yourcart">Your cart</string>
+    <string name="action_createpost">Create post</string>
     <string name="checkout">Checkout</string>
     <string name="emptycart_goshopping">Your cart is empty\nClick to continue shopping</string>
     <string name="addoptionnotetoseller">Add option note to seller</string>
@@ -391,5 +392,9 @@
     <string name="updateavatarfailed">Update avatar failed\nPlease try again</string>
     <string name="writesomthingaboutthisphoto">Write somthing about this photo</string>
     <string name="upload_aphoto">Upload a photo</string>
+    <string name="uploadphoto">Upload Photo</string>
+    <string name="pleasewaituploadingphoto">Please wait while we uploading your photo...</string>
+    <string name="youmusttakephotoupload">You must take a photo to upload</string>
+    <string name="your_style_was_changed">Your style was changed</string>
     
 </resources>

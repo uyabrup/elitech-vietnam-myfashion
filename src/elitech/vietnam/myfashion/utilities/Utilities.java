@@ -414,4 +414,23 @@ public class Utilities {
 		}
 		return string;
 	}
+	
+	public static boolean rotateImage(String path, int rotate) {
+		try {
+			Bitmap bitmap = BitmapFactory.decodeFile(path);
+			Matrix matrix = new Matrix();
+			matrix.postRotate(rotate);
+			Bitmap bitmap1 = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix,
+					false);
+			FileOutputStream out = new FileOutputStream(path);
+			bitmap1.compress(Bitmap.CompressFormat.JPEG, Const.IMAGE_COMPRESSION, out);
+			out.close();
+			bitmap.recycle();
+			bitmap1.recycle();
+			return true;
+		} catch (Throwable e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 }
