@@ -54,7 +54,10 @@ public class SettingsFragment extends AbstractFragment implements View.OnClickLi
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.settings_btnAccount:
-			mActivity.getCurrentBase().replaceFragment(AccountInfoFragment.newInstance(), true);
+			if (mActivity.getLoggedinUser() != null)
+				mActivity.getCurrentBase().replaceFragment(AccountInfoFragment.newInstance(), true);
+			else
+				Toast.makeText(mActivity, R.string.requestlogin, Toast.LENGTH_SHORT).show();
 			break;
 		case R.id.settings_btnNotifications:
 			mActivity.getCurrentBase().replaceFragment(NotificationSettingFragment.newInstance(), true);

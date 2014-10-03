@@ -75,7 +75,7 @@ public class ProductGridAdapter extends ArrayAdapter<Product> {
 		holder.mTxtName.setText(item.Name);
 		holder.mBtnLikes.setText(item.Likes + "");
 		holder.mTxtPrice.setText(Utilities.numberFormat((item.SaleOff != 0) ? item.PriceSale : item.PriceVN) + Const.CURRENCY_VN);
-		holder.mBtnLikes.setCompoundDrawablesWithIntrinsicBounds((item.Liked > 0) ? R.drawable.ic_fav_active : R.drawable.ic_fav_inactive, 0, 0, 0);
+		holder.mBtnLikes.setCompoundDrawablesWithIntrinsicBounds((item.Liked()) ? R.drawable.ic_fav_active : R.drawable.ic_fav_inactive, 0, 0, 0);
 		holder.mLaySaleOff.setVisibility((item.SaleOff > 0) ? View.VISIBLE : View.GONE);
 		holder.mTxtSale.setText("-" + item.SaleOff + "%");
 		

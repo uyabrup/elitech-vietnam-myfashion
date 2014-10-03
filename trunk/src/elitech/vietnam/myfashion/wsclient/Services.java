@@ -6,6 +6,7 @@ package elitech.vietnam.myfashion.wsclient;
 import java.util.List;
 
 import retrofit.Callback;
+import retrofit.http.DELETE;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
@@ -150,4 +151,15 @@ public interface Services {
 	@FormUrlEncoded
 	@PUT("/member/{id}/avatar")
 	void updateAvatar(@Path("id") int member, @Field("image") String image, Callback<Integer> callback);
+	
+	@FormUrlEncoded
+	@POST("/member/{id}/newStyle")
+	void createStyle(@Path("id") int member, @Field("title") String title, @Field("image") String image, @Field("content") String content, Callback<Integer> callback);
+	
+	@DELETE("/style/{id}")
+	void deleteStyle(@Path("id") int postId, Callback<Integer> callback);
+	
+	@FormUrlEncoded
+	@PUT("/style/{id}/content")
+	void updateStyleContent(@Path("id") int postId, @Field("content") String content, Callback<Integer> callback);
 }

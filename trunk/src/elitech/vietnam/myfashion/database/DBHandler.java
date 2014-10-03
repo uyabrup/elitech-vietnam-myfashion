@@ -169,7 +169,6 @@ public class DBHandler extends SQLiteOpenHelper {
 			} while (c.moveToNext());
 		}
 		c.close();
-		db.close();
 		return result;
 	}
 	
@@ -185,7 +184,6 @@ public class DBHandler extends SQLiteOpenHelper {
 			
 			db.insert(TABLE_CITY, null, values);
 		}
-		db.close();
 	}
 	
 	public List<City> loadCities() {
@@ -204,7 +202,6 @@ public class DBHandler extends SQLiteOpenHelper {
 			} while (c.moveToNext());
 		}
 		c.close();
-		db.close();
 		return result;
 	}
 	
@@ -221,7 +218,6 @@ public class DBHandler extends SQLiteOpenHelper {
 			
 			db.insert(TABLE_DISTRICT, null, values);
 		}
-		db.close();
 	}
 	
 	public List<District> loadDistricts() {
@@ -241,7 +237,6 @@ public class DBHandler extends SQLiteOpenHelper {
 			} while (c.moveToNext());
 		}
 		c.close();
-		db.close();
 		return result;
 	}
 	
@@ -262,7 +257,6 @@ public class DBHandler extends SQLiteOpenHelper {
 			} while (c.moveToNext());
 		}
 		c.close();
-		db.close();
 		return result;
 	}
 	
@@ -275,7 +269,6 @@ public class DBHandler extends SQLiteOpenHelper {
 			result = c.getInt(0);
 		}
 		c.close();
-		db.close();
 		return result;
 	}
 	
@@ -288,7 +281,6 @@ public class DBHandler extends SQLiteOpenHelper {
 			result = c.getInt(0);
 		}
 		c.close();
-		db.close();
 		return result;
 	}
 	
@@ -307,7 +299,6 @@ public class DBHandler extends SQLiteOpenHelper {
 			} while (c.moveToNext());
 		}
 		c.close();
-		db.close();
 		return item;
 	}
 	
@@ -325,7 +316,6 @@ public class DBHandler extends SQLiteOpenHelper {
 			} while (c.moveToNext());
 		}
 		c.close();
-		db.close();
 		return item;
 	}
 
@@ -338,7 +328,6 @@ public class DBHandler extends SQLiteOpenHelper {
 			result = c.getInt(0);
 		}
 		c.close();
-		db.close();
 		return result;
 	}
 	
@@ -354,7 +343,6 @@ public class DBHandler extends SQLiteOpenHelper {
 			
 			db.insert(TABLE_SHIP, null, values);
 		}
-		db.close();
 	}
 	
 	public void saveShipMore(List<ShipMore> ships) {
@@ -368,7 +356,6 @@ public class DBHandler extends SQLiteOpenHelper {
 			
 			db.insert(TABLE_SHIPMORE, null, values);
 		}
-		db.close();
 	}
 	
 	public double getShipping(String code, float weight, int districtId) {
@@ -383,7 +370,6 @@ public class DBHandler extends SQLiteOpenHelper {
 			result = c.getDouble(0);
 		}
 		c.close();
-		db.close();
 		return result;
 	}
 	
@@ -398,7 +384,6 @@ public class DBHandler extends SQLiteOpenHelper {
 			result = c.getDouble(0);
 		}
 		c.close();
-		db.close();
 		return result;
 	}
 	
@@ -411,7 +396,6 @@ public class DBHandler extends SQLiteOpenHelper {
 			result = c.getInt(0);
 		}
 		c.close();
-		db.close();
 		return result;
 	}
 }

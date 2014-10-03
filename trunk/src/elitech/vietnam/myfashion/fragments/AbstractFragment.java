@@ -34,6 +34,7 @@ public class AbstractFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		mActivity = (MainActivity) getActivity();
 		mShowAnim = AnimationUtils.loadAnimation(mActivity, android.R.anim.fade_in);
+		setHasOptionsMenu(true);
 	}
 	
 	@Override
@@ -94,12 +95,6 @@ public class AbstractFragment extends Fragment {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		Log.w(getClass().getSimpleName(), "onViewCreated");
-//		super.onViewCreated(view, savedInstanceState);
-//		mMain = getView().findViewById(R.id.mainLayout);
-//		mLoading = getView().findViewById(R.id.prgLoading);
-//		mNodata = getView().findViewById(R.id.txtNodata);
-//		if (mMain == null || mLoading == null || mNodata == null)
-//			throw new IllegalArgumentException("Your layout doesn't support loading and nodata");
 	}
 	
 	@Override

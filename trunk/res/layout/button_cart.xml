@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content" >
 
@@ -8,12 +8,13 @@
         style="?android:attr/textAppearanceSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
         android:background="@null"
         android:drawableLeft="@drawable/ic_shopping_cart"
         android:drawablePadding="5dp"
+        android:drawableStart="@drawable/ic_shopping_cart"
         android:gravity="center_vertical"
         android:text="@string/buy"
         android:textColor="@color/actionbarcolor" />
 
-</RelativeLayout>
+</FrameLayout>

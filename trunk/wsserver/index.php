@@ -668,7 +668,7 @@ $app->post ( '/unfollow', function () use($app) {
 $app->get ( '/member/:id', function ($id) use ($app) {
 	authenticate ();
 	verifyRequiredParams ( array (
-		'account',
+		'account'
 	) );
 	
 	$account = $app->request->get ( 'account' );
@@ -684,7 +684,7 @@ $app->get ( '/member/:id/likedProduct', function ($id) use ($app) {
 	verifyRequiredParams ( array (
 		'account',
 		'start',
-		'count',
+		'count'
 	) );
 	
 	$account = $app->request->get ( 'account' );
@@ -707,7 +707,7 @@ $app->get ( '/member/:id/likedStyle', function ($id) use ($app) {
 	verifyRequiredParams ( array (
 		'account',
 		'start',
-		'count',
+		'count'
 	) );
 	
 	$account = $app->request->get ( 'account' );
@@ -761,7 +761,7 @@ $app->get ( '/member/:id/follower', function ($id) use ($app) {
 	verifyRequiredParams ( array (
 		'account',
 		'start',
-		'count',
+		'count'
 	) );
 	
 	$account = $app->request->get ( 'account' );
@@ -782,7 +782,7 @@ $app->get ( '/member/:id/following', function ($id) use ($app) {
 	verifyRequiredParams ( array (
 		'account',
 		'start',
-		'count',
+		'count'
 	) );
 	
 	$account = $app->request->get ( 'account' );
@@ -803,7 +803,7 @@ $app->get ( '/member/:id/likedProduct', function ($id) use ($app) {
 	verifyRequiredParams ( array (
 		'account',
 		'start',
-		'count',
+		'count'
 	) );
 	
 	$account = $app->request->get ( 'account' );
@@ -821,6 +821,10 @@ $app->get ( '/member/:id/likedProduct', function ($id) use ($app) {
 
 $app->post ( '/login', function () use($app) {
 	authenticate ();
+	verifyRequiredParams ( array (
+		'email',
+		'password'
+	) );
 	$email = $app->request->post ( 'email' );
 	$password = $app->request->post ( 'password' );
 	
@@ -851,6 +855,12 @@ $app->post ( '/login', function () use($app) {
 
 $app->post ( '/register', function () use($app) {
 	authenticate ();
+	verifyRequiredParams ( array (
+		'name',
+		'email',
+		'password',
+		'gcmid'
+	) );
 	$name = $app->request->post ( 'name' );
 	$email = $app->request->post ( 'email' );
 	$password = $app->request->post ( 'password' );
@@ -892,6 +902,10 @@ $app->post ( '/member/:id/basicInfo', function ($id) use($app) {
 
 $app->post ( '/member/:id/shippingAddress', function ($id) use($app) {
 	authenticate ();
+	verifyRequiredParams ( array (
+		'district',
+		'city',
+	) );
 	$address = $app->request->post ( 'address' );
 	$district = $app->request->post ( 'district' );
 	$city = $app->request->post ( 'city' );
@@ -917,18 +931,50 @@ $app->put ( '/member/:id/avatar', function ($account) use($app) {
 	
 	echoRespnse ( 200, $result );
 } );
+
+$app->post ( '/member/:id/newStyle', function ($id) use($app) {
+	authenticate ();
+	verifyRequiredParams ( array (
+		'title',
+		'image'
+	) );
+	$title = $app->request->post ( 'title' );
+	$image = $app->request->post ( 'image' );
+	$content = $app->request->post ( 'content' );
+	$ip = $_SERVER['REMOTE_ADDR'];
+	$db = new DbHandler ();
+	$rs = $db->newStyle($id, $title, $image, $content, $ip);
+	
+	echoRespnse ( 200,  $rs );
+} );
+
+$app->delete ( '/style/:id', function ($id) use($app) {
+	authenticate ();
+	
+	$db = new DbHandler ();
+	$rs = $db->deleteStyle($id);
+	
+	echoRespnse ( 200,  $rs );
+} );
+
+$app->put ( '/style/:id/content', function ($id) use($app) {
+	authenticate ();
+	
+	$content = $app->request->put('content');
+	
+	$db = new DbHandler ();
+	$rs = $db->updateStyleContent($id, $content);
+	
+	echoRespnse ( 200,  $rs );
+} );
+
 /**
  * Test method
  */
 $app->post ( '/test', function () use($app) {
-	$product = $app->request->post ( 'product' );
-	$account = $app->request->post ( 'account' );
-	$liked = $app->request->post ( 'liked' );
-	$type = $app->request->post ( 'type' );
-	
 	$db = new DbHandler ();
 	
-	echoRespnse ( 200, $db->checkLikeError ( $product, $account, $liked, $type ) );
+	echoRespnse ( 200, $db->updateStyleContent(896, 'no content'));
 } );
 
 
