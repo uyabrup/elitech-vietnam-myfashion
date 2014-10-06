@@ -48,7 +48,7 @@ public class DBHandler extends SQLiteOpenHelper {
 																+ TABLE_MENUITEM_ID + " INTEGER PRIMARY KEY, "
 																+ TABLE_MENUITEM_NAME + " TEXT, "
 																+ TABLE_MENUITEM_IMAGE + " TEXT, "
-																+ TABLE_MENUITEM_ICON + " INTEGER, "
+																+ TABLE_MENUITEM_ICON + " TEXT, "
 																+ TABLE_MENUITEM_GROUP + " INTEGER, "
 																+ TABLE_MENUITEM_NUM + " INTEGER, "
 																+ TABLE_MENUITEM_POS + " INTEGER" + ")";
@@ -157,13 +157,13 @@ public class DBHandler extends SQLiteOpenHelper {
 		List<TradeMark> result = new ArrayList<>();
 		if (c.moveToFirst()) {
 			do {
-				TradeMark item = new TradeMark(0, "", 0, 0);
+				TradeMark item = new TradeMark(0, "", 0, "");
 				item.Id = c.getInt(c.getColumnIndex(TABLE_MENUITEM_ID));
 				item.Name = c.getString(c.getColumnIndex(TABLE_MENUITEM_NAME));
 				item.Image = c.getString(c.getColumnIndex(TABLE_MENUITEM_IMAGE));
 				item.Pos = c.getInt(c.getColumnIndex(TABLE_MENUITEM_POS));
 				item.GroupId = c.getInt(c.getColumnIndex(TABLE_MENUITEM_GROUP));
-				item.Icon = c.getInt(c.getColumnIndex(TABLE_MENUITEM_ICON));
+				item.Icon = c.getString(c.getColumnIndex(TABLE_MENUITEM_ICON));
 				item.NumProduct = c.getInt(c.getColumnIndex(TABLE_MENUITEM_NUM));
 				result.add(item);
 			} while (c.moveToNext());

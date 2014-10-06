@@ -7,15 +7,13 @@ import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
-import elitech.vietnam.myfashion.R;
-
 /**
  * @author Cong
  *
  */
 public class TradeMark {
 	
-	public TradeMark(int id, String name, int groupId, int icon) {
+	public TradeMark(int id, String name, int groupId, String icon) {
 		Id = id;
 		Name = name;
 		GroupId = groupId;
@@ -30,7 +28,7 @@ public class TradeMark {
 	
 	public int GroupId = 1;
 	
-	public int Icon = R.drawable.menuicon_best;
+	public String Icon = "menuicon_best";
 
 	@SerializedName("image")
 	public String Image;

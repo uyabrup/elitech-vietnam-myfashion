@@ -433,4 +433,14 @@ public class Utilities {
 			return false;
 		}
 	}
-}
+	
+	public static int dpiToPixel(Activity activity, int dpi) {
+		final float scale = activity.getResources().getDisplayMetrics().density;
+	    return (int) (dpi * scale + 0.5f);
+	}
+	
+	public static int pixelToDpi(Activity activity, int pixel) {
+		final float scale = activity.getResources().getDisplayMetrics().density;
+	    return (int) (pixel / scale + 0.5f);
+	}
+} 

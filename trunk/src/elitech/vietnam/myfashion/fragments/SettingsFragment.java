@@ -3,16 +3,16 @@
  */
 package elitech.vietnam.myfashion.fragments;
 
-import elitech.vietnam.myfashion.R;
-import elitech.vietnam.myfashion.dialogues.ConfirmDialog;
-import elitech.vietnam.myfashion.dialogues.ConfirmDialog.ConfirmDialogClick;
-import elitech.vietnam.myfashion.prefs.PrefsDefinition;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
+import elitech.vietnam.myfashion.R;
+import elitech.vietnam.myfashion.dialogues.ConfirmDialog;
+import elitech.vietnam.myfashion.dialogues.ConfirmDialog.ConfirmDialogClick;
+import elitech.vietnam.myfashion.prefs.PrefsDefinition;
 
 /**
  * @author Cong

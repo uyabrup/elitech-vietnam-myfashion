@@ -28,14 +28,13 @@ import elitech.vietnam.myfashion.entities.Member;
 import elitech.vietnam.myfashion.entities.TradeMark;
 import elitech.vietnam.myfashion.fragments.BaseFragment;
 import elitech.vietnam.myfashion.fragments.CategoryFragment;
+import elitech.vietnam.myfashion.utilities.Utilities;
 
 /**
  * @author Cong
  *
  */
-public class SlidingMenuController implements OnGroupClickListener, OnChildClickListener, OnClickListener {
-	
-	private static final int BRANDS_ID = 99;
+public class SlidingMenuController implements OnChildClickListener, OnGroupClickListener, OnClickListener {
 	
 	MainActivity mActivity;
 	SlidingMenu mMenu;
@@ -49,7 +48,7 @@ public class SlidingMenuController implements OnGroupClickListener, OnChildClick
 	
 	List<TradeMark> mGroups;
 	HashMap<Integer, List<TradeMark>> mChilds;
-	List<TradeMark> mBranches, mEmpty;
+	List<TradeMark> mFashions, mStyles;
 	
 	int mMenuWidth;
 
@@ -74,11 +73,11 @@ public class SlidingMenuController implements OnGroupClickListener, OnChildClick
 		mMenuListView = (ExpandableListView) mActivity.findViewById(R.id.slidemenu_explist);
 		
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) 
-			mMenuListView.setIndicatorBounds(mMenuWidth - dpiToPixel(50), mMenuWidth - dpiToPixel(10));
+			mMenuListView.setIndicatorBounds(mMenuWidth - Utilities.dpiToPixel(mActivity, 50), mMenuWidth - Utilities.dpiToPixel(mActivity, 10));
 		else
-			mMenuListView.setIndicatorBoundsRelative(mMenuWidth - dpiToPixel(50), mMenuWidth - dpiToPixel(10));
+			mMenuListView.setIndicatorBoundsRelative(mMenuWidth - Utilities.dpiToPixel(mActivity, 50), mMenuWidth - Utilities.dpiToPixel(mActivity, 10));
 		
-		setUpHeaders();
+//		setUpHeaders();
 		
 //		mMenuListView.addHeaderView((mActivity.getLoggedinUser() != null) ? mMemberLayout : mIntroLayout);
 		mMenuListView.setOnGroupClickListener(this);
@@ -90,98 +89,90 @@ public class SlidingMenuController implements OnGroupClickListener, OnChildClick
 		// Generate menu groups
 		mGroups = new ArrayList<>();
 		
-		mGroups.add(new TradeMark(0, mActivity.getString(R.string.bestoftoday), 0, R.drawable.menuicon_best));
-		mGroups.add(new TradeMark(1, mActivity.getString(R.string.womenfashion), 0, R.drawable.menuicon_female));
-		mGroups.add(new TradeMark(2, mActivity.getString(R.string.officefashion), 0, R.drawable.menuicon_office));
-		mGroups.add(new TradeMark(3, mActivity.getString(R.string.menfashion), 0, R.drawable.menuicon_male));
-		mGroups.add(new TradeMark(4, mActivity.getString(R.string.winterfashion), 0, R.drawable.menuicon_best));
-		mGroups.add(new TradeMark(BRANDS_ID, mActivity.getString(R.string.menugroup_brands), 0, R.drawable.menuicon_best));
-		mBranches = new ArrayList<>();
+		mGroups.add(new TradeMark(0, mActivity.getString(R.string.fashion), 0, ""));
+		mGroups.add(new TradeMark(1, mActivity.getString(R.string.style), 0, ""));
 		
-		mGroups.add(new TradeMark(5, mActivity.getString(R.string.myshopping), 2, R.drawable.menuicon_cart));
-		mGroups.add(new TradeMark(6, mActivity.getString(R.string.styler), 2, R.drawable.menuicon_styler));
-		mGroups.add(new TradeMark(7, mActivity.getString(R.string.mystyle), 2, R.drawable.menuicon_mystyle));
-		mGroups.add(new TradeMark(8, mActivity.getString(R.string.review), 2, R.drawable.menuicon_review));
-		mGroups.add(new TradeMark(9, mActivity.getString(R.string.setting), 2, R.drawable.menuicon_settings));
-		// Dummy data for no-child groups
-		mEmpty = new ArrayList<>();
+		mFashions = new ArrayList<>();
+		mFashions.add(new TradeMark(0, "Best top", 0, "menuicon_best"));
+		mFashions.add(new TradeMark(1, "Women", 0, "menuicon_female"));
+		mFashions.add(new TradeMark(2, "Office", 0, "menuicon_office"));
+		mFashions.add(new TradeMark(3, "Men", 0, "menuicon_male"));
+		mFashions.add(new TradeMark(4, "Winter", 0, "menuicon_female"));
+		mFashions.add(new TradeMark(5, "My Pham", 0, "menuicon_best"));
+		mFashions.add(new TradeMark(6, "Thuong hieu", 0, "menuicon_best"));
+		
+		mStyles = new ArrayList<>();
+		mStyles.add(new TradeMark(7, "All style", 0, "menuicon_styler"));
+		mStyles.add(new TradeMark(8, "My style", 0, "menuicon_mystyle"));
+		mStyles.add(new TradeMark(9, "Review", 0, "menuicon_review"));
+		
 		// Generate child map
 		mChilds = new HashMap<>();
-		for (TradeMark item : mGroups)
-			mChilds.put(item.Id, item.Id == BRANDS_ID ? mBranches : mEmpty);
+		mChilds.put(0, mFashions);
+		mChilds.put(1, mStyles);
 		
 		mMenuAdapter = new SlidingMenuAdapter(mActivity, mGroups, mChilds);
 		mMenuListView.setAdapter(mMenuAdapter);
 		// Get data from service
-		
-		mMenuListView.setSelection(0);
+		mMenuListView.expandGroup(0);
+		mMenuListView.expandGroup(1);
 	}
 	
 	public void loadBrandData(List<TradeMark> tradeMarks) {
-		mBranches.clear();
-		mBranches.addAll(tradeMarks);
-		mMenuAdapter.notifyDataSetChanged();
+//		mBranches.clear();
+//		mBranches.addAll(tradeMarks);
+//		mMenuAdapter.notifyDataSetChanged();
 	}
 
 	@Override
-	public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-		// Define click event for static menu item
-		if (mGroups.get(groupPosition).Id != BRANDS_ID) {
-			Bundle args = null;
-			switch (groupPosition) {
-			case 0:
-				mActivity.changeBase(BaseFragment.TAG_BESTOFDAY, null);
-				break;
-			case 1:
-				args = new Bundle();
-				args.putString(CategoryFragment.TAG, CategoryFragment.TAG_WOMEN);
-				mActivity.changeBase(BaseFragment.TAG_WOMENFASHION, args);
-				break;
-			case 2:
-				args = new Bundle();
-				args.putString(CategoryFragment.TAG, CategoryFragment.TAG_OFFICE);
-				mActivity.changeBase(BaseFragment.TAG_OFFICEFASHION, args);
-				break;
-			case 3:
-				args = new Bundle();
-				args.putString(CategoryFragment.TAG, CategoryFragment.TAG_MEN);
-				mActivity.changeBase(BaseFragment.TAG_MENFASHION, args);
-				break;
-			case 4:
-				args = new Bundle();
-				args.putString(CategoryFragment.TAG, CategoryFragment.TAG_WINTER);
-				mActivity.changeBase(BaseFragment.TAG_WINTERFASHION, args);
-				break;
-			case 6:
-				mActivity.changeBase(BaseFragment.TAG_MYSHOPPING, null);
-				break;
-			case 7:
-				mActivity.changeBase(BaseFragment.TAG_STYLER, null);
-				break;
-			case 8:
-				// my style
-				break;
-			case 9:
-				// review
-				break;
-			case 10:
-				mActivity.changeBase(BaseFragment.TAG_SETTINGS, null);
-				break;
-			default:
-				break;
-			}
-			mMenu.showContent();
-		}
-		return false;
-	}
-	
-	@Override
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-		if (mGroups.get(groupPosition).Id == BRANDS_ID) {
-			mActivity.getController().setTradeMark(mBranches.get(childPosition));
-			Bundle args = new Bundle();
-			args.putInt(BaseFragment.ARG_POSITION, childPosition);
-			mActivity.changeBase(BaseFragment.TAG_BRANCHES + childPosition, args);
+		int groupId = mGroups.get(groupPosition).Id;
+		int childId = groupId == 0 ? mFashions.get(childPosition).Id : mStyles.get(childPosition).Id;
+		Bundle args = null;
+		switch (childId) {
+		case 0:
+			mActivity.changeBase(BaseFragment.TAG_BESTOFDAY, null);
+			break;
+		case 1:
+			args = new Bundle();
+			args.putString(CategoryFragment.TAG, CategoryFragment.TAG_WOMEN);
+			mActivity.changeBase(BaseFragment.TAG_WOMENFASHION, args);
+			break;
+		case 2:
+			args = new Bundle();
+			args.putString(CategoryFragment.TAG, CategoryFragment.TAG_OFFICE);
+			mActivity.changeBase(BaseFragment.TAG_OFFICEFASHION, args);
+			break;
+		case 3:
+			args = new Bundle();
+			args.putString(CategoryFragment.TAG, CategoryFragment.TAG_MEN);
+			mActivity.changeBase(BaseFragment.TAG_MENFASHION, args);
+			break;
+		case 4:
+			args = new Bundle();
+			args.putString(CategoryFragment.TAG, CategoryFragment.TAG_WINTER);
+			mActivity.changeBase(BaseFragment.TAG_WINTERFASHION, args);
+			break;
+		case 5:
+//			My pham
+			break;
+		case 6:
+//			Thuong hieu
+			break;
+		case 7:
+			mActivity.changeBase(BaseFragment.TAG_STYLER, null);
+			break;
+		case 8:
+			// my style
+			break;
+		case 9:
+			// review
+			break;
+		case 10:
+			mActivity.changeBase(BaseFragment.TAG_SETTINGS, null);
+			break;
+		default:
+			break;
 		}
 		mMenu.showContent();
 		return false;
@@ -198,11 +189,6 @@ public class SlidingMenuController implements OnGroupClickListener, OnChildClick
 		default:
 			break;
 		}
-	}
-	
-	private int dpiToPixel(int dpi) {
-		final float scale = mActivity.getResources().getDisplayMetrics().density;
-	    return (int) (dpi * scale + 0.5f);
 	}
 	
 	private void setUpHeaders() {
@@ -236,5 +222,10 @@ public class SlidingMenuController implements OnGroupClickListener, OnChildClick
 //			mMenuListView.removeHeaderView(mMemberLayout);
 //			mMenuListView.addHeaderView(mIntroLayout);
 //		}
+	}
+
+	@Override
+	public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+		return true;
 	}
 }
