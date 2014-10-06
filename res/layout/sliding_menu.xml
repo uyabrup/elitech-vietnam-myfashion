@@ -418,7 +418,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#404241"
-    android:childDivider="@drawable/sliding_menu_childdivider"
+    android:childDivider="@android:drawable/divider_horizontal_dim_dark"
     android:choiceMode="singleChoice"
-    android:divider="@drawable/sliding_menu_groupdivider"
-    android:groupIndicator="@drawable/sliding_menu_groupindicator" />
+    android:divider="@android:drawable/divider_horizontal_dim_dark"
+    android:groupIndicator="@null"
+    android:listSelector="@drawable/bg_button_simple" />

@@ -396,5 +396,6 @@
     <string name="pleasewaituploadingphoto">Please wait while we uploading your photo...</string>
     <string name="youmusttakephotoupload">You must take a photo to upload</string>
     <string name="your_style_was_changed">Your style was changed</string>
+    <string name="fashion">FASHION</string>
     
 </resources>

@@ -74,9 +74,8 @@ public class SlidingMenuAdapter extends BaseExpandableListAdapter {
 			convertView = LayoutInflater.from(mActivity).inflate(R.layout.sliding_menu_group, parent, false);
 		}
 
-		TextView lblListHeader = (TextView) convertView.findViewById(R.id.slidemenu_txtGroup);
+		TextView lblListHeader = (TextView) convertView;
 		lblListHeader.setText(item.Name);
-		lblListHeader.setCompoundDrawablesWithIntrinsicBounds(item.Icon, 0, 0, 0);
 
 		return convertView;
 	}
@@ -89,11 +88,10 @@ public class SlidingMenuAdapter extends BaseExpandableListAdapter {
 			convertView = LayoutInflater.from(mActivity).inflate(R.layout.sliding_menu_child, parent, false);
 		}
 
-		TextView lblListHeader = (TextView) convertView.findViewById(R.id.slidemenu_txtChild);
+		TextView lblListHeader = (TextView) convertView;
 		lblListHeader.setText(item.Name);
-		item.Icon = R.drawable.menuicon_best;
-		item.GroupId = 1;
-		lblListHeader.setCompoundDrawablesWithIntrinsicBounds(item.Icon, 0, 0, 0);
+//		int icon = mActivity.getResources().getIdentifier(item.Icon, "drawable", mActivity.getPackageName());
+//		lblListHeader.setCompoundDrawablesWithIntrinsicBounds(icon, 0, 0, 0);
 
 		return convertView;
 	}
