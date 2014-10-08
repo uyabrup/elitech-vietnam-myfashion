@@ -131,6 +131,7 @@ public class MemberFollowFragment extends AbstractFragment implements OnItemClic
 		switch (parent.getId()) {
 		case R.id.memberfollow_lvContent:
 			MemberInfoFragment fragment = MemberInfoFragment.newInstance(mMembers.get(position).Id);
+//			mActivity.getCurrentBase().replaceFragment(fragment, true);
 			((MemberBaseFragment) getParentFragment()).replaceFragment(fragment, R.id.base_container, true);
 			break;
 		default:

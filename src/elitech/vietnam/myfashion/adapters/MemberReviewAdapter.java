@@ -30,12 +30,9 @@ public class MemberReviewAdapter extends ArrayAdapter<Review> {
 
 	MainActivity mActivity;
 	
-	int mMemberId;
-	
-	public MemberReviewAdapter(Context context, List<Review> objects, int memberId) {
+	public MemberReviewAdapter(Context context, List<Review> objects) {
 		super(context, R.layout.item_member_review, objects);
 		mActivity = (MainActivity) context;
-		mMemberId = memberId;
 	}
 	
 	@Override

@@ -10,20 +10,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import elitech.vietnam.myfashion.R;
 import elitech.vietnam.myfashion.entities.Category;
-import elitech.vietnam.myfashion.entities.TradeMark;
+import elitech.vietnam.myfashion.entities.Cosmetic;
 
 /**
  * @author Cong
  *
  */
-public class TradeMarkDetailFragment extends AbstractFragment {
+public class CosmeticDetailFragment extends AbstractFragment {
 
 	FragmentTabHost mTabHost;
 	
-	TrademarkDetailCallback mCallback;
-	TradeMark mItem;
+	CosmeticDetailCallback mCallback;
+	Cosmetic mItem;
 	
-	public TradeMarkDetailFragment() {
+	public CosmeticDetailFragment() {
 	}
 	
 	@Override
@@ -31,7 +31,7 @@ public class TradeMarkDetailFragment extends AbstractFragment {
 		View view = inflater.inflate(R.layout.fragment_category_tabshost, container, false);
 		
 		mCallback = mActivity.getController();
-		mItem = mCallback.getTradeMark();
+		mItem = mCallback.getCosmetic();
 		
 		mTabHost = (FragmentTabHost) view.findViewById(android.R.id.tabhost);
 		mTabHost.setup(mActivity, getChildFragmentManager(), android.R.id.tabcontent);
@@ -39,14 +39,14 @@ public class TradeMarkDetailFragment extends AbstractFragment {
 		for (int i = 0; i < mItem.Categories.size(); i++) {
 			Category item = mItem.Categories.get(i);
 			Bundle bundle = new Bundle();
-			bundle.putInt(TradeMarkContentFragment.ARG_CATEGORY_POSITION, i);
-			mTabHost.addTab(mTabHost.newTabSpec(item.NameVN).setIndicator(item.NameVN), TradeMarkContentFragment.class, bundle);
+			bundle.putInt(CosmeticContentFragment.ARG_CATEGORY_POSITION, i);
+			mTabHost.addTab(mTabHost.newTabSpec(item.NameVN).setIndicator(item.NameVN), CosmeticContentFragment.class, bundle);
 		}
 		return view;
 	}
 	
-	public static interface TrademarkDetailCallback {
-		void setTradeMark(TradeMark trademark);
-		TradeMark getTradeMark();
+	public static interface CosmeticDetailCallback {
+		void setCosmetic(Cosmetic trademark);
+		Cosmetic getCosmetic();
 	}
 }

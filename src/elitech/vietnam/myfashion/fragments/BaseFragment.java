@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import elitech.vietnam.myfashion.MainActivity;
 import elitech.vietnam.myfashion.R;
+import elitech.vietnam.myfashion.fragments.MemberStyleFragment.StyleType;
 
 /**
  * @author Cong
@@ -20,7 +21,7 @@ import elitech.vietnam.myfashion.R;
 public class BaseFragment extends Fragment {
 
 	public static final String	TAG					= "BASETAG";
-	public static final String	ARG_POSITION		= "ARG_POSITION";
+	public static final String	ARG_SEARCHVALUE		= "ARG_SEARCHVALUE";
 
 	public static final String	TAG_SPLASH			= "TAG_SPLASH";
 	public static final String	TAG_BESTOFDAY		= "TAG_BESTOFDAY";
@@ -28,18 +29,22 @@ public class BaseFragment extends Fragment {
 	public static final String	TAG_OFFICEFASHION	= "TAG_OFFICEFASHION";
 	public static final String	TAG_MENFASHION		= "TAG_MENFASHION";
 	public static final String	TAG_WINTERFASHION	= "TAG_WINTERFASHION";
-	public static final String	TAG_BRANCHES		= "TAG_BRANCHES";
+	public static final String	TAG_COSMETIC		= "TAG_COSMETIC";
+	public static final String	TAG_TRADEMARK		= "TAG_TRADEMARK";
 	public static final String	TAG_MYSHOPPING		= "TAG_MYSHOPPING";
 	public static final String	TAG_STYLER			= "TAG_STYLER";
 	public static final String	TAG_MYSTYLE			= "TAG_MYSTYLE";
+	public static final String	TAG_MYPAGE			= "TAG_MYPAGE";
 	public static final String	TAG_REVIEW			= "TAG_REVIEW";
+	public static final String	TAG_SEARCHSIMPLE	= "TAG_SEARCHSIMPLE";
 	public static final String	TAG_SETTINGS		= "TAG_SETTINGS";
+	public static final String	TAG_TPMLOGIN		= "TAG_TPMLOGIN";
 	public static final String	TAG_NETWORKERROR	= "TAG_NETWORKERROR";
 
 	MainActivity				mActivity;
 
 	String						mTag, mCurrent = "";
-	int							mPos;
+	String 						mArgSearch;
 	
 	public static BaseFragment newInstance(String tag) {
 		Bundle bundle = new Bundle();
@@ -70,11 +75,15 @@ public class BaseFragment extends Fragment {
 		return inflater.inflate(R.layout.fragment_base, container, false);
 	}
 
+	/**
+	 * Change the base fragment here
+	 * Note: this method not handle user login state, must handle it before calling this method
+	 */
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		mTag = getArguments().getString(TAG, "");
-		mPos = getArguments().getInt(ARG_POSITION, -1);
+		mArgSearch = getArguments().getString(ARG_SEARCHVALUE, "");
 		Log.w("BaseFragment", "onViewCreated");
 
 		if (savedInstanceState == null) {
@@ -92,16 +101,26 @@ public class BaseFragment extends Fragment {
 				fragment = CategoryFragment.newInstance(CategoryFragment.TAG_MEN);
 			if (mTag.equals(TAG_WINTERFASHION))
 				fragment = CategoryFragment.newInstance(CategoryFragment.TAG_WINTER);
-			if (mTag.equals(TAG_BRANCHES + mPos))
-				fragment = new TradeMarkDetailFragment();
+			if (mTag.equals(TAG_COSMETIC))
+				fragment = CosmeticFragment.newInstance();
+			if (mTag.equals(TAG_TRADEMARK))
+				fragment = TrademarkFragment.newInstance();
 			if (mTag.equals(TAG_MYSHOPPING))
 				fragment = new ShoppingCartFragment();
 			if (mTag.equals(TAG_STYLER))
 				fragment = new StylerBestTopFragment();
-			// my style
-			// reviews
+			if (mTag.equals(TAG_SEARCHSIMPLE))
+				fragment = SearchFragment.newInstance(mArgSearch);
+			if (mTag.equals(TAG_MYSTYLE))
+				fragment = MemberStyleFragment.newInstance(mActivity.getLoggedinUser().Id, StyleType.STYLE);
+			if (mTag.equals(TAG_REVIEW))
+				fragment = ReviewFragment.newInstance();
+			if (mTag.equals(TAG_TPMLOGIN))
+				fragment = LoginBaseFragment.newInstance();
+			if (mTag.equals(TAG_MYPAGE))
+				fragment = MemberInfoFragment.newInstance(mActivity.getLoggedinUser().Id);
 			if (mTag.equals(TAG_SETTINGS))
-				fragment = new SettingsFragment();
+				fragment = SettingsFragment.newInstance();
 			if (mTag.equals(TAG_NETWORKERROR))
 				fragment = new SettingsFragment();
 			

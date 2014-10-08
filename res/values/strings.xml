@@ -397,5 +397,15 @@
     <string name="youmusttakephotoupload">You must take a photo to upload</string>
     <string name="your_style_was_changed">Your style was changed</string>
     <string name="fashion">FASHION</string>
+    <string name="best_top">Best top</string>
+    <string name="women">Women</string>
+    <string name="office">Office</string>
+    <string name="men">Men</string>
+    <string name="autumn_winter">Autumn and Winter</string>
+    <string name="cosmetics">Cosmetics</string>
+    <string name="trademarks">Trademarks</string>
+    <string name="all_style">All style</string>
+    <string name="my_style">My style</string>
+    <string name="loginrequiremessage">You are not logged in.\nPlease go to Setting and login to your account, then try again.</string>
     
 </resources>

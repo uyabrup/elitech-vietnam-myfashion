@@ -154,14 +154,13 @@ $app->get ( '/bestOfDay', function () use($app) {
 	
 	// looping through result and preparing tasks array
 	while ( $row = $result->fetch_assoc () ) {
-		$row = calculateSaleOff ( $row );
 		array_push ( $response, calculateSaleOff ( $row ) );
 	}
 	
 	echoRespnse ( 200, $response );
 } );
 
-$app->get ( '/trademarks', function () {
+$app->get ( '/cosmetics', function () {
 	authenticate ();
 	
 	$response = array ();
@@ -695,7 +694,6 @@ $app->get ( '/member/:id/likedProduct', function ($id) use ($app) {
 	$response = array ();
 	$result = $db->getLikedProduct ( $id, $account, $start, $count );
 	while ( $row = $result->fetch_assoc () ) {
-		$row = calculateSaleOff ( $row );
 		array_push ( $response, calculateSaleOff ( $row ) );
 	}
 	
@@ -968,6 +966,93 @@ $app->put ( '/style/:id/content', function ($id) use($app) {
 	echoRespnse ( 200,  $rs );
 } );
 
+$app->get ( '/brands', function () use($app) {
+	authenticate ();
+	
+	$response = array ();
+	$db = new DbHandler ();
+	
+	$result = $db->getBrands ();
+	
+	while ( $row = $result->fetch_assoc () ) {
+		if ($row['brand'] != "")
+			array_push ( $response, $row['brand'] );
+	}
+	
+	echoRespnse ( 200, $response );
+} );
+
+$app->get ( '/brand/:name/products', function ($name) use($app) {
+	authenticate ();
+	verifyRequiredParams ( array (
+			'account',
+			'start',
+			'count' 
+	) );
+	
+	$account = $app->request->get ( 'account' );
+	$start = $app->request->get ( 'start' );
+	$count = $app->request->get ( 'count' );
+	
+	$response = array ();
+	$db = new DbHandler ();
+	
+	// fetching all best of day products
+	$result = $db->getBrandProduct ( $name, $account, $start, $count );
+	
+	// looping through result and preparing tasks array
+	while ( $row = $result->fetch_assoc () ) {
+		array_push ( $response, calculateSaleOff ( $row ) );
+	}
+	
+	echoRespnse ( 200, $response );
+} );
+
+$app->get ( '/search', function () use($app) {
+	authenticate ();
+	verifyRequiredParams ( array (
+			'name',
+			'account'
+	) );
+	
+	$name = $app->request->get ( 'name' );
+	$account = $app->request->get ( 'account' );
+	
+	$response = array ();
+	$db = new DbHandler ();
+	
+	// fetching all best of day products
+	$result = $db->searchProduct ( $name, $account );
+	
+	// looping through result and preparing tasks array
+	while ( $row = $result->fetch_assoc () ) {
+		array_push ( $response, calculateSaleOff ( $row ) );
+	}
+	
+	echoRespnse ( 200, $response );
+} );
+
+$app->get ( '/reviews', function () use($app) {
+	authenticate ();
+	verifyRequiredParams ( array (
+			'start',
+			'count' 
+	) );
+	
+	$start = $app->request->get ( 'start' );
+	$count = $app->request->get ( 'count' );
+	
+	$response = array ();
+	$db = new DbHandler ();
+	
+	$result = $db->getReviews ( $start, $count );
+	
+	while ( $row = $result->fetch_assoc () ) {
+		array_push ( $response, $row );
+	}
+	
+	echoRespnse ( 200, $response );
+} );
 /**
  * Test method
  */

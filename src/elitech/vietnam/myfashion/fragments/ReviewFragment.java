@@ -27,10 +27,9 @@ import elitech.vietnam.myfashion.entities.Review;
  * @author Cong
  *
  */
-public class MemberReviewFragment extends AbstractFragment implements OnRefreshListener, OnItemClickListener {
+public class ReviewFragment extends AbstractFragment implements OnRefreshListener, OnItemClickListener {
 
 	private static final int LOADMORE = 20;
-	public static final String ARG_MEMBERID = "ARG_MEMBERID";
 	
 	SwipeRefreshLayout mRefresh;
 	ListView mListView;
@@ -38,22 +37,16 @@ public class MemberReviewFragment extends AbstractFragment implements OnRefreshL
 	List<Review> mReviews = new ArrayList<>();
 	MemberReviewAdapter mAdapter;
 	
-	int mMemberId;
-	
-	public static MemberReviewFragment newInstance(int memberId) {
-		Bundle args = new Bundle();
-		args.putInt(ARG_MEMBERID, memberId);
-		MemberReviewFragment fragment = new MemberReviewFragment();
-		fragment.setArguments(args);
+	public static ReviewFragment newInstance() {
+		ReviewFragment fragment = new ReviewFragment();
 		return fragment;
 	}
 	
-	public MemberReviewFragment() {
+	public ReviewFragment() {
 	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		mMemberId = getArguments().getInt(ARG_MEMBERID, 0);
 		View view = inflater.inflate(R.layout.fragment_member_follow, container, false);
 		
 		mRefresh = (SwipeRefreshLayout) view.findViewById(R.id.memberfollow_layRefresh);
@@ -78,7 +71,7 @@ public class MemberReviewFragment extends AbstractFragment implements OnRefreshL
 	}
 
 	private void getData() {
-		mActivity.getServices().getReviewById(mMemberId, 0, LOADMORE, new Callback<List<Review>>() {
+		mActivity.getServices().getAllReviews(0, LOADMORE, new Callback<List<Review>>() {
 			@Override
 			public void success(List<Review> arg0, Response arg1) {
 				mReviews.clear();

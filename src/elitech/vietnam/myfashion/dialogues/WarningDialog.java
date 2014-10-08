@@ -37,7 +37,6 @@ public class WarningDialog extends AbstractDialogFragment implements View.OnClic
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		getDialog().getWindow().getAttributes().windowAnimations = R.style.SlideBottom;
 		getDialog().setTitle(R.string.warning);
 		View view = inflater.inflate(R.layout.dialog_warning, container, false);
 		

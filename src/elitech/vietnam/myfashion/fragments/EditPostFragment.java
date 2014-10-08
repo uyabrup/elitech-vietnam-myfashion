@@ -43,8 +43,11 @@ public class EditPostFragment extends AbstractFragment {
 
 	Post mPost;
 
-	public static EditPostFragment newInstance() {
+	public static EditPostFragment newInstance(int postId) {
+		Bundle args = new Bundle();
+		args.putInt(ARG_POSTID, postId);
 		EditPostFragment fragment = new EditPostFragment();
+		fragment.setArguments(args);
 		return fragment;
 	}
 
@@ -53,7 +56,7 @@ public class EditPostFragment extends AbstractFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		mPost = mActivity.getController().getPost();
+		mPost = mActivity.getController().getPost(getArguments().getInt(ARG_POSTID));
 		View view = inflater.inflate(R.layout.fragment_createpost, container, false);
 
 		mLayoutMain = view.findViewById(R.id.createpost_scrMainView);
