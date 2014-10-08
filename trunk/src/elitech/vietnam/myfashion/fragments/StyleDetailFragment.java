@@ -43,6 +43,7 @@ import elitech.vietnam.myfashion.widgets.ScaleImageView;
  */
 public class StyleDetailFragment extends AbstractFragment implements View.OnClickListener, CommentDialogCallback, ConfirmDialogClick {
 
+	public static final String ARG_POSTID = "ARG_POSTID";
 	public static final int	REQ_DIALOG_COMMENT	= 1;
 
 	CircularImageView		mAvatar;
@@ -56,13 +57,21 @@ public class StyleDetailFragment extends AbstractFragment implements View.OnClic
 	StyleDetailCallback		mCallback;
 	StyleDetailPopupMenu	mMenu;
 
+	public static final StyleDetailFragment newInstance(int postId) {
+		Bundle args = new Bundle();
+		args.putInt(ARG_POSTID, postId);
+		StyleDetailFragment fragment = new StyleDetailFragment();
+		fragment.setArguments(args);
+		return fragment;
+	}
+	
 	public StyleDetailFragment() {
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		mCallback = mActivity.getController();
-		mPost = mCallback.getPost();
+		mPost = mCallback.getPost(getArguments().getInt(ARG_POSTID));
 		View view = inflater.inflate(R.layout.fragment_style_detail, container, false);
 		mMenu = new StyleDetailPopupMenu(mActivity);
 		mMenu.setUp();
@@ -136,7 +145,7 @@ public class StyleDetailFragment extends AbstractFragment implements View.OnClic
 		super.onCreateOptionsMenu(menu, inflater);
 		mCallback = mActivity.getController();
 		int n = mActivity.getLoggedinUser() == null ? -1 : mActivity.getLoggedinUser().Id;
-		if (n == mCallback.getPost().IdAccount) {
+		if (n == mCallback.getPost(getArguments().getInt(ARG_POSTID)).IdAccount) {
 			inflater.inflate(R.menu.style_detail, menu);
 			final MenuItem item = menu.findItem(R.id.action_styleDetail_more);
 			View view = MenuItemCompat.getActionView(item).findViewById(R.id.menuitem_action_more);
@@ -247,10 +256,8 @@ public class StyleDetailFragment extends AbstractFragment implements View.OnClic
 	}
 
 	public static interface StyleDetailCallback {
-		Post getPost();
-
+		Post getPost(int postId);
 		void setPost(Post post);
-
 		void openMemberPage(int member);
 	}
 
@@ -293,7 +300,7 @@ public class StyleDetailFragment extends AbstractFragment implements View.OnClic
 			switch (v.getId()) {
 			case R.id.dialog_popupStyleDetail_btnEdit:
 				mActivity.getCurrentBase().replaceFragment(
-						EditPostFragment.newInstance(), true);
+						EditPostFragment.newInstance(mPost.Id), true);
 				break;
 			case R.id.dialog_popupStyleDetail_btnDelete:
 				ConfirmDialog.newInstance(R.string.warning, R.string.areyousure, Const.REQUEST_CONFIRM_DELETEPOST,
@@ -328,5 +335,4 @@ public class StyleDetailFragment extends AbstractFragment implements View.OnClic
 	@Override
 	public void noClick(int requestCode) {
 	}
-
 }

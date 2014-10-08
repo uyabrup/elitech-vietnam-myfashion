@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -93,6 +94,22 @@ public class MainActivity extends ActionBarActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
+		
+		final MenuItem searchItem = menu.findItem(R.id.action_search);
+		final SearchView search = (SearchView) MenuItemCompat.getActionView(searchItem);
+		search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+			@Override
+			public boolean onQueryTextSubmit(String arg0) {
+				search.clearFocus();
+				mController.search(arg0);
+				searchItem.collapseActionView();
+				return false;
+			}
+			@Override
+			public boolean onQueryTextChange(String arg0) {
+				return false;
+			}
+		});
 		
 		final MenuItem cartItem = menu.findItem(R.id.action_settings);
 		View view = MenuItemCompat.getActionView(cartItem).findViewById(R.id.menuitem_action_cart);

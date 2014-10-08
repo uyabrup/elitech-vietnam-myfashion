@@ -33,7 +33,6 @@ import elitech.vietnam.myfashion.entities.District;
 import elitech.vietnam.myfashion.entities.Member;
 import elitech.vietnam.myfashion.entities.Ship;
 import elitech.vietnam.myfashion.entities.ShipMore;
-import elitech.vietnam.myfashion.entities.TradeMark;
 import elitech.vietnam.myfashion.prefs.PrefsDefinition;
 import elitech.vietnam.myfashion.utilities.Tracker;
 import elitech.vietnam.myfashion.utilities.Utilities;
@@ -71,27 +70,6 @@ public class FirstLoadingFragment extends AbstractFragment {
 		super.onResume();
 		mActivity.getActionBar().hide();
 		new OneTimeStoreID().execute();
-		mActivity.getServices().getTradeMarks(new Callback<List<TradeMark>>() {
-			@Override
-			public void success(final List<TradeMark> arg0, Response arg1) {
-				AsyncTask.execute(new Runnable() {
-					@Override
-					public void run() {
-						mActivity.getDatabase().saveMenuItem(arg0);
-					}
-				});
-				mActivity.getMenuController().loadBrandData(arg0);
-			}
-			@Override
-			public void failure(RetrofitError arg0) {
-				Log.w("RetrofitError", arg0.getMessage());
-				List<TradeMark> list = mActivity.getDatabase().loadMenuItem();
-				if (list.size() > 0)
-					mActivity.getMenuController().loadBrandData(list);
-				else
-					mFailed = true;
-			}
-		});
 		if (mActivity.getDatabase().getShipCount() == 0) {
 			mTask += 1;
 			mActivity.getServices().getShip(new Callback<List<Ship>>() {

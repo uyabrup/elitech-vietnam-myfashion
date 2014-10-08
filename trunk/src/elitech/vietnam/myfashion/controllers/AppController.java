@@ -4,6 +4,7 @@
 package elitech.vietnam.myfashion.controllers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import android.content.Intent;
@@ -12,15 +13,19 @@ import elitech.vietnam.myfashion.MainActivity;
 import elitech.vietnam.myfashion.MainActivity.ResultListener;
 import elitech.vietnam.myfashion.entities.Category;
 import elitech.vietnam.myfashion.entities.Color;
+import elitech.vietnam.myfashion.entities.Cosmetic;
 import elitech.vietnam.myfashion.entities.Order;
 import elitech.vietnam.myfashion.entities.OrderDetail;
 import elitech.vietnam.myfashion.entities.Post;
 import elitech.vietnam.myfashion.entities.Product;
 import elitech.vietnam.myfashion.entities.Size;
-import elitech.vietnam.myfashion.entities.TradeMark;
+import elitech.vietnam.myfashion.fragments.BaseFragment;
 import elitech.vietnam.myfashion.fragments.BestOfTodayFragment.BestOfTodayCallback;
 import elitech.vietnam.myfashion.fragments.CategoryDetailFragment;
 import elitech.vietnam.myfashion.fragments.CategoryDetailFragment.CategoryDetailCallback;
+import elitech.vietnam.myfashion.fragments.CosmeticDetailFragment;
+import elitech.vietnam.myfashion.fragments.CosmeticDetailFragment.CosmeticDetailCallback;
+import elitech.vietnam.myfashion.fragments.CosmeticFragment.CosmeticCallback;
 import elitech.vietnam.myfashion.fragments.MemberBaseFragment;
 import elitech.vietnam.myfashion.fragments.ProductDetailFragment.ProductDetailCallback;
 import elitech.vietnam.myfashion.fragments.ProductTabHostFragment;
@@ -28,23 +33,26 @@ import elitech.vietnam.myfashion.fragments.ShoppingCartFragment.ShoppingCartCall
 import elitech.vietnam.myfashion.fragments.StyleDetailFragment;
 import elitech.vietnam.myfashion.fragments.StyleDetailFragment.StyleDetailCallback;
 import elitech.vietnam.myfashion.fragments.StylerBestTopFragment.StylerBestCallback;
-import elitech.vietnam.myfashion.fragments.TradeMarkDetailFragment.TrademarkDetailCallback;
+import elitech.vietnam.myfashion.fragments.TrademarkContentFragment;
+import elitech.vietnam.myfashion.fragments.TrademarkFragment.TradeMarkCallback;
 
 /**
  * @author Cong
  *
  */
 public class AppController implements CategoryDetailCallback, ProductDetailCallback, ShoppingCartCallback, 
-			TrademarkDetailCallback, BestOfTodayCallback, StylerBestCallback, StyleDetailCallback {
+			CosmeticDetailCallback, TradeMarkCallback, BestOfTodayCallback, StylerBestCallback, 
+			StyleDetailCallback, CosmeticCallback {
 
 	MainActivity mActivity;
 	
 	Category mCategory;
 	Product mProduct;
-	Post mPost;
+	HashMap<Integer, Post> mPosts = new HashMap<>();
 	List<OrderDetail> mOrderDetails;
-	TradeMark mTradeMark;
+	Cosmetic mCosmetic;
 	ResultListener mResultListener;
+	SearchCallback mSearch;
 	
 	Order mBill;
 	double mTotal = 0;
@@ -168,16 +176,6 @@ public class AppController implements CategoryDetailCallback, ProductDetailCallb
 	}
 
 	@Override
-	public void setTradeMark(TradeMark trademark) {
-		mTradeMark = trademark;
-	}
-
-	@Override
-	public TradeMark getTradeMark() {
-		return mTradeMark;
-	}
-
-	@Override
 	public void onItemClick(Product product) {
 		setProduct(product);
 		mActivity.getCurrentBase().replaceFragment(new ProductTabHostFragment(), true);
@@ -211,17 +209,19 @@ public class AppController implements CategoryDetailCallback, ProductDetailCallb
 	@Override
 	public void onItemClick(Post post) {
 		setPost(post);
-		mActivity.getCurrentBase().replaceFragment(new StyleDetailFragment(), true);
+		mActivity.getCurrentBase().replaceFragment(StyleDetailFragment.newInstance(post.Id), true);
 	}
 
 	@Override
-	public Post getPost() {
-		return mPost;
+	public Post getPost(int postId) {
+		return mPosts.get(postId);
 	}
 
 	@Override
 	public void setPost(Post post) {
-		mPost = post;
+		if (mPosts.get(post.Id) != null)
+			mPosts.remove(post.Id);
+		mPosts.put(post.Id, post);
 	}
 
 	@Override
@@ -236,5 +236,51 @@ public class AppController implements CategoryDetailCallback, ProductDetailCallb
 	
 	public void setResultListener(ResultListener listener) {
 		mResultListener = listener;
+	}
+
+	@Override
+	public void onItemClick(Cosmetic item) {
+		setCosmetic(item);
+		CosmeticDetailFragment fragment = new CosmeticDetailFragment();
+		mActivity.getCurrentBase().replaceFragment(fragment, true);
+	}
+
+	@Override
+	public void setCosmetic(Cosmetic trademark) {
+		mCosmetic = trademark;
+	}
+
+	@Override
+	public Cosmetic getCosmetic() {
+		return mCosmetic;
+	}
+
+	@Override
+	public void onItemClick(String item) {
+		TrademarkContentFragment fragment = TrademarkContentFragment.newInstance(item);
+		mActivity.getCurrentBase().replaceFragment(fragment, true);
+	}
+
+	public void search(String arg0) {
+		arg0 = arg0.trim();
+		if (mSearch != null)
+			mSearch.doSearch(arg0);
+		else {
+			Bundle args = new Bundle();
+			args.putString(BaseFragment.ARG_SEARCHVALUE, arg0);
+			mActivity.changeBase(BaseFragment.TAG_SEARCHSIMPLE, args);
+		}
+	}
+	
+	public static interface SearchCallback {
+		void doSearch(String query);
+	}
+	
+	public void setSearchCallback(SearchCallback callback) {
+		mSearch = callback;
+	}
+	
+	public SearchCallback getSearchCallback() {
+		return mSearch;
 	}
 }

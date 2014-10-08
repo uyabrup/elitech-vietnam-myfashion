@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/elitech.vietnam.myfashion"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="15dp"
@@ -14,14 +15,15 @@
         android:padding="10dp"
         android:visibility="gone" >
 
-        <ImageView
+        <elitech.vietnam.myfashion.widgets.rdimgview.RoundedImageView
             android:id="@+id/menu_imgAvatar"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/ok"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_user" />
+            android:src="@drawable/ic_user"
+            app:corner_radius="5dp" />
 
         <TextView
             android:id="@+id/menu_txtName"

@@ -28,28 +28,28 @@
             android:orientation="vertical"
             android:padding="10dp" >
 
-            <elitech.vietnam.myfashion.widgets.ScaleImageView
-                android:id="@+id/createpost_imgPhoto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/ok" />
-
             <EditText
                 android:id="@+id/createpost_edtContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
                 android:background="@drawable/textfield_default_holo_light"
-                android:gravity="top"
+                android:gravity="bottom"
                 android:hint="@string/writesomthingaboutthisphoto"
                 android:inputType="textMultiLine|textCapSentences"
-                android:lines="2"
+                android:lines="3"
                 android:maxLines="8"
                 android:padding="5dp"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/gray"
                 android:typeface="serif" />
+
+            <elitech.vietnam.myfashion.widgets.ScaleImageView
+                android:id="@+id/createpost_imgPhoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/ok" />
         </LinearLayout>
     </ScrollView>
 

@@ -22,6 +22,11 @@ public class SettingsFragment extends AbstractFragment implements View.OnClickLi
 
 	Button mBtnAccount, mBtnNotification, mBtnLanguage, mBtnAbout, mBtnLogin;
 	
+	public static SettingsFragment newInstance() {
+		SettingsFragment fragment = new SettingsFragment();
+		return fragment;
+	}
+	
 	public SettingsFragment() {
 	}
 	
@@ -70,7 +75,7 @@ public class SettingsFragment extends AbstractFragment implements View.OnClickLi
 			break;
 		case R.id.settings_btnLoginSignup:
 			if (mActivity.getLoggedinUser() == null) {
-				mActivity.getCurrentBase().replaceFragment(LoginBaseFragment.newInstance(), true);
+				mActivity.changeBase(BaseFragment.TAG_TPMLOGIN, null);
 			} else {
 				ConfirmDialog.newInstance(R.string.logout, R.string.logoutconfirm, 1, this).show(getFragmentManager());
 			}

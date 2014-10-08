@@ -1266,6 +1266,117 @@ class DbHandler {
 		$stmt->close ();
 		return $num_affected_rows;
 	}
+	public function getBrands() {
+		$str = "SELECT		SUBSTRING_INDEX(	TRIM(	LEADING	'shop.' 
+												FROM 	TRIM(	LEADING	'www.'
+														FROM 	TRIM(	LEADING	'http://' 
+																FROM 	p.`url`))), '.', 1)	AS	`brand`
+				FROM		`product` p
+				INNER JOIN	`category` c
+				ON			c.`id`=p.`id_category`
+				WHERE		c.`status`=1	AND
+							p.`quantity`=1
+				GROUP BY	`brand`
+				ORDER BY	`brand`	ASC;";
+				
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->execute ();
+		$data = $stmt->get_result ();
+		$stmt->close ();
+		return $data;
+	}
+	public function getBrandProduct($name, $account, $start, $count) {
+		$str = "SELECT		p.*,
+							IFNULL((	SELECT	SUM(l.`like`)
+										FROM	`like` l
+										WHERE	l.`id_account`=? AND l.`id_product`=p.`id` AND l.`type`=1
+									), 0) AS `liked`,
+							SUBSTRING_INDEX(	TRIM(	LEADING	'shop.' 
+												FROM 	TRIM(	LEADING	'www.'
+																FROM 	TRIM(	LEADING	'http://' 
+																				FROM 	p.`url`))), '.', 1)	AS	`brand`,
+							c.`nameEN`	AS	`category_name_en`,
+							c.`nameKR`	AS	`category_name_kr`,
+							c.`nameVN`	AS	`category_name_vn`,
+							c.`color`	AS	`color`,
+							p.`priceVN`	AS	`price_vn`
+				FROM		`product` p
+				INNER JOIN	`category` c
+				ON			c.`id`=p.`id_category`
+				WHERE		c.`status`=1	AND
+							p.`quantity`=1		AND
+							p.`url` LIKE '%$name%'
+				ORDER BY	p.`create_day` 						DESC,
+							p.`priceVN` * (100-p.`sale_off`)	ASC,
+							p.`date` 							DESC
+				LIMIT		?, ?;";
+		
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->bind_param ( "iii", $account, $start, $count );
+		$stmt->execute ();
+		$data = $stmt->get_result ();
+		$stmt->close ();
+		return $data;
+	}
+	public function searchProduct($name, $account) {
+		$words = explode(' ', $name);
+		$str = "SELECT	p.*,
+						IFNULL((	SELECT	SUM(l.`like`)
+									FROM	`like` l
+									WHERE	l.`id_account`=$account AND l.`id_product`=p.`id` AND l.`type`=1
+								), 0) AS `liked`,
+						SUBSTRING_INDEX(	TRIM(	LEADING	'shop.' 
+											FROM 	TRIM(	LEADING	'www.'
+													FROM 	TRIM(	LEADING	'http://' 
+															FROM 	p.`url`))), '.', 1)	AS	`brand`,
+						c.`nameEN`	AS	`category_name_en`,
+						c.`nameKR`	AS	`category_name_kr`,
+						c.`nameVN`	AS	`category_name_vn`,
+						c.`color`	AS	`color`,
+						p.`priceVN`	AS	`price_vn`
+			FROM		`product` p
+			INNER JOIN	`category` c
+			ON			c.`id`=p.`id_category`
+			WHERE		p.`status`=1";
+			
+		foreach($words as $word) {
+			$word = trim($word);
+			$str .= "	AND	p.`name` LIKE '%$word%'";
+		}
+		$str .=	"	AND		p.`quantity`=1
+				ORDER BY	p.`name`;";
+		
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->execute ();
+		$data = $stmt->get_result ();
+		$stmt->close ();
+		return $data;
+	}
+	public function getReviews($start, $count) {
+		$str = "SELECT		r.*,
+							a.`image`		AS	`aimage`,
+							a.`name`		AS	`aname`,
+							a.`nick_name`	AS	`anickname`,
+							p.`name`		AS	`pname`,
+							p.`image`		AS	`pimage`
+				FROM		`review` r
+				INNER JOIN	`account` a
+				ON			a.`id`=r.`id_account`	AND
+							a.`status`=1
+				INNER JOIN	`product` p
+				ON			p.`id`=r.`id_product`	AND
+							p.`status`=1
+				WHERE		r.`status`=1
+				ORDER BY	r.`date`	DESC
+				LIMIT		?, ?;";
+				
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->bind_param ( "ii", $start, $count );
+		$stmt->execute ();
+		$data = $stmt->get_result ();
+		$stmt->close ();
+		return $data;
+	}
 }
 
 ?>

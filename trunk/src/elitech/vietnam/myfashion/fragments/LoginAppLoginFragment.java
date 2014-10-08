@@ -77,9 +77,9 @@ public class LoginAppLoginFragment extends AbstractFragment implements View.OnCl
 					@Override
 					public void success(Member arg0, Response arg1) {
 						mActivity.setLoggedinUser(arg0);
-						mActivity.getCurrentBase().popAllFragment();
 						mActivity.getMenuController().changeLoggedState(true);
 						mActivity.getPreferences().edit().putString(PrefsDefinition.LOGGEDIN_MEMBER, new Gson().toJson(arg0)).commit();
+						mActivity.onBackPressed();
 					}
 					@Override
 					public void failure(RetrofitError arg0) {

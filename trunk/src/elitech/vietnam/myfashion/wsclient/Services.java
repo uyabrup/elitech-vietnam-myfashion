@@ -18,6 +18,7 @@ import elitech.vietnam.myfashion.entities.Category;
 import elitech.vietnam.myfashion.entities.City;
 import elitech.vietnam.myfashion.entities.Color;
 import elitech.vietnam.myfashion.entities.Comment;
+import elitech.vietnam.myfashion.entities.Cosmetic;
 import elitech.vietnam.myfashion.entities.District;
 import elitech.vietnam.myfashion.entities.Member;
 import elitech.vietnam.myfashion.entities.Post;
@@ -27,7 +28,6 @@ import elitech.vietnam.myfashion.entities.Review;
 import elitech.vietnam.myfashion.entities.Ship;
 import elitech.vietnam.myfashion.entities.ShipMore;
 import elitech.vietnam.myfashion.entities.Size;
-import elitech.vietnam.myfashion.entities.TradeMark;
 
 /**
  * @author Cong
@@ -37,9 +37,6 @@ public interface Services {
 	@GET("/bestOfDay")
 	void getBestOfDay(@Query("day") String day, @Query("account") int account, @Query("start") int start,
 			@Query("count") int count, Callback<List<Product>> callback);
-	
-	@GET("/trademarks")
-	void getTradeMarks(Callback<List<TradeMark>> callback);
 	
 	@FormUrlEncoded
 	@POST("/doLikes")
@@ -162,4 +159,19 @@ public interface Services {
 	@FormUrlEncoded
 	@PUT("/style/{id}/content")
 	void updateStyleContent(@Path("id") int postId, @Field("content") String content, Callback<Integer> callback);
+	
+	@GET("/cosmetics")
+	void getCosmetics(Callback<List<Cosmetic>> callback);
+	
+	@GET("/brands")
+	void getTradeMarks(Callback<List<String>> callback);
+	
+	@GET("/brand/{name}/products")
+	void getProductByBrand(@Path("name") String name, @Query("account") int account, @Query("start") int start, @Query("count") int count, Callback<List<Product>> callback);
+	
+	@GET("/search")
+	void searchSimple(@Query("name") String name, @Query("account") int account, Callback<List<Product>> callback);
+	
+	@GET("/reviews")
+	void getAllReviews(@Query("start") int start, @Query("count") int count, Callback<List<Review>> callback);
 }

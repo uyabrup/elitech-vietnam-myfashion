@@ -129,7 +129,6 @@ public class MemberStyleFragment extends AbstractFragment implements OnRefreshLi
 		default:
 			break;
 		}
-		
 	}
 
 	@Override
