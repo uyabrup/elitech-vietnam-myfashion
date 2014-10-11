@@ -56,6 +56,7 @@ public class EditPostFragment extends AbstractFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		mActivity.getActionBar().setTitle(R.string.title_editstyle);
 		mPost = mActivity.getController().getPost(getArguments().getInt(ARG_POSTID));
 		View view = inflater.inflate(R.layout.fragment_createpost, container, false);
 

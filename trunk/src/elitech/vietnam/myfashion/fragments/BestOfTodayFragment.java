@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import elitech.vietnam.myfashion.R;
+import elitech.vietnam.myfashion.adapters.EndlessScrollListener;
 import elitech.vietnam.myfashion.adapters.ProductGridAdapter;
 import elitech.vietnam.myfashion.dialogues.AddToCartDialog.AddToCartCallBack;
 import elitech.vietnam.myfashion.entities.Color;
@@ -48,6 +49,7 @@ public class BestOfTodayFragment extends AbstractFragment implements OnRefreshLi
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		mActivity.getActionBar().setTitle(R.string.app_name);
 		View view = inflater.inflate(R.layout.fragment_bestofday, container, false);
 		mCallback = mActivity.getController();
 		
@@ -57,6 +59,16 @@ public class BestOfTodayFragment extends AbstractFragment implements OnRefreshLi
 		mLayoutRefresh.setColorSchemeResources(R.color.red, R.color.green, R.color.blue, R.color.orange);
 		mAdapter = new ProductGridAdapter(mActivity, R.layout.item_bestofday, mBest, this);
 		mGrid.setAdapter(mAdapter);
+		mGrid.setOnScrollListener(new EndlessScrollListener() {
+			@Override
+			public void onLoadmore() {
+				getMoreData();
+			}
+			@Override
+			public int getItemCount() {
+				return mBest.size();
+			}
+		});
 		
 		mLayoutRefresh.setOnRefreshListener(this);
 		mGrid.setOnItemClickListener(this);

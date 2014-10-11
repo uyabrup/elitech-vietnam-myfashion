@@ -32,6 +32,7 @@ public class SettingsFragment extends AbstractFragment implements View.OnClickLi
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		mActivity.getActionBar().setTitle(R.string.title_settings);
 		View view = inflater.inflate(R.layout.fragment_settings, container, false);
 		
 		mBtnAbout = (Button) view.findViewById(R.id.settings_btnAbout);

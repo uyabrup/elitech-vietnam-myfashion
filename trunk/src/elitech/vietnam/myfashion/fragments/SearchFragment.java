@@ -55,6 +55,7 @@ public class SearchFragment extends AbstractFragment implements SearchCallback, 
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		mActivity.getActionBar().setTitle(R.string.search);
 		mController = mActivity.getController();
 		mController.setSearchCallback(this);
 		View view = inflater.inflate(R.layout.fragment_search_simple, container, false);

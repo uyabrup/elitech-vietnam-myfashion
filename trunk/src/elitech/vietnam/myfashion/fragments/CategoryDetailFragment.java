@@ -30,10 +30,11 @@ public class CategoryDetailFragment extends AbstractFragment {
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_category_tabshost, container, false);
-
 		mCallBack = mActivity.getController();
 		mCategory = mCallBack.getCategory();
+		mActivity.getActionBar().setTitle(mCategory.NameVN);
+		View view = inflater.inflate(R.layout.fragment_category_tabshost, container, false);
+
 		mFashion = getArguments().getInt(ARG_FASHION);
 		
 		mTabHost = (FragmentTabHost) view.findViewById(android.R.id.tabhost);

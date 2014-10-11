@@ -418,8 +418,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#404241"
-    android:childDivider="@android:drawable/divider_horizontal_dim_dark"
+    android:childDivider="@android:color/transparent"
     android:choiceMode="singleChoice"
-    android:divider="@android:drawable/divider_horizontal_dim_dark"
+    android:divider="@android:color/transparent"
+    android:dividerHeight="1dp"
+    android:footerDividersEnabled="false"
     android:groupIndicator="@null"
+    android:headerDividersEnabled="false"
     android:listSelector="@drawable/bg_button_simple" />

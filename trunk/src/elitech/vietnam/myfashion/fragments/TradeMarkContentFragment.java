@@ -55,6 +55,8 @@ public class TrademarkContentFragment extends AbstractFragment implements OnRefr
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		mTMName = getArguments().getString(ARG_TRADEMARK);
+		mActivity.getActionBar().setTitle(mTMName);
 		View view = inflater.inflate(R.layout.fragment_bestofday, container, false);
 
 		mLayoutRefresh = (SwipeRefreshLayout) view.findViewById(R.id.bod_layRefresh);

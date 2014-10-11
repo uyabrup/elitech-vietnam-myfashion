@@ -44,6 +44,7 @@ public class BillingReviewFragment extends AbstractFragment implements View.OnCl
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		mActivity.getActionBar().setTitle(R.string.title_revieworder);
 		mController = mActivity.getController();
 		mOrder = mController.getBill();
 		View view = inflater.inflate(R.layout.fragment_billconfirm, container, false);

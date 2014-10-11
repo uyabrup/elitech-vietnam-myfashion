@@ -30,7 +30,7 @@ public class AbstractFragment extends Fragment {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		Log.w(getClass().getSimpleName(), "onCreate");
+		Log.w(getClass().getSimpleName(), "onCreate" + " / " + System.identityHashCode(this) + " / " + getTag());
 		super.onCreate(savedInstanceState);
 		mActivity = (MainActivity) getActivity();
 		mShowAnim = AnimationUtils.loadAnimation(mActivity, android.R.anim.fade_in);
@@ -39,73 +39,73 @@ public class AbstractFragment extends Fragment {
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
-		Log.w(getClass().getSimpleName(), "onActivityCreated");
+		Log.w(getClass().getSimpleName(), "onActivityCreated" + " / " + System.identityHashCode(this) + " / " + getTag());
 		super.onActivityCreated(savedInstanceState);
 	}
 	
 	@Override
 	public void onAttach(Activity activity) {
-		Log.w(getClass().getSimpleName(), "onAttach");
+		Log.w(getClass().getSimpleName(), "onAttach" + " / " + System.identityHashCode(this) + " / " + getTag());
 		super.onAttach(activity);
 	}
 	
 	@Override
 	public void onDestroy() {
-		Log.w(getClass().getSimpleName(), "onDestroy");
+		Log.w(getClass().getSimpleName(), "onDestroy" + " / " + System.identityHashCode(this) + " / " + getTag());
 		mShowAnim = null;
 		super.onDestroy();
 	}
 	
 	@Override
 	public void onDestroyView() {
-		Log.w(getClass().getSimpleName(), "onDestroyView");
+		Log.w(getClass().getSimpleName(), "onDestroyView" + " / " + System.identityHashCode(this) + " / " + getTag());
 		super.onDestroyView();
 	}
 	
 	@Override
 	public void onDetach() {
-		Log.w(getClass().getSimpleName(), "onDetach");
+		Log.w(getClass().getSimpleName(), "onDetach" + " / " + System.identityHashCode(this) + " / " + getTag());
 		super.onDetach();
 	}
 	
 	@Override
 	public void onPause() {
-		Log.w(getClass().getSimpleName(), "onPause");
+		Log.w(getClass().getSimpleName(), "onPause" + " / " + System.identityHashCode(this) + " / " + getTag());
 		super.onPause();
 	}
 	
 	@Override
 	public void onResume() {
-		Log.w(getClass().getSimpleName(), "onResume");
+		Log.w(getClass().getSimpleName(), "onResume" + " / " + System.identityHashCode(this) + " / " + getTag());
 		super.onResume();
 	}
 	
 	@Override
 	public void onStart() {
-		Log.w(getClass().getSimpleName(), "onStart");
+		Log.w(getClass().getSimpleName(), "onStart" + " / " + System.identityHashCode(this) + " / " + getTag());
 		super.onStart();
 	}
 	
 	@Override
 	public void onStop() {
-		Log.w(getClass().getSimpleName(), "onStop");
+		Log.w(getClass().getSimpleName(), "onStop" + " / " + System.identityHashCode(this) + " / " + getTag());
 		super.onStop();
 	}
 	
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
-		Log.w(getClass().getSimpleName(), "onViewCreated");
+		Log.w(getClass().getSimpleName(), "onViewCreated" + " / " + System.identityHashCode(this) + " / " + getTag());
 	}
 	
 	@Override
 	public void onViewStateRestored(Bundle savedInstanceState) {
-		Log.w(getClass().getSimpleName(), "onViewStateRestored");
+		Log.w(getClass().getSimpleName(), "onViewStateRestored" + " / " + System.identityHashCode(this) + " / " + getTag());
 		super.onViewStateRestored(savedInstanceState);
 	}
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		Log.w(getClass().getSimpleName(), "onActivityResult");
+		Log.w(getClass().getSimpleName(), "onActivityResult" + " / " + System.identityHashCode(this) + " / " + getTag());
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 	

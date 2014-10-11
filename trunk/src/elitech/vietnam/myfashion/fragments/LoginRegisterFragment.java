@@ -36,6 +36,7 @@ public class LoginRegisterFragment extends AbstractFragment implements View.OnCl
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		mActivity.getActionBar().setTitle(R.string.title_register);
 		View view = inflater.inflate(R.layout.fragment_login_signup, container, false);
 		
 		mEdtName = (EditText) view.findViewById(R.id.login_edtRegisterUser);

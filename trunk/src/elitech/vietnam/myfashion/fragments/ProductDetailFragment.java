@@ -63,6 +63,7 @@ public class ProductDetailFragment extends AbstractFragment implements View.OnCl
 		// Get product from activity
 		mCallback = mActivity.getController();
 		mProduct = mCallback.getProduct();
+		mActivity.getActionBar().setTitle(mProduct.Name);
 
 		mImage = (RoundedImageView) view.findViewById(R.id.detail_imgProduct);
 		mTxtName = (TextView) view.findViewById(R.id.detail_txtName);

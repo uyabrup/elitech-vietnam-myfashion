@@ -54,6 +54,8 @@ public class MemberFavoriteFragment extends AbstractFragment implements OnRefres
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		mActivity.getActionBar().setTitle(R.string.title_favorite);
+		mMemberId = getArguments().getInt(MemberInfoFragment.ARG_MEMBERID);
 		View view = inflater.inflate(R.layout.fragment_bestofday, container, false);
 
 		mLayoutRefresh = (SwipeRefreshLayout) view.findViewById(R.id.bod_layRefresh);
@@ -72,7 +74,6 @@ public class MemberFavoriteFragment extends AbstractFragment implements OnRefres
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		mMemberId = getArguments().getInt(MemberInfoFragment.ARG_MEMBERID);
 		getData();
 	}
 

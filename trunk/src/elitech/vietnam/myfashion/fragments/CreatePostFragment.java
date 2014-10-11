@@ -29,9 +29,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import elitech.vietnam.myfashion.MainActivity;
-import elitech.vietnam.myfashion.MainActivity.ResultListener;
 import elitech.vietnam.myfashion.R;
 import elitech.vietnam.myfashion.config.Const;
+import elitech.vietnam.myfashion.controllers.AppController.ResultListener;
 import elitech.vietnam.myfashion.dialogues.LoadingDialog;
 import elitech.vietnam.myfashion.dialogues.TakePhotoActionDialog;
 import elitech.vietnam.myfashion.dialogues.TakePhotoActionDialog.TakePhotoAction;
@@ -42,7 +42,8 @@ import elitech.vietnam.myfashion.wsclient.ImageUploader;
 /**
  * @author Cong
  */
-public class CreatePostFragment extends AbstractFragment implements View.OnClickListener, TakePhotoAction, ResultListener {
+public class CreatePostFragment extends AbstractFragment implements View.OnClickListener,
+	TakePhotoAction, ResultListener {
 	
 	private static final String POST_DIR = "images/post/";
 	
@@ -68,7 +69,14 @@ public class CreatePostFragment extends AbstractFragment implements View.OnClick
 	}
 
 	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
+	
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		mActivity.getController().setResultListener(this);
+		mActivity.getActionBar().setTitle(R.string.title_newstyle);
 		mMemberId = getArguments().getInt(ARG_MEMBERID);
 		View view = inflater.inflate(R.layout.fragment_createpost, container, false);
 		
@@ -79,9 +87,14 @@ public class CreatePostFragment extends AbstractFragment implements View.OnClick
 		
 		mBtnTake.setOnClickListener(this);
 		mImage.setOnClickListener(this);
-		mActivity.getController().setResultListener(this);
 		
 		return view;
+	}
+	
+	@Override
+	public void onDestroyView() {
+		mActivity.getController().setResultListener(null);
+		super.onDestroyView();
 	}
 
 	@Override
@@ -126,71 +139,104 @@ public class CreatePostFragment extends AbstractFragment implements View.OnClick
 			break;
 		}
 	}
-
+	
 	@Override
 	public void onCameraSelected() {
+		mImagePath = null;
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		intent.putExtra(MediaStore.EXTRA_OUTPUT,
 				Uri.fromFile(new File(mActivity.getConfig().getImageTemp())));
-		startActivityForResult(intent, Const.REQUEST_POSTCAMERA);
+		mActivity.getCurrentBase().startActivityForResult(intent, Const.REQUEST_POSTCAMERA);
 	}
 
 	@Override
 	public void onLibrarySelected() {
+		mImagePath = null;
 		Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 		intent.setType("image/*");
-		startActivityForResult(intent, Const.REQUEST_POSTLIBRARY);
+		mActivity.getCurrentBase().startActivityForResult(intent, Const.REQUEST_POSTLIBRARY);
 	}
 	
 	@Override
-	public void onDestroyView() {
-		mActivity.getController().setResultListener(null);
-		super.onDestroyView();
+	public void onResume() {
+		super.onResume();
+//		if (mActivity.getController().mRequest != 0) {
+//			new Handler().postDelayed(new Runnable() {
+//				@Override
+//				public void run() {
+//					onResult(mActivity.getController().mRequest, mActivity.getController().mResult, mActivity.getController().mData);
+//				}
+//			}, 200);
+//		}
 	}
-
+	
 	@Override
-	public boolean onResult(int request, int result, Intent data) {
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);Log.w("onResult", System.identityHashCode(this) + "");
+		onResult(requestCode, resultCode, data);
+//		Log.w("onResult", "isAdded " + isAdded() + "; isDetached "  + isDetached() + "; isHidden " + isHidden() + "; isInLayout " + isInLayout() + "; isRemoving " + isRemoving() + "; isResumed " + isResumed() + "; isVisible " + isVisible());
+	}
+	
+	@Override
+	public void onResult(int requestCode, int resultCode, Intent data) {
+		final int result = resultCode;
+		final int mRequest = requestCode & 0xffff;
+		final Intent mData = data;
+		
+		Log.w("onResult", mRequest + "/" + result);
 		if (result == MainActivity.RESULT_CANCELED)
-			return false;
-		
-		request &= 0xffff;
-		String image = null;
-		switch (request) {
-		case Const.REQUEST_POSTLIBRARY:
-			Uri img = data.getData();
-			String path = "";
-			if (img.toString().startsWith("content://com.android.gallery3d.provider"))
-				img = Uri.parse(img.toString().replace("com.android.gallery3d", "com.google.android.gallery3d"));
-			path = mActivity.getRealPathFromURI(img);
-			path = (path == null || path.length() == 0) ? img.toString() : path;
-			if (URLUtil.isContentUrl(path) || URLUtil.isHttpsUrl(path) || URLUtil.isHttpUrl(path))
-				image = Utilities.downloadImage(mActivity, path, mActivity.getConfig().getImageTemp());
-			else 
-				image = Utilities.copyFile(mActivity.getRealPathFromURI(img), mActivity.getConfig().getImageTemp());
-			break;
-		case Const.REQUEST_POSTCAMERA:
-			image = Uri.fromFile(new File(mActivity.getConfig().getImageTemp())).getPath();
-			break;
-		default:
-			break;
-		}
-		
-		int rotate = Utilities.getImageRotation(image);
-		if (rotate != 0 && !Utilities.rotateImage(image, rotate)) {
-			Toast.makeText(mActivity, R.string.cannottakephoto, Toast.LENGTH_SHORT).show();
-			return false;
-		}
-		
-		if (!displayContentImage(image)) {
-			Toast.makeText(mActivity, R.string.cannottakephoto, Toast.LENGTH_SHORT).show();
-			return false;
-		}
-		
-		mBtnTake.setVisibility(View.GONE);
-		mLayoutMain.setVisibility(View.VISIBLE);
-		mImagePath = image;
-		mEdtDes.requestFocus();
-		return true;
+			return;
+
+		new AsyncTask<Integer, Integer, String>() {
+			@Override
+			protected String doInBackground(Integer... params) {
+				switch (mRequest) {
+				case Const.REQUEST_POSTLIBRARY:
+					Uri img = mData.getData();
+					String path = "";
+					if (img.toString().startsWith("content://com.android.gallery3d.provider"))
+						img = Uri.parse(img.toString().replace("com.android.gallery3d", "com.google.android.gallery3d"));
+					path = mActivity.getRealPathFromURI(img);
+					path = (path == null || path.length() == 0) ? img.toString() : path;
+					if (URLUtil.isContentUrl(path) || URLUtil.isHttpsUrl(path) || URLUtil.isHttpUrl(path))
+						return Utilities.downloadImage(mActivity, path, mActivity.getConfig().getImageTemp());
+					else 
+						return Utilities.copyFile(mActivity.getRealPathFromURI(img), mActivity.getConfig().getImageTemp());
+				case Const.REQUEST_POSTCAMERA:
+					return Uri.fromFile(new File(mActivity.getConfig().getImageTemp())).getPath();
+				default:
+					return null;
+				}
+			}
+			@Override
+			protected void onPostExecute(String result) {
+				if (result == null || result.length() == 0) {
+					Log.w("result == null", "result == null");
+					Toast.makeText(mActivity, R.string.cannottakephoto, Toast.LENGTH_SHORT).show();
+					return;
+				}
+				
+				System.gc();
+				int rotate = Utilities.getImageRotation(result);
+				if (rotate != 0 && !Utilities.rotateImage(result, rotate)) {
+					Log.w("rotate != 0", "rotate != 0");
+					Toast.makeText(mActivity, R.string.cannottakephoto, Toast.LENGTH_SHORT).show();
+					return;
+				}
+
+				if (!displayContentImage(result)) {
+					Log.w("displayContentImage", "displayContentImage");
+					Toast.makeText(mActivity, R.string.cannottakephoto, Toast.LENGTH_SHORT).show();
+					return;
+				}
+				
+				mBtnTake.setVisibility(View.GONE);
+				mLayoutMain.setVisibility(View.VISIBLE);
+				mImagePath = result;
+				mEdtDes.requestFocus();
+				Log.w("mImagePath", mImagePath);
+			}
+		}.execute();		
 	}
 	
 	private boolean displayContentImage(String path) {
@@ -205,6 +251,7 @@ public class CreatePostFragment extends AbstractFragment implements View.OnClick
 			options.inSampleSize = sampleSize;
 			options.inJustDecodeBounds = false;
 			Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+			Log.w("displayContentImage", bitmap.getWidth() + "x" + bitmap.getHeight());
 			mImage.setImageBitmap(bitmap);
 			return true;
 		} catch (OutOfMemoryError e) {

@@ -73,6 +73,7 @@ public class ShoppingCartFragment extends AbstractFragment implements DeleteItem
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		mActivity.getActionBar().setTitle(R.string.title_shopping_cart);
 		View view = inflater.inflate(R.layout.fragment_shoppingcart, container, false);
 		mController = mActivity.getController();
 		mOrders = mController.getOrders();

@@ -35,6 +35,7 @@ import elitech.vietnam.myfashion.dialogues.ConfirmDialog;
 import elitech.vietnam.myfashion.dialogues.ConfirmDialog.ConfirmDialogClick;
 import elitech.vietnam.myfashion.entities.Member;
 import elitech.vietnam.myfashion.entities.Post;
+import elitech.vietnam.myfashion.fragments.StylerBestTopFragment.StylerBestCallback;
 import elitech.vietnam.myfashion.widgets.CircularImageView;
 import elitech.vietnam.myfashion.widgets.ScaleImageView;
 
@@ -54,7 +55,7 @@ public class StyleDetailFragment extends AbstractFragment implements View.OnClic
 	ScaleImageView			mImage;
 
 	Post					mPost;
-	StyleDetailCallback		mCallback;
+	StylerBestCallback		mCallback;
 	StyleDetailPopupMenu	mMenu;
 
 	public static final StyleDetailFragment newInstance(int postId) {
@@ -70,6 +71,7 @@ public class StyleDetailFragment extends AbstractFragment implements View.OnClic
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		mActivity.getActionBar().setTitle(R.string.style);
 		mCallback = mActivity.getController();
 		mPost = mCallback.getPost(getArguments().getInt(ARG_POSTID));
 		View view = inflater.inflate(R.layout.fragment_style_detail, container, false);
@@ -246,19 +248,13 @@ public class StyleDetailFragment extends AbstractFragment implements View.OnClic
 		case R.id.styledetail_imgAvatar:
 		case R.id.styledetail_txtName:
 		case R.id.styledetail_txtSlogan:
-			mCallback.openMemberPage(mPost.IdAccount);
+			mActivity.getCurrentBase().replaceFragment(MemberInfoFragment.newInstance(mPost.IdAccount), true);
 			break;
 		case R.id.styledetail_imgContent:
 			break;
 		default:
 			break;
 		}
-	}
-
-	public static interface StyleDetailCallback {
-		Post getPost(int postId);
-		void setPost(Post post);
-		void openMemberPage(int member);
 	}
 
 	@Override

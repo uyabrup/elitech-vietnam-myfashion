@@ -31,6 +31,7 @@ public class LoginSocialFragment extends AbstractFragment implements View.OnClic
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		mActivity.getActionBar().setTitle(R.string.login);
 		View view = inflater.inflate(R.layout.fragment_login_social, container, false);
 		
 		mFbLogin = (LoginButton) view.findViewById(R.id.facebook_btnLogin);

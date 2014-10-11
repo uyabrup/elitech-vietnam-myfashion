@@ -64,6 +64,7 @@ public class MemberStyleFragment extends AbstractFragment implements OnRefreshLi
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		mActivity.getActionBar().setTitle(R.string.style);
 		mCallBack = mActivity.getController();
 		mMemberId = getArguments().getInt(MemberInfoFragment.ARG_MEMBERID, 0);
 		mType = (StyleType) getArguments().getSerializable(ARG_TYPE);
