@@ -407,5 +407,18 @@
     <string name="all_style">All style</string>
     <string name="my_style">My style</string>
     <string name="loginrequiremessage">You are not logged in.\nPlease go to Setting and login to your account, then try again.</string>
+    <string name="title_memberprofile">Member Profile</string>
+    <string name="title_revieworder">Review Order</string>
+    <string name="title_womenfashion">Women Fashion</string>
+    <string name="title_menfashion">Men Fashion</string>
+    <string name="title_officefashion">Office Fashion</string>
+    <string name="title_autumn_and_winter">Autumn and Winter</string>
+    <string name="title_cosmetics">Cosmetics</string>
+    <string name="title_newstyle">New Style</string>
+    <string name="title_editstyle">Edit Style</string>
+    <string name="title_register">Register</string>
+    <string name="title_favorite">Favorite</string>
+    <string name="title_settings">Settings</string>
+    <string name="title_shopping_cart">Shopping cart</string>
     
 </resources>

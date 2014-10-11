@@ -42,6 +42,7 @@ public class LanguageSettingFragment extends AbstractFragment implements OnClick
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		mActivity.getActionBar().setTitle(R.string.language);
 		mOptions = mActivity.getOptions();
 		View view = inflater.inflate(R.layout.fragment_language, container, false);
 		

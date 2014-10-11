@@ -50,6 +50,7 @@ public class StylerBestTopFragment extends AbstractFragment implements OnRefresh
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		mActivity.getActionBar().setTitle(R.string.styler);
 		mCallBack = mActivity.getController();
 		View view = inflater.inflate(R.layout.fragment_style_besttop, container, false);
 		
@@ -142,5 +143,7 @@ public class StylerBestTopFragment extends AbstractFragment implements OnRefresh
 	
 	public static interface StylerBestCallback {
 		public void onItemClick(Post post);
+		Post getPost(int postId);
+		void setPost(Post post);
 	}
 }

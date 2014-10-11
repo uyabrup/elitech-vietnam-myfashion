@@ -38,6 +38,7 @@ public class NotificationSettingFragment extends AbstractFragment implements OnC
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		mActivity.getActionBar().setTitle(R.string.notifications);
 		mOptions = mActivity.getOptions();
 		View view = inflater.inflate(R.layout.fragment_notifications, container, false);
 		mCbEnable = (CheckBox) view.findViewById(R.id.stnoti_cbEnable);

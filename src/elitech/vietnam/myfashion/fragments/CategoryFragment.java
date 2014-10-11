@@ -19,6 +19,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import elitech.vietnam.myfashion.R;
 import elitech.vietnam.myfashion.adapters.CategoryAdapter;
+import elitech.vietnam.myfashion.adapters.EndlessScrollListener;
 import elitech.vietnam.myfashion.entities.Category;
 
 /**
@@ -39,6 +40,8 @@ public class CategoryFragment extends AbstractFragment implements OnItemClickLis
 	List<Category> mCategories = new ArrayList<>();
 	String mTag;
 	int mFashion;
+	
+	private final int[] mTitleResId = new int[] {R.string.title_womenfashion, R.string.title_menfashion, R.string.title_officefashion, R.string.title_autumn_and_winter};
 	
 	public CategoryFragment() {
 	}
@@ -62,7 +65,7 @@ public class CategoryFragment extends AbstractFragment implements OnItemClickLis
 			mFashion = 2;
 		if (mTag.equals(TAG_WINTER))
 			mFashion = 3;
-		
+		mActivity.getActionBar().setTitle(mTitleResId[mFashion]);
 		View view = inflater.inflate(R.layout.fragment_category_list, container, false);
 
 		mGrid = (ListView) view.findViewById(R.id.category_grvCategory);
@@ -77,7 +80,6 @@ public class CategoryFragment extends AbstractFragment implements OnItemClickLis
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		
 		mCategories.clear();
 		getData();
 	}

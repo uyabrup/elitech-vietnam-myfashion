@@ -118,6 +118,7 @@ public class MemberInfoFragment extends AbstractFragment implements View.OnClick
 				
 				UrlImageViewHelper.setUrlDrawable(mAvatar, Const.SERVER_IMAGE_URL + mMember.Image, R.drawable.no_avatar);
 				mName.setText(mMember.NickName.length() == 0 ? mMember.Name : mMember.NickName);
+				mActivity.getActionBar().setTitle(mMember.NickName.length() == 0 ? mMember.Name : mMember.NickName);
 				
 				if (mMember.Profile.length() > 0)
 					mSlogan.setText(mMember.Profile);
@@ -229,36 +230,30 @@ public class MemberInfoFragment extends AbstractFragment implements View.OnClick
 		switch (v.getId()) {
 		case R.id.memInfo_btnFollower:
 			if (mMember.FollowCount > 0)
-//				mActivity.getCurrentBase().replaceFragment(MemberFollowFragment.newInstance(mMemberId, FollowType.FOLLOWER), true);
-				((MemberBaseFragment) getParentFragment()).replaceFragment(MemberFollowFragment.newInstance(mMemberId, FollowType.FOLLOWER), R.id.base_container, true);
+				mActivity.getCurrentBase().replaceFragment(MemberFollowFragment.newInstance(mMemberId, FollowType.FOLLOWER), true);
 			break;
 		case R.id.memInfo_btnFollowing:
 			if (mMember.FollowingCount > 0)
-//				mActivity.getCurrentBase().replaceFragment(MemberFollowFragment.newInstance(mMemberId, FollowType.FOLLOWING), true);
-				((MemberBaseFragment) getParentFragment()).replaceFragment(MemberFollowFragment.newInstance(mMemberId, FollowType.FOLLOWING), R.id.base_container, true);
+				mActivity.getCurrentBase().replaceFragment(MemberFollowFragment.newInstance(mMemberId, FollowType.FOLLOWING), true);
 			break;
 		case R.id.memInfo_layoutStyleContent:
 			if (mPosts.size() > 0)
-//				mActivity.getCurrentBase().replaceFragment(MemberStyleFragment.newInstance(mMemberId, StyleType.STYLE), true);
-				((MemberBaseFragment) getParentFragment()).replaceFragment(MemberStyleFragment.newInstance(mMemberId, StyleType.STYLE), R.id.base_container, true);
+				mActivity.getCurrentBase().replaceFragment(MemberStyleFragment.newInstance(mMemberId, StyleType.STYLE), true);
 			break;
 		case R.id.memInfo_layoutFavoriteContent:
 			if (mProducts.size() > 0)
-//				mActivity.getCurrentBase().replaceFragment(MemberFavoriteFragment.newInstance(mMemberId), true);
-				((MemberBaseFragment) getParentFragment()).replaceFragment(MemberFavoriteFragment.newInstance(mMemberId), R.id.base_container, true);
+				mActivity.getCurrentBase().replaceFragment(MemberFavoriteFragment.newInstance(mMemberId), true);
 			break;
 		case R.id.memInfo_layoutSuggestContent:
 			if (mSuggests.size() > 0)
-//				mActivity.getCurrentBase().replaceFragment(MemberStyleFragment.newInstance(mMemberId, StyleType.SUGGEST), true);
-				((MemberBaseFragment) getParentFragment()).replaceFragment(MemberStyleFragment.newInstance(mMemberId, StyleType.SUGGEST), R.id.base_container, true);
+				mActivity.getCurrentBase().replaceFragment(MemberStyleFragment.newInstance(mMemberId, StyleType.SUGGEST), true);
 			break;
 		case R.id.memInfo_layoutReviewContent:
 			if (mReviews.size() > 0)
-//				mActivity.getCurrentBase().replaceFragment(MemberReviewFragment.newInstance(mMemberId), true);
-				((MemberBaseFragment) getParentFragment()).replaceFragment(MemberReviewFragment.newInstance(mMemberId), R.id.base_container, true);
+				mActivity.getCurrentBase().replaceFragment(MemberReviewFragment.newInstance(mMemberId), true);
 			break;
 		case R.id.memInfo_btnEdit:
-			
+			mActivity.getCurrentBase().replaceFragment(AccountInfoFragment.newInstance(), true);
 			break;
 		case R.id.memInfo_btnPurchaseHistory:
 			

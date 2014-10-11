@@ -53,6 +53,7 @@ public class MemberReviewFragment extends AbstractFragment implements OnRefreshL
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		mActivity.getActionBar().setTitle(R.string.review);
 		mMemberId = getArguments().getInt(ARG_MEMBERID, 0);
 		View view = inflater.inflate(R.layout.fragment_member_follow, container, false);
 		

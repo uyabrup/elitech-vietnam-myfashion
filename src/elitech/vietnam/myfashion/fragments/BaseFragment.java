@@ -3,6 +3,7 @@
  */
 package elitech.vietnam.myfashion.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -40,6 +41,8 @@ public class BaseFragment extends Fragment {
 	public static final String	TAG_SETTINGS		= "TAG_SETTINGS";
 	public static final String	TAG_TPMLOGIN		= "TAG_TPMLOGIN";
 	public static final String	TAG_NETWORKERROR	= "TAG_NETWORKERROR";
+	
+	private static final String SAVED_CURRENTTAG 	= "SAVED_CURRENTTAG";
 
 	MainActivity				mActivity;
 
@@ -125,8 +128,16 @@ public class BaseFragment extends Fragment {
 				fragment = new SettingsFragment();
 			
 			getChildFragmentManager().beginTransaction().add(R.id.base_container, fragment, mTag).commit();
-		} else
+		} else {
 			Log.w("savedInstanceState", "NOT NULL");
+			mCurrent = savedInstanceState.getString(SAVED_CURRENTTAG, "");
+		}
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putString(SAVED_CURRENTTAG, mCurrent);
 	}
 	
 	public boolean popFragment() {
@@ -163,13 +174,23 @@ public class BaseFragment extends Fragment {
 	}
 	
 	public void replaceFragment(Fragment fragment, boolean addToBackStack) {
-		mCurrent = fragment.getClass().getName();
+//		mCurrent = System.identityHashCode(fragment) + "";
+		mCurrent = getClass().getName();
 		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 		if (addToBackStack) {
-			transaction.addToBackStack(fragment.getClass().getName());
+			transaction.addToBackStack(mCurrent);
 		}
 		transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-		transaction.replace(R.id.base_container, fragment, fragment.getClass().getName());
+		transaction.replace(R.id.base_container, fragment, mCurrent + "");
 		transaction.commit();
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Fragment fragment = getChildFragmentManager().findFragmentByTag(mCurrent);
+		if (fragment != null)
+			fragment.onActivityResult(requestCode, resultCode, data);
+		else
+			super.onActivityResult(requestCode, resultCode, data);
 	}
 }

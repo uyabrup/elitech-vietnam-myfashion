@@ -417,16 +417,20 @@ public class Utilities {
 	
 	public static boolean rotateImage(String path, int rotate) {
 		try {
-			Bitmap bitmap = BitmapFactory.decodeFile(path);
+			Options option = new Options();
+			option.inJustDecodeBounds = true;
+			BitmapFactory.decodeFile(path, option);
+			int width = option.outWidth;
+			int height = option.outHeight;
+			Log.w("rotateImage", width + "x" + height);
 			Matrix matrix = new Matrix();
 			matrix.postRotate(rotate);
-			Bitmap bitmap1 = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix,
+			Bitmap bitmap = Bitmap.createBitmap(BitmapFactory.decodeFile(path), 0, 0, width, height, matrix,
 					false);
 			FileOutputStream out = new FileOutputStream(path);
-			bitmap1.compress(Bitmap.CompressFormat.JPEG, Const.IMAGE_COMPRESSION, out);
+			bitmap.compress(Bitmap.CompressFormat.JPEG, Const.IMAGE_COMPRESSION, out);
 			out.close();
 			bitmap.recycle();
-			bitmap1.recycle();
 			return true;
 		} catch (Throwable e) {
 			e.printStackTrace();

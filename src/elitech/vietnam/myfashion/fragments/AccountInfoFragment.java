@@ -26,7 +26,6 @@ import android.widget.Toast;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import elitech.vietnam.myfashion.MainActivity;
-import elitech.vietnam.myfashion.MainActivity.ResultListener;
 import elitech.vietnam.myfashion.R;
 import elitech.vietnam.myfashion.config.Const;
 import elitech.vietnam.myfashion.cropimage.CropImage;
@@ -48,7 +47,7 @@ import elitech.vietnam.myfashion.wsclient.ImageUploader;
  * @author Cong
  */
 public class AccountInfoFragment extends AbstractFragment implements View.OnClickListener, StatusDialogCallback,
-		BasicInfoDialogCallback, ShippingDialogCallback, TakePhotoAction, ResultListener {
+		BasicInfoDialogCallback, ShippingDialogCallback, TakePhotoAction {
 	
 	private static final String		MEM_DIR			= "images/account/";
 	
@@ -73,7 +72,7 @@ public class AccountInfoFragment extends AbstractFragment implements View.OnClic
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		mMember = mActivity.getLoggedinUser();
-		mActivity.getController().setResultListener(this);
+		mActivity.getActionBar().setTitle(R.string.title_memberprofile);
 		View view = inflater.inflate(R.layout.fragment_account_info, container, false);
 
 		mImgAvatar = (CircularImageView) view.findViewById(R.id.accountinfo_imgAvatar);
@@ -227,11 +226,9 @@ public class AccountInfoFragment extends AbstractFragment implements View.OnClic
 	
 	@Override
 	public void onDestroyView() {
-		mActivity.getController().setResultListener(null);
 		super.onDestroyView();
 	}
 
-	@Override
 	public boolean onResult(int request, int result, Intent data) {
 		if (result == MainActivity.RESULT_CANCELED)
 			return false;

@@ -10,7 +10,6 @@ import java.util.List;
 import android.content.Intent;
 import android.os.Bundle;
 import elitech.vietnam.myfashion.MainActivity;
-import elitech.vietnam.myfashion.MainActivity.ResultListener;
 import elitech.vietnam.myfashion.entities.Category;
 import elitech.vietnam.myfashion.entities.Color;
 import elitech.vietnam.myfashion.entities.Cosmetic;
@@ -26,12 +25,10 @@ import elitech.vietnam.myfashion.fragments.CategoryDetailFragment.CategoryDetail
 import elitech.vietnam.myfashion.fragments.CosmeticDetailFragment;
 import elitech.vietnam.myfashion.fragments.CosmeticDetailFragment.CosmeticDetailCallback;
 import elitech.vietnam.myfashion.fragments.CosmeticFragment.CosmeticCallback;
-import elitech.vietnam.myfashion.fragments.MemberBaseFragment;
 import elitech.vietnam.myfashion.fragments.ProductDetailFragment.ProductDetailCallback;
 import elitech.vietnam.myfashion.fragments.ProductTabHostFragment;
 import elitech.vietnam.myfashion.fragments.ShoppingCartFragment.ShoppingCartCallback;
 import elitech.vietnam.myfashion.fragments.StyleDetailFragment;
-import elitech.vietnam.myfashion.fragments.StyleDetailFragment.StyleDetailCallback;
 import elitech.vietnam.myfashion.fragments.StylerBestTopFragment.StylerBestCallback;
 import elitech.vietnam.myfashion.fragments.TrademarkContentFragment;
 import elitech.vietnam.myfashion.fragments.TrademarkFragment.TradeMarkCallback;
@@ -42,7 +39,7 @@ import elitech.vietnam.myfashion.fragments.TrademarkFragment.TradeMarkCallback;
  */
 public class AppController implements CategoryDetailCallback, ProductDetailCallback, ShoppingCartCallback, 
 			CosmeticDetailCallback, TradeMarkCallback, BestOfTodayCallback, StylerBestCallback, 
-			StyleDetailCallback, CosmeticCallback {
+			CosmeticCallback {
 
 	MainActivity mActivity;
 	
@@ -51,7 +48,6 @@ public class AppController implements CategoryDetailCallback, ProductDetailCallb
 	HashMap<Integer, Post> mPosts = new HashMap<>();
 	List<OrderDetail> mOrderDetails;
 	Cosmetic mCosmetic;
-	ResultListener mResultListener;
 	SearchCallback mSearch;
 	
 	Order mBill;
@@ -223,21 +219,7 @@ public class AppController implements CategoryDetailCallback, ProductDetailCallb
 			mPosts.remove(post.Id);
 		mPosts.put(post.Id, post);
 	}
-
-	@Override
-	public void openMemberPage(int member) {
-		mActivity.getCurrentBase().replaceFragment(MemberBaseFragment.newInstance(member), true);
-	}
 	
-	public void onActivityResult(int request, int result, Intent data) {
-		if (mResultListener != null)
-			mResultListener.onResult(request, result, data);
-	}
-	
-	public void setResultListener(ResultListener listener) {
-		mResultListener = listener;
-	}
-
 	@Override
 	public void onItemClick(Cosmetic item) {
 		setCosmetic(item);
@@ -282,5 +264,26 @@ public class AppController implements CategoryDetailCallback, ProductDetailCallb
 	
 	public SearchCallback getSearchCallback() {
 		return mSearch;
+	}
+	
+	public interface ResultListener {
+		void onResult(int request, int result, Intent data);
+	}
+	
+	private ResultListener mResultListener;
+
+	public ResultListener getResultListener() {
+		return mResultListener;
+	}
+
+	public void setResultListener(ResultListener mResultListener) {
+		this.mResultListener = mResultListener;
+	}
+	
+	public int mResult, mRequest; public Intent mData;
+	public void storeResult(int request, int result, Intent data) {
+		mRequest = request;
+		mResult = result;
+		mData = data;
 	}
 }

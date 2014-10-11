@@ -40,6 +40,7 @@ public class TrademarkFragment extends AbstractFragment implements OnItemClickLi
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		mActivity.getActionBar().setTitle(R.string.trademarks);
 		View view = inflater.inflate(R.layout.fragment_category_list, container, false);
 
 		mGrid = (ListView) view.findViewById(R.id.category_grvCategory);

@@ -28,10 +28,10 @@ public class CosmeticDetailFragment extends AbstractFragment {
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_category_tabshost, container, false);
-		
 		mCallback = mActivity.getController();
 		mItem = mCallback.getCosmetic();
+		mActivity.getActionBar().setTitle(mItem.Name);
+		View view = inflater.inflate(R.layout.fragment_category_tabshost, container, false);
 		
 		mTabHost = (FragmentTabHost) view.findViewById(android.R.id.tabhost);
 		mTabHost.setup(mActivity, getChildFragmentManager(), android.R.id.tabcontent);

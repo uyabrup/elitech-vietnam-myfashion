@@ -63,6 +63,10 @@ public class MemberFollowFragment extends AbstractFragment implements OnItemClic
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		mMemberId = getArguments().getInt(MemberInfoFragment.ARG_MEMBERID, 0);
 		mType = (FollowType) getArguments().getSerializable(ARG_TYPE);
+		if (mType == FollowType.FOLLOWER)
+			mActivity.getActionBar().setTitle(R.string.follower);
+		else
+			mActivity.getActionBar().setTitle(R.string.following);
 		View view = inflater.inflate(R.layout.fragment_member_follow, container, false);
 		
 		mRefresh = (SwipeRefreshLayout) view.findViewById(R.id.memberfollow_layRefresh);
@@ -131,8 +135,7 @@ public class MemberFollowFragment extends AbstractFragment implements OnItemClic
 		switch (parent.getId()) {
 		case R.id.memberfollow_lvContent:
 			MemberInfoFragment fragment = MemberInfoFragment.newInstance(mMembers.get(position).Id);
-//			mActivity.getCurrentBase().replaceFragment(fragment, true);
-			((MemberBaseFragment) getParentFragment()).replaceFragment(fragment, R.id.base_container, true);
+			mActivity.getCurrentBase().replaceFragment(fragment, true);
 			break;
 		default:
 			break;

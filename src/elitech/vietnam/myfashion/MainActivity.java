@@ -247,11 +247,8 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	@Override
-	protected void onActivityResult(int arg0, int arg1, Intent arg2) {
-		mController.onActivityResult(arg0, arg1, arg2);
-	}
-	
-	public interface ResultListener {
-		boolean onResult(int request, int result, Intent data);
+	protected void onActivityResult(final int arg0, final int arg1, final Intent arg2) {
+		super.onActivityResult(arg0, arg1, arg2);
+//		mController.storeResult(arg0, arg1, arg2);
 	}
 }
