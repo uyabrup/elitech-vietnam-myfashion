@@ -26,6 +26,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.etsy.android.grid.StaggeredGridView;
 
 import elitech.vietnam.myfashion.R;
+import elitech.vietnam.myfashion.adapters.EndlessScrollListener;
 import elitech.vietnam.myfashion.adapters.StyleGridAdapter;
 import elitech.vietnam.myfashion.entities.Post;
 
@@ -59,6 +60,31 @@ public class StylerBestTopFragment extends AbstractFragment implements OnRefresh
 		
 		mAdapter = new StyleGridAdapter(mActivity, mPosts);
 		mGrid.setAdapter(mAdapter);
+		mGrid.setOnScrollListener(new EndlessScrollListener() {
+			@Override
+			public void onLoadmore() {
+				int member = (mActivity.getLoggedinUser() != null) ? mActivity.getLoggedinUser().Id : -1;
+				mActivity.getServices().getStylerBest(member, mPosts.size(), LOADMORE, new Callback<List<Post>>() {
+					@Override
+					public void success(List<Post> arg0, Response arg1) {
+						mPosts.addAll(arg0);
+						mAdapter.notifyDataSetChanged();
+						setLoading(false);
+						if (arg0.size() < 20)
+							setEnd(true);
+					}
+					@Override
+					public void failure(RetrofitError arg0) {
+						Log.w("RetrofitError", arg0.getMessage());
+						setLoading(false);
+					}
+				});
+			}
+			@Override
+			public int getItemCount() {
+				return mPosts.size();
+			}
+		});
 		
 		mRefresh.setColorSchemeResources(R.color.swipe_1, R.color.swipe_2, R.color.swipe_3, R.color.swipe_4);
 		

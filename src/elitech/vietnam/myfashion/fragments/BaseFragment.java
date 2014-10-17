@@ -41,6 +41,7 @@ public class BaseFragment extends Fragment {
 	public static final String	TAG_SETTINGS		= "TAG_SETTINGS";
 	public static final String	TAG_TPMLOGIN		= "TAG_TPMLOGIN";
 	public static final String	TAG_NETWORKERROR	= "TAG_NETWORKERROR";
+	public static final String	TAG_INVENTORY		= "TAG_INVENTORY";
 	
 	private static final String SAVED_CURRENTTAG 	= "SAVED_CURRENTTAG";
 
@@ -126,6 +127,8 @@ public class BaseFragment extends Fragment {
 				fragment = SettingsFragment.newInstance();
 			if (mTag.equals(TAG_NETWORKERROR))
 				fragment = new SettingsFragment();
+			if (mTag.equals(TAG_INVENTORY))
+				fragment = InventoryFragment.newInstance();
 			
 			getChildFragmentManager().beginTransaction().add(R.id.base_container, fragment, mTag).commit();
 		} else {
@@ -162,7 +165,7 @@ public class BaseFragment extends Fragment {
 	 * @return
 	 */
 	public boolean popChildFragment() {
-		Fragment f = getChildFragmentManager().findFragmentByTag(mCurrent);
+		Fragment f = getChildFragmentManager().findFragmentByTag(mTag);
 		if (f != null && f instanceof ChildBaseFragment) {
 			return ((ChildBaseFragment) f).popFragment();
 		}
@@ -170,12 +173,12 @@ public class BaseFragment extends Fragment {
 	}
 	
 	public ChildBaseFragment getCurrentChildBase() {
-		return (ChildBaseFragment) getChildFragmentManager().findFragmentByTag(mCurrent);
+		return (ChildBaseFragment) getChildFragmentManager().findFragmentByTag(mTag);
 	}
 	
 	public void replaceFragment(Fragment fragment, boolean addToBackStack) {
 //		mCurrent = System.identityHashCode(fragment) + "";
-		mCurrent = getClass().getName();
+		mCurrent = fragment.getClass().getName();
 		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 		if (addToBackStack) {
 			transaction.addToBackStack(mCurrent);

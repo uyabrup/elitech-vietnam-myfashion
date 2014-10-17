@@ -3,7 +3,6 @@
  */
 package elitech.vietnam.myfashion.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,6 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 
 import com.google.gson.Gson;
 
-import elitech.vietnam.myfashion.MainActivity;
 import elitech.vietnam.myfashion.R;
 import elitech.vietnam.myfashion.config.Options;
 import elitech.vietnam.myfashion.prefs.PrefsDefinition;
@@ -87,9 +85,8 @@ public class LanguageSettingFragment extends AbstractFragment implements OnClick
 			break;
 		}
 		mActivity.getPreferences().edit().putString(PrefsDefinition.OPTION_SETTINGS, new Gson().toJson(mOptions)).commit();
-		Intent intent = new Intent(mActivity, MainActivity.class);
-		mActivity.startActivity(intent);
-		mActivity.finish();
+		mActivity.changeLanguage(mOptions.mLanguage);
+		mActivity.onBackPressed();
 	}
 
 }

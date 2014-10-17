@@ -81,6 +81,13 @@ public class MemberFollowAdapter extends ArrayAdapter<Member> {
 									dummyHolder.mFollow.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_following, 0, 0, 0);
 									dummyItem.FollowCount += 1;
 									dummyHolder.mCount.setText(dummyItem.FollowCount + " " + mActivity.getString(dummyItem.FollowCount > 1 ? R.string.num_followers : R.string.num_follower));
+									mActivity.getServices().notifyAddFriend(mActivity.getLoggedinUser().Id, dummyItem.Id, new Callback<Integer>() {
+										@Override
+										public void failure(RetrofitError arg0) {
+										}
+										@Override
+										public void success(Integer arg0, Response arg1) {
+										}});
 								}
 								dummyHolder.mFollow.setEnabled(true);
 							}

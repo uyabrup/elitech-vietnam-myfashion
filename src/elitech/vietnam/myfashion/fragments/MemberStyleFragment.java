@@ -22,6 +22,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.etsy.android.grid.StaggeredGridView;
 
 import elitech.vietnam.myfashion.R;
+import elitech.vietnam.myfashion.adapters.EndlessScrollListener;
 import elitech.vietnam.myfashion.adapters.StyleLikedGridAdapter;
 import elitech.vietnam.myfashion.entities.Post;
 import elitech.vietnam.myfashion.fragments.StylerBestTopFragment.StylerBestCallback;
@@ -75,6 +76,54 @@ public class MemberStyleFragment extends AbstractFragment implements OnRefreshLi
 		
 		mAdapter = new StyleLikedGridAdapter(mActivity, mPosts, mMemberId);
 		mGrid.setAdapter(mAdapter);
+		mGrid.setOnScrollListener(new EndlessScrollListener() {
+			@Override
+			public void onLoadmore() {
+				int account = (mActivity.getLoggedinUser() != null) ? mActivity.getLoggedinUser().Id : -1;
+				switch (mType) {
+				case STYLE:
+					mActivity.getServices().getStyleById(mMemberId, account, mPosts.size(), LOADMORE, new Callback<List<Post>>() {
+						@Override
+						public void success(List<Post> arg0, Response arg1) {
+							mPosts.addAll(arg0);
+							mAdapter.notifyDataSetChanged();
+							setLoading(false);
+							if (arg0.size() < 20)
+								setEnd(true);
+						}
+						@Override
+						public void failure(RetrofitError arg0) {
+							Log.w("RetrofitError", arg0.getMessage());
+							setLoading(false);
+						}
+					});
+					break;
+				case SUGGEST:
+					mActivity.getServices().getLikedStyle(mMemberId, account, mPosts.size(), LOADMORE, new Callback<List<Post>>() {
+						@Override
+						public void success(List<Post> arg0, Response arg1) {
+							mPosts.addAll(arg0);
+							mAdapter.notifyDataSetChanged();
+							setLoading(false);
+							if (arg0.size() < 20)
+								setEnd(true);
+						}
+						@Override
+						public void failure(RetrofitError arg0) {
+							Log.w("RetrofitError", arg0.getMessage());
+							setLoading(false);
+						}
+					});
+					break;
+				default:
+					break;
+				}
+			}
+			@Override
+			public int getItemCount() {
+				return mPosts.size();
+			}
+		});
 		
 		mRefresh.setColorSchemeResources(R.color.swipe_1, R.color.swipe_2, R.color.swipe_3, R.color.swipe_4);
 		

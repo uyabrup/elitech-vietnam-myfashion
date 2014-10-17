@@ -20,7 +20,7 @@
             android:button="@drawable/radio"
             android:paddingLeft="30dp"
             android:paddingRight="30dp"
-            android:text="Auto" />
+            android:text="@string/lang_auto" />
 
         <View
             android:layout_width="match_parent"
@@ -35,7 +35,7 @@
             android:button="@drawable/radio"
             android:paddingLeft="30dp"
             android:paddingRight="30dp"
-            android:text="한국어" />
+            android:text="@string/lang_korea" />
 
         <View
             android:layout_width="match_parent"
@@ -50,7 +50,7 @@
             android:button="@drawable/radio"
             android:paddingLeft="30dp"
             android:paddingRight="30dp"
-            android:text="English" />
+            android:text="@string/lang_english" />
 
         <View
             android:layout_width="match_parent"
@@ -65,7 +65,7 @@
             android:button="@drawable/radio"
             android:paddingLeft="30dp"
             android:paddingRight="30dp"
-            android:text="Tiếng Việt" />
+            android:text="@string/lang_vietnam" />
     </RadioGroup>
 
 </ScrollView>

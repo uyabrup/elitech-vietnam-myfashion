@@ -35,6 +35,7 @@ import elitech.vietnam.myfashion.controllers.AppController;
 import elitech.vietnam.myfashion.dialogues.DeleteItemCartDialog.DeleteItemDialogClick;
 import elitech.vietnam.myfashion.entities.City;
 import elitech.vietnam.myfashion.entities.District;
+import elitech.vietnam.myfashion.entities.Member;
 import elitech.vietnam.myfashion.entities.Order;
 import elitech.vietnam.myfashion.entities.OrderDetail;
 import elitech.vietnam.myfashion.utilities.Utilities;
@@ -106,6 +107,8 @@ public class ShoppingCartFragment extends AbstractFragment implements DeleteItem
 		mPayAdapter = new StringSpinnerAdapter(mActivity, mPays);
 		mSpinPayment.setAdapter(mPayAdapter);
 		
+		mSpinCity.setTag("init tag");
+		mSpinDistrict.setTag("init tag");
 		mBtnGoShopping.setOnClickListener(this);
 		mBtnCheckout.setOnClickListener(this);
 		mBtnCheckoutIcon.setOnClickListener(this);
@@ -134,23 +137,46 @@ public class ShoppingCartFragment extends AbstractFragment implements DeleteItem
 		mPays.add(getString(R.string.chuyenkhoan));
 		mPays.add(getString(R.string.tienmat));
 		mPayAdapter.notifyDataSetChanged();
-		
+
 		loadCheckoutView();
 	}
 	
-	public void loadCheckoutView() {
+	private void loadCheckoutView() {
 		double price = mController.getTotalPrice();
 		String str = getString(mOrders.size() > 1 ? R.string.items : R.string.item);
 		mTxtHeaderCount.setText(mOrders.size() + " " + str);
 		mTxtHeaderTotal.setText(Utilities.numberFormat(price) + Const.CURRENCY_VN);
-		// TODO: calculate shipping price
-		mSpinCity.setSelection(0);
-		
-		mDistricts.clear();
-		mDistricts.addAll(mActivity.getDatabase().getDistrictByCity(mCities.get(mSpinCity.getSelectedItemPosition()).Id));
-		mDistrictAdapter.notifyDataSetChanged();
-		mSpinDistrict.setSelection(0);
-		
+
+		if (mActivity.getLoggedinUser() != null) {
+			Member member = mActivity.getLoggedinUser();
+			mEdtAddress.setText(member.Address);
+			mEdtFullName.setText(member.Name);
+			mEdtEmail.setText(member.Email);
+			mEdtPhone.setText(member.Phone);
+			
+			for (int i=0; i<mCities.size(); i++)
+				if (mCities.get(i).Id == member.City) {
+					mSpinCity.setTag("select tag");
+					mSpinCity.setSelection(i);
+					break;
+				}
+			
+			mDistricts.clear();
+			mDistricts.addAll(mActivity.getDatabase().getDistrictByCity(mCities.get(mSpinCity.getSelectedItemPosition()).Id));
+			mDistrictAdapter.notifyDataSetChanged();
+			for (int i=0; i<mDistricts.size(); i++)
+				if (mDistricts.get(i).Id == member.District) {
+					mSpinDistrict.setSelection(i);
+					break;
+				}
+		} else {
+			mSpinCity.setTag("select tag");
+			mSpinCity.setSelection(0);
+			mDistricts.clear();
+			mDistricts.addAll(mActivity.getDatabase().getDistrictByCity(mCities.get(mSpinCity.getSelectedItemPosition()).Id));
+			mDistrictAdapter.notifyDataSetChanged();
+			mSpinDistrict.setSelection(0);
+		}
 		mSpinPayment.setSelection(0);
 		
 		setShippingText(mDistricts.get(mSpinDistrict.getSelectedItemPosition()).Id, mCities.get(mSpinCity.getSelectedItemPosition()).Code);
@@ -185,7 +211,7 @@ public class ShoppingCartFragment extends AbstractFragment implements DeleteItem
 				if (mShipping == 0)
 					mTxtShip.setText("Free");
 				else
-					mTxtShip.setText(String.format("%s   (%.2f Kg)", Utilities.numberFormat(mShipping) + Const.CURRENCY_VN, mController.getTotalWeight()));
+					mTxtShip.setText(String.format("%s   (%.2f kg)", Utilities.numberFormat(mShipping) + Const.CURRENCY_VN, mController.getTotalWeight()));
 			}
 		}.execute();
 	}
@@ -193,7 +219,7 @@ public class ShoppingCartFragment extends AbstractFragment implements DeleteItem
 	public void onItemQuantityChanged(double subPrice, float subWeight) {
 		mController.setTotalPrice(mController.getTotalPrice() + subPrice);
 		mController.setTotalWeight(mController.getTotalWeight() + subWeight);
-		loadCheckoutView();
+		changeCheckoutPrice();
 	}
 	
 	public void onItemDeleted(int position) {
@@ -207,8 +233,16 @@ public class ShoppingCartFragment extends AbstractFragment implements DeleteItem
 			mLayoutEmpty.setVisibility(View.VISIBLE);
 		} else {
 			mAdapter.notifyDataSetChanged();
-			loadCheckoutView();
+			changeCheckoutPrice();
 		}
+	}
+	
+	private void changeCheckoutPrice() {
+		double price = mController.getTotalPrice();
+		String str = getString(mOrders.size() > 1 ? R.string.items : R.string.item);
+		mTxtHeaderCount.setText(mOrders.size() + " " + str);
+		mTxtHeaderTotal.setText(Utilities.numberFormat(price) + Const.CURRENCY_VN);
+		setShippingText(mDistricts.get(mSpinDistrict.getSelectedItemPosition()).Id, mCities.get(mSpinCity.getSelectedItemPosition()).Code);
 	}
 	
 	public static interface ShoppingCartCallback {
@@ -247,6 +281,10 @@ public class ShoppingCartFragment extends AbstractFragment implements DeleteItem
 	
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+		if (parent.getTag() != null) {
+			parent.setTag(null);
+			return;
+		}
 		switch (parent.getId()) {
 		case R.id.cart_spinnerCity:
 			mDistricts.clear();

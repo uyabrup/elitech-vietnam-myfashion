@@ -216,6 +216,14 @@ public class StyleDetailFragment extends AbstractFragment implements View.OnClic
 										mPost.Account.Followed = 1;
 										mBtnFollow.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_following, 0,
 												0, 0);
+										mActivity.getServices().notifyAddFriend(mActivity.getLoggedinUser().Id, mPost.IdAccount, new Callback<Integer>() {
+											@Override
+											public void success(Integer arg0, Response arg1) {
+											}
+											@Override
+											public void failure(RetrofitError arg0) {
+											}
+										});
 									}
 									mBtnFollow.setEnabled(true);
 								}

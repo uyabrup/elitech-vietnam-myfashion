@@ -509,18 +509,6 @@ class DbHandler {
 		$stmt->close ();
 		return $data;
 	}
-	public function changePassword($account, $password) {
-		$str = "UPDATE	`account`
-				SET		`password`=?
-				WHERE	`id`=?;";
-		
-		$stmt = $this->conn->prepare ( $str );
-		$stmt->bind_param ( "si", $password, $account );
-		$stmt->execute ();
-		$num_affected_rows = $stmt->affected_rows;
-		$stmt->close ();
-		return $num_affected_rows;
-	}
 	public function getStyle($member, $account, $start, $count) {
 		$str = "SELECT		p.*,	
 							IFNULL((	SELECT	SUM(l.`like`)
@@ -1376,6 +1364,64 @@ class DbHandler {
 		$data = $stmt->get_result ();
 		$stmt->close ();
 		return $data;
+	}
+	public function getInventory($account, $start, $count) {
+		$str = "SELECT		p.*,
+							IFNULL((	SELECT	SUM(l.`like`)
+										FROM	`like` l
+										WHERE	l.`id_account`=? AND l.`id_product`=p.`id` AND l.`type`=1
+									), 0) AS `liked`,
+							SUBSTRING_INDEX(	TRIM(	LEADING	'shop.' 
+												FROM 	TRIM(	LEADING	'www.'
+																FROM 	TRIM(	LEADING	'http://' 
+																				FROM 	p.`url`))), '.', 1)	AS	`brand`,
+							c.`nameEN`	AS	`category_name_en`,
+							c.`nameKR`	AS	`category_name_kr`,
+							c.`nameVN`	AS	`category_name_vn`,
+							c.`color`	AS	`color`,
+							p.`priceVN`	AS	`price_vn`
+				FROM		`product` p
+				INNER JOIN	`category` c
+				ON			c.`id`=p.`id_category`
+				WHERE		c.`status`=1	AND
+							p.`quantity`=1		AND
+							p.`inventory`>0		AND
+							c.`id_trademarks`=0
+				ORDER BY	p.`create_day` 						DESC,
+							p.`priceVN` * (100-p.`sale_off`)	ASC,
+							p.`date` 							DESC
+				LIMIT		?, ?;";
+		
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->bind_param ( "iii", $idaccount, $start, $count );
+		$stmt->execute ();
+		$data = $stmt->get_result ();
+		$stmt->close ();
+		return $data;
+	}
+	public function changePassword($email, $password) {
+		$str = "UPDATE	`account`
+				SET		`password`=?
+				WHERE	`email`=?;";
+		
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->bind_param ( "ss", $password, $email );
+		$stmt->execute ();
+		$num_affected_rows = $stmt->affected_rows;
+		$stmt->close ();
+		return $num_affected_rows;
+	}
+	public function updateGCMId($member, $gcmid) {
+		$str = "UPDATE	`account`
+				SET		`gcm_id`=?
+				WHERE	`id`=?;";
+		
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->bind_param ( "si", $member, $gcmid );
+		$stmt->execute ();
+		$num_affected_rows = $stmt->affected_rows;
+		$stmt->close ();
+		return $num_affected_rows;
 	}
 }
 

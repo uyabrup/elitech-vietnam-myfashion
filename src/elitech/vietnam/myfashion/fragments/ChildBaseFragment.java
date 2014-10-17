@@ -18,6 +18,8 @@ import elitech.vietnam.myfashion.R;
  */
 public class ChildBaseFragment extends Fragment {
 
+	protected String mTag;
+	
 	public ChildBaseFragment() {
 	}
 	
@@ -26,14 +28,19 @@ public class ChildBaseFragment extends Fragment {
 		return inflater.inflate(R.layout.fragment_base, container, false);
 	}
 	
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+	}
 
 	public void replaceFragment(Fragment fragment, int containerId, boolean addToBackStack) {
+		mTag = fragment.getClass().getName();
 		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 		if (addToBackStack) {
-			transaction.addToBackStack(fragment.getClass().getName());
+			transaction.addToBackStack(mTag);
 		}
 		transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-		transaction.replace(containerId, fragment, fragment.getClass().getName());
+		transaction.replace(containerId, fragment, mTag);
 		transaction.commit();
 	}
 

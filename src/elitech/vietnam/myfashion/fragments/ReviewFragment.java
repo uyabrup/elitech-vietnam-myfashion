@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import elitech.vietnam.myfashion.R;
+import elitech.vietnam.myfashion.adapters.EndlessScrollListener;
 import elitech.vietnam.myfashion.adapters.MemberReviewAdapter;
 import elitech.vietnam.myfashion.entities.Review;
 
@@ -56,6 +57,31 @@ public class ReviewFragment extends AbstractFragment implements OnRefreshListene
 		mRefresh.setColorSchemeResources(R.color.swipe_1, R.color.swipe_2, R.color.swipe_3, R.color.swipe_4);
 		mAdapter = new MemberReviewAdapter(mActivity, mReviews);
 		mListView.setAdapter(mAdapter);
+		mListView.setOnScrollListener(new EndlessScrollListener() {
+			
+			@Override
+			public void onLoadmore() {
+				mActivity.getServices().getAllReviews(mReviews.size(), LOADMORE, new Callback<List<Review>>() {
+					@Override
+					public void success(List<Review> arg0, Response arg1) {
+						mReviews.addAll(arg0);
+						mAdapter.notifyDataSetChanged();
+						setLoading(false);
+						if (arg0.size() < 20)
+							setEnd(true);
+					}
+					@Override
+					public void failure(RetrofitError arg0) {
+						Log.w("RetrofitError", arg0.getMessage());
+						setLoading(false);
+					}
+				});
+			}
+			@Override
+			public int getItemCount() {
+				return mReviews.size();
+			}
+		});
 		
 		mRefresh.setOnRefreshListener(this);
 		mListView.setOnItemClickListener(this);

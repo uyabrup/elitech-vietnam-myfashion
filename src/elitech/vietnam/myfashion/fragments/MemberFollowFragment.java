@@ -10,6 +10,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import elitech.vietnam.myfashion.R;
+import elitech.vietnam.myfashion.adapters.EndlessScrollListener;
 import elitech.vietnam.myfashion.adapters.MemberFollowAdapter;
 import elitech.vietnam.myfashion.entities.Member;
 import android.os.Bundle;
@@ -75,6 +76,54 @@ public class MemberFollowFragment extends AbstractFragment implements OnItemClic
 		mRefresh.setColorSchemeResources(R.color.swipe_1, R.color.swipe_2, R.color.swipe_3, R.color.swipe_4);
 		mAdapter = new MemberFollowAdapter(mActivity, mMembers, mMemberId);
 		mListView.setAdapter(mAdapter);
+		mListView.setOnScrollListener(new EndlessScrollListener() {
+			@Override
+			public void onLoadmore() {
+				int n = mActivity.getLoggedinUser() == null ? -1 : mActivity.getLoggedinUser().Id;
+				switch (mType) {
+				case FOLLOWER:
+					mActivity.getServices().getFollower(mMemberId, n, mMembers.size(), LOADMORE, new Callback<List<Member>>() {
+						@Override
+						public void success(List<Member> arg0, Response arg1) {
+							mMembers.addAll(arg0);
+							mAdapter.notifyDataSetChanged();
+							setLoading(false);
+							if (arg0.size() < 20)
+								setEnd(true);
+						}
+						@Override
+						public void failure(RetrofitError arg0) {
+							Log.w("RetrofitError", arg0.getMessage());
+							setLoading(false);
+						}
+					});
+					break;
+				case FOLLOWING:
+					mActivity.getServices().getFollowing(mMemberId, n, mMembers.size(), LOADMORE, new Callback<List<Member>>() {
+						@Override
+						public void success(List<Member> arg0, Response arg1) {
+							mMembers.addAll(arg0);
+							mAdapter.notifyDataSetChanged();
+							setLoading(false);
+							if (arg0.size() < 20)
+								setEnd(true);
+						}
+						@Override
+						public void failure(RetrofitError arg0) {
+							Log.w("RetrofitError", arg0.getMessage());
+							setLoading(false);
+						}
+					});
+					break;
+				default:
+					break;
+				}
+			}
+			@Override
+			public int getItemCount() {
+				return mMembers.size();
+			}
+		});
 		
 		mRefresh.setOnRefreshListener(this);
 		mListView.setOnItemClickListener(this);

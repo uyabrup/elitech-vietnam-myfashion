@@ -62,7 +62,23 @@ public class BestOfTodayFragment extends AbstractFragment implements OnRefreshLi
 		mGrid.setOnScrollListener(new EndlessScrollListener() {
 			@Override
 			public void onLoadmore() {
-				getMoreData();
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				int member = (mActivity.getLoggedinUser() != null) ? mActivity.getLoggedinUser().Id : -1;
+				mActivity.getServices().getBestOfDay(format.format(new Date()), member, mBest.size(), LOADMORE, new Callback<List<Product>>() {
+					@Override
+					public void success(List<Product> arg0, Response arg1) {
+						mBest.addAll(arg0);
+						mAdapter.notifyDataSetChanged();
+						setLoading(false);
+						if (arg0.size() < 20)
+							setEnd(true);
+					}
+					@Override
+					public void failure(RetrofitError arg0) {
+						Log.w("RetrofitError", arg0.getMessage());
+						setLoading(false);
+					}
+				});
 			}
 			@Override
 			public int getItemCount() {
@@ -95,24 +111,6 @@ public class BestOfTodayFragment extends AbstractFragment implements OnRefreshLi
 			@Override
 			public void success(List<Product> arg0, Response arg1) {
 				mBest.clear();
-				mBest.addAll(arg0);
-				mAdapter.notifyDataSetChanged();
-				mLayoutRefresh.setRefreshing(false);
-			}
-			@Override
-			public void failure(RetrofitError arg0) {
-				Log.w("RetrofitError", arg0.getMessage());
-				mLayoutRefresh.setRefreshing(false);
-			}
-		});
-	}
-	
-	private void getMoreData() {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		int member = (mActivity.getLoggedinUser() != null) ? mActivity.getLoggedinUser().Id : -1;
-		mActivity.getServices().getBestOfDay(format.format(new Date()), member, mBest.size(), LOADMORE, new Callback<List<Product>>() {
-			@Override
-			public void success(List<Product> arg0, Response arg1) {
 				mBest.addAll(arg0);
 				mAdapter.notifyDataSetChanged();
 				mLayoutRefresh.setRefreshing(false);

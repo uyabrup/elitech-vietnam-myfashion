@@ -74,7 +74,8 @@ public class LoginAppLoginFragment extends AbstractFragment implements View.OnCl
 		case R.id.login_btnLoginSubmit:
 			if (validate()) {
 				String pass = Utilities.getMD5(mEdtPassword.getText().toString().trim() + "orchipro");
-				mActivity.getServices().login(mEdtUsername.getText().toString().trim(), pass, new Callback<Member>() {
+				String gcm = Utilities.getRegistrationId(mActivity.getApplicationContext());
+				mActivity.getServices().login(mEdtUsername.getText().toString().trim(), pass, gcm, new Callback<Member>() {
 					@Override
 					public void success(Member arg0, Response arg1) {
 						mActivity.setLoggedinUser(arg0);

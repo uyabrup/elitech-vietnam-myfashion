@@ -24,6 +24,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import elitech.vietnam.myfashion.R;
+import elitech.vietnam.myfashion.adapters.EndlessScrollListener;
 import elitech.vietnam.myfashion.adapters.ProductGridAdapter;
 import elitech.vietnam.myfashion.dialogues.AddToCartDialog.AddToCartCallBack;
 import elitech.vietnam.myfashion.entities.Category;
@@ -69,6 +70,32 @@ public class CosmeticContentFragment extends AbstractFragment implements OnRefre
 
 		mAdapter = new ProductGridAdapter(mActivity, R.layout.item_bestofday, mProducts, this);
 		mGrid.setAdapter(mAdapter);
+		mGrid.setOnScrollListener(new EndlessScrollListener() {
+			@Override
+			public void onLoadmore() {
+				int account = (mActivity.getLoggedinUser() != null) ? mActivity.getLoggedinUser().Id : -1;
+				mActivity.getServices().getCategoryProduct(mCurrent, account, -1, mProducts.size(), LOADMORE,
+					new Callback<List<Product>>() {
+						@Override
+						public void success(List<Product> arg0, Response arg1) {
+							mProducts.addAll(arg0);
+							mAdapter.notifyDataSetChanged();
+							setLoading(false);
+							if (arg0.size() < 20)
+								setEnd(true);
+						}
+						@Override
+						public void failure(RetrofitError arg0) {
+							Log.w("RetrofitError", arg0.getMessage());
+							setLoading(false);
+						}
+					});
+			}
+			@Override
+			public int getItemCount() {
+				return mProducts.size();
+			}
+		});
 
 		mGrid.setQuickReturnView(mQuickLayout);
 		
@@ -130,22 +157,6 @@ public class CosmeticContentFragment extends AbstractFragment implements OnRefre
 				mRefresh.setRefreshing(false);
 			}
 		});
-	}
-
-	private void getMore() {
-		int account = (mActivity.getLoggedinUser() != null) ? mActivity.getLoggedinUser().Id : -1;
-		mActivity.getServices().getCategoryProduct(mCurrent, account, -1, mProducts.size(), LOADMORE,
-			new Callback<List<Product>>() {
-				@Override
-				public void success(List<Product> arg0, Response arg1) {
-					mProducts.addAll(arg0);
-					mAdapter.notifyDataSetChanged();
-				}
-				@Override
-				public void failure(RetrofitError arg0) {
-					Log.w("RetrofitError", arg0.getMessage());
-				}
-			});
 	}
 
 	@Override

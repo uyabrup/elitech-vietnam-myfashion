@@ -45,7 +45,7 @@ public interface Services {
 	
 	@FormUrlEncoded
 	@POST("/login")
-	void login(@Field("email") String username, @Field("password") String password, Callback<Member> callback);
+	void login(@Field("email") String username, @Field("password") String password, @Field("gcmid") String gcmId, Callback<Member> callback);
 	
 	@GET("/product/{id}/details")
 	void getProductDetails(@Path("id") int id, Callback<List<ProductDetail>> callback);
@@ -174,4 +174,27 @@ public interface Services {
 	
 	@GET("/reviews")
 	void getAllReviews(@Query("start") int start, @Query("count") int count, Callback<List<Review>> callback);
+	
+	@GET("/inventory")
+	void getInventory(@Query("account") int account, @Query("start") int start, @Query("count") int count, Callback<List<Product>> callback);
+	
+	@FormUrlEncoded
+	@POST("/notifyComment")
+	void notifyComment(@Field("comment") int idComment, @Field("type") int type, Callback<Integer> callback);
+	
+	@FormUrlEncoded
+	@POST("/notifyPostFriend")
+	void notifyPostFriend(@Field("post") int idPost, Callback<Integer> callback);
+	
+	@FormUrlEncoded
+	@POST("/notifyAddFriend")
+	void notifyAddFriend(@Field("member") int idMember, @Field("friend") int idFriend, Callback<Integer> callback);
+	
+	@FormUrlEncoded
+	@POST("/forgotPassword")
+	void forgotPassword(@Field("email") String email, @Field("password") String password, Callback<Integer> callback);
+	
+	@FormUrlEncoded
+	@POST("/addMemoTrack")
+	void addMemoTrack(@Field("idaccount") int idAccount, @Field("email") String email, @Field("version") String version, Callback<Integer> callback);
 }

@@ -1,9 +1,55 @@
 <?php
 require_once 'include/DbHandler.php';
 require_once 'include/PassHash.php';
+require_once 'include/MemoTracker.php';
 require 'libs/Slim/Slim.php';
 
 define ( 'API_KEY', '89a7f77b5a13635f5d6707d694c22a71' );
+define ( 'GCM_KEY', 'AIzaSyC1tpZ_RPGgo9qtmCalRvLGO72hH9ozt-4' );
+define ('DB_USERNAME', 'cam');
+define ('DB_PASSWORD', '5678');
+define ('DB_HOST', '127.0.0.1');
+define ('DB_NAME', 'shopping');
+
+
+class Notify {
+	public $id;
+	public $id_mem;
+	public $id_sender;
+	public $uid_sender;
+	public $name_sender;
+	public $id_owner;
+	public $uid_owner;
+	public $name_owner;
+	public $content;
+	public $id_post;
+	public $image;
+	public $type;
+	public $cm_type;
+	public $unread;
+	public $date;
+	public $status;
+	
+	public function __construct($id, $id_mem, $id_sender, $uid_sender, $name_sender, $id_owner, $uid_owner, $name_owner, $content, $id_post, $image, $type, $cm_type, $unread, $date, $status) {
+		$this->id = $id;
+		$this->id_mem = $id_mem;
+		$this->id_sender = $id_sender;
+		$this->uid_sender = $uid_sender;
+		$this->name_sender = $name_sender;
+		$this->id_owner = $id_owner;
+		$this->uid_owner = $uid_owner;
+		$this->name_owner = $name_owner;
+		$this->content = $content;
+		$this->id_post = $id_post;
+		$this->image = $image;
+		$this->type = $type;
+		$this->cm_type = $cm_type;
+		$this->unread = $unread;
+		$this->date = $date;
+		$this->status = $status;
+	}
+}
+
 
 date_default_timezone_set ( "Asia/Saigon" );
 \Slim\Slim::registerAutoloader ();
@@ -72,6 +118,43 @@ function verifyRequiredParams($required_fields) {
 		echoRespnse ( 400, $response );
 		$app->stop ();
 	}
+}
+
+function SendNotification($message, $registrationIDs) {
+	// Set POST variables
+	$url = 'https://android.googleapis.com/gcm/send';
+	
+	$fields = array(
+					'registration_ids'  => $registrationIDs,
+					'data'              => array( "message" => $message ),
+					);
+
+	$headers = array( 
+					'Authorization: key=' . GCM_KEY,
+					'Content-Type: application/json'
+					);
+
+	// Open connection
+	$ch = curl_init();
+
+	// Set the url, number of POST vars, POST data
+	curl_setopt( $ch, CURLOPT_URL, $url );
+
+	curl_setopt( $ch, CURLOPT_POST, true );
+	curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers);
+	curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+
+	curl_setopt( $ch, CURLOPT_POSTFIELDS, json_encode( $fields ) );
+
+	curl_setopt ($ch, CURLOPT_CAINFO, dirname(__FILE__)."/cacert.pem");
+	curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, false);
+	// Execute post
+	$result = curl_exec($ch);
+
+	// Close connection
+	curl_close($ch);
+
+	return $result;
 }
 
 /**
@@ -160,6 +243,30 @@ $app->get ( '/bestOfDay', function () use($app) {
 	echoRespnse ( 200, $response );
 } );
 
+$app->get ( '/inventory', function () use($app) {
+	authenticate ();
+	verifyRequiredParams ( array (
+			'account',
+			'start',
+			'count' 
+	) );
+	
+	$account = $app->request->get ( 'account' );
+	$start = $app->request->get ( 'start' );
+	$count = $app->request->get ( 'count' );
+	
+	$response = array ();
+	$db = new DbHandler ();
+	
+	$result = $db->getInventory ( $account, $start, $count );
+	
+	while ( $row = $result->fetch_assoc () ) {
+		array_push ( $response, calculateSaleOff ( $row ) );
+	}
+	
+	echoRespnse ( 200, $response );
+} );
+
 $app->get ( '/cosmetics', function () {
 	authenticate ();
 	
@@ -207,10 +314,8 @@ $app->get ( '/styler', function () use($app) {
 	$response = array ();
 	$db = new DbHandler ();
 	
-	// fetching all best of day products
 	$result = $db->getStyler ( $account, $start, $count );
 	
-	// looping through result and preparing tasks array
 	while ( $row = $result->fetch_assoc () ) {
 		$r1 = new stdClass ();
 		$r2 = new stdClass ();
@@ -291,22 +396,6 @@ $app->post ( '/doComment', function ($product) use($app) {
 	$response = $result;
 	
 	echoRespnse ( 200, $response );
-} );
-
-$app->put ( '/member/:id/changePassword', function ($account) use($app) {
-	authenticate ();
-	verifyRequiredParams ( array (
-			'password' 
-	) );
-	
-	$password = $app->request->put ( 'password' );
-	
-	$response = array ();
-	$db = new DbHandler ();
-	
-	$result = $db->changePassword ( $account, $password );
-	
-	echoRespnse ( 200, $result );
 } );
 
 $app->get ( '/member/:id/style', function ($member) use($app) {
@@ -554,6 +643,7 @@ $app->post ( '/devices', function () use($app) {
 	$user = $app->request->post ( 'user' );
 	$day = $app->request->post ( 'day' );
 	$gcmid = $app->request->post ( 'gcmid' );
+	$ip = $app->request->getIp();
 	
 	$db = new DbHandler ();
 	$result = $db->storeDevice ( $device, $gcmid );
@@ -821,10 +911,12 @@ $app->post ( '/login', function () use($app) {
 	authenticate ();
 	verifyRequiredParams ( array (
 		'email',
-		'password'
+		'password',
+		'gcmid'
 	) );
 	$email = $app->request->post ( 'email' );
 	$password = $app->request->post ( 'password' );
+	$gcmid = $app->request->post ( 'gcmid' );
 	
 	$db = new DbHandler ();
 	$response = array();
@@ -844,6 +936,14 @@ $app->post ( '/login', function () use($app) {
 	if (empty($r3)) {
 		$response['code'] = 2;
 		$response['message'] = 'Password incorrect!';
+		echoRespnse ( 400,  $response );
+		return;
+	}
+	
+	$r4 = $db->updateGCMId($r3[0]['id'], $gcmid);
+	if (false === $r4) {
+		$response['code'] = 3;
+		$response['message'] = 'Cannot update Google Cloud Message ID!';
 		echoRespnse ( 400,  $response );
 		return;
 	}
@@ -1053,6 +1153,460 @@ $app->get ( '/reviews', function () use($app) {
 	
 	echoRespnse ( 200, $response );
 } );
+
+$app->post ( '/forgotPassword', function () use ($app) {
+	authenticate ();
+	verifyRequiredParams ( array (
+			'email',
+			'password' 
+	) );
+	$email = $app->request->post('email');
+	
+	$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	$length = 6;
+	
+	$pwd1 = substr(str_shuffle($chars), 0, $length);
+	
+	$salt = "orchipro";
+	$pwd2 = md5($pwd1 . $salt);
+	
+	$db = new DbHandler();
+	$rs2 = $db->changePassword($email, $pwd1);
+	
+	$error = array();
+	if ($rs2 < 1) {
+		$error['code'] = 1;
+		$error['message'] = 'Email not exists!';
+		echoRespnse(400, $error);
+		return;
+	}
+		
+	$fields_string = "";
+	$lang = "EN";
+	$url = 'http://1.234.53.52/mail/shopping_forgetpass.php';
+	$fields = array(
+							'lang'  => urlencode($lang),
+							'email' => urlencode($email),
+							'pass' => urlencode($pwd1)
+					);
+
+	//url-ify the data for the POST
+	foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+	rtrim($fields_string, '&');
+	
+	// Open connection
+	$ch = curl_init();
+
+	// Set the url, number of POST vars, POST data
+	curl_setopt( $ch, CURLOPT_URL, $url );
+
+	curl_setopt( $ch, CURLOPT_POST, true );
+	// curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers);
+	curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+
+	curl_setopt( $ch, CURLOPT_POSTFIELDS, $fields_string );
+
+	curl_setopt ($ch, CURLOPT_CAINFO, dirname(__FILE__)."/cacert.pem");
+	
+	curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, false);
+	// Execute post
+	$result = curl_exec($ch);
+
+	//close connection
+	curl_close($ch);
+	
+	echoRespnse(200, 1);
+} );
+
+$app->post ('/notifyAddFriend', function () use ($app) {
+	authenticate ();
+	verifyRequiredParams ( array (
+			'member',
+			'friend' 
+	) );
+
+	$member = $app->request->post('member');
+	$friend = $app->request->post('friend');
+	
+	$conn = mysql_connect(DB_HOST, DB_USERNAME, DB_PASSWORD) or
+		die("Khong ket noi dc Database !");
+	mysql_select_db(DB_NAME);
+	mysql_query("SET NAMES 'utf8'");
+	
+	$str = "SELECT		a.`id`			AS	`id_mem`,
+						a.`gcm_id`,
+						a1.`id`			AS	`id_sender`,
+						a1.`name`		AS	`uid_sender`,
+						a1.`nick_name`	AS	`name_sender`,
+						a1.`image`		AS	`image`,
+						a1.`id`			AS	`id_owner`,
+						a1.`name`		AS	`uid_owner`,
+						a1.`nick_name`	AS	`name_owner`,
+						f.`create_date`	AS	`date`
+			FROM		(	SELECT	*
+							FROM	`follower`
+							WHERE	`id_mem`=$member	AND
+									`id_follow`=$friend	)	f
+			INNER JOIN	`account` a
+			ON 			a.`id`=f.`id_follow`
+			INNER JOIN	`account` a1
+			ON			a1.`id`=f.`id_mem`
+			GROUP BY	a.`id`
+			HAVING		a.`id`<>a1.`id`;";
+	
+	$rs1 = mysql_query($str);
+	if (mysql_num_rows($rs1)>0) {
+		$r = mysql_fetch_assoc($rs1);
+		$id_mem = $r['id_mem'];
+		$id_sender = $r['id_sender'];
+		$uid_sender = $r['uid_sender'];
+		$name_sender = $r['name_sender'];
+		$id_owner = $r['id_owner'];
+		$uid_owner = $r['uid_owner'];
+		$name_owner = $r['name_owner'];
+		$content = "";
+		$id_post = 0;
+		$image = $r['image'];
+		$type = 4;
+		$unread = 1;
+		$date = $r['date'];
+		$status = 1;
+		
+		$str = "INSERT INTO	`notify`	(`id_mem`, `id_sender`, `uid_sender`, `name_sender`, `id_owner`, `uid_owner`, `name_owner`, `content`, `id_post`, `image`, `type`, `cm_type`, `unread`, `date`, `status`)
+				VALUES					('$id_mem', '$id_sender', '$uid_sender', '$name_sender', '$id_owner', '$uid_owner', '$name_owner', '$content', '$id_post', '$image', '$type', '0', '$unread', '$date', '$status');";
+				
+		$rs2 = mysql_query($str);
+		if ($rs2==TRUE) {
+			$ids = array();
+			$ids[] = $r['gcm_id'];
+			$id1 = mysql_insert_id();
+			$notify = new Notify($id1, $id_mem, $id_sender, $uid_sender, $name_sender, $id_owner, $uid_owner, $name_owner, $content, $id_post, $image, $type, $cmtype, $unread, $date, $status);
+			$mess = json_encode($notify);
+			SendNotification($mess, $ids);
+		}
+	}
+	
+	mysql_close($conn);
+	echoRespnse(200, 1);
+} );
+
+$app->post ( '/notifyPostFriend', function () use ($app) {
+	authenticate ();
+	verifyRequiredParams ( array (
+			'post'
+	) );
+
+	$idpost = $app->request->post('post');
+	
+	$conn = mysql_connect(DB_HOST, DB_USERNAME, DB_PASSWORD) or
+		die("Khong ket noi dc Database !");
+	mysql_select_db(DB_NAME);
+	mysql_query("SET NAMES 'utf8'");
+	
+	$str = "SELECT		a.`id`			AS	`id_mem`,
+						a.`gcm_id`,
+						a1.`id`			AS	`id_sender`,
+						a1.`name`		AS	`uid_sender`,
+						a1.`nick_name`	AS	`name_sender`,
+						a1.`image`	AS	`image`,
+						a1.`id`			AS	`id_owner`,
+						a1.`name`		AS	`uid_owner`,
+						a1.`nick_name`	AS	`name_owner`,
+						p.`create_day`	AS	`date`
+			FROM		`post` p
+			INNER JOIN 	`follower` f
+			ON			f.`id_follow`=p.`id_account`
+			INNER JOIN 	`account` a
+			ON			a.`id`=f.`id_mem`
+			INNER JOIN 	`account` a1
+			ON			a1.`id`=p.`id_account`
+			WHERE		p.`id`=$idpost
+			GROUP BY	a.`id`
+			HAVING		a.`id`<>a1.`id`;";
+			
+	$rs1 = mysql_query($str);
+	if (mysql_num_rows($rs1)>0) {
+		while ($r = mysql_fetch_assoc($rs1)) {
+			$id_mem = $r['id_mem'];
+			$id_sender = $r['id_sender'];
+			$uid_sender = $r['uid_sender'];
+			$name_sender = $r['name_sender'];
+			$id_owner = $r['id_owner'];
+			$uid_owner = $r['uid_owner'];
+			$name_owner = $r['name_owner'];
+			$content = "";
+			$id_post = $idpost;
+			$image = $r['image'];
+			$type = 3;
+			$unread = 1;
+			$date = $r['date'];
+			$status = 1;
+			
+			$str = "INSERT INTO	`notify`	(`id_mem`, `id_sender`, `uid_sender`, `name_sender`, `id_owner`, `uid_owner`, `name_owner`, `content`, `id_post`, `image`, `type`, `cm_type`, `unread`, `date`, `status`)
+					VALUES					('$id_mem', '$id_sender', '$uid_sender', '$name_sender', '$id_owner', '$uid_owner', '$name_owner', '$content', '$id_post', '$image', '$type', '0', '$unread', '$date', '$status');";
+					
+			$rs2 = mysql_query($str);
+			if ($rs2==TRUE) {
+				$ids = array();
+				$ids[] = $r['gcm_id'];
+				$id1 = mysql_insert_id();
+				$notify = new Notify($id1, $id_mem, $id_sender, $uid_sender, $name_sender, $id_owner, $uid_owner, $name_owner, $content, $id_post, $image, $type, $cmtype, $unread, $date, $status);
+				$mess = json_encode($notify);
+				SendNotification($mess, $ids);
+			}
+		}
+	}
+	
+	mysql_close($conn);
+	echoRespnse(200, 1);
+} );
+
+$app->post ( '/notifyComment', function () use ($app) {
+	authenticate ();
+	verifyRequiredParams ( array (
+			'comment',
+			'type'
+	) );
+	
+	$idcomment = $app->request->post('comment');
+	$cmtype = $app->request->post('type');
+	
+	$conn = mysql_connect(DB_HOST, DB_USERNAME, DB_PASSWORD) or
+		die("Khong ket noi dc Database !");
+	mysql_select_db(DB_NAME);
+	mysql_query("SET NAMES 'utf8'");
+	
+	$str = "";
+	if ($cmtype==1) {
+		$str = "SELECT		c.`content`,
+							a.`id`			AS	`id_mem`,
+							a.`gcm_id`,
+							a1.`id`			AS	`id_sender`,
+							a1.`name`		AS	`uid_sender`,
+							a1.`nick_name`	AS	`name_sender`,
+							a1.`image`,
+							p.`id_category`	AS	`id_owner`,
+							p.`name`		AS	`uid_owner`,
+							p.`name`		AS	`name_owner`,
+							c1.`id_product`	AS	`id_post`,
+							c.`date`
+				FROM		`comment` c
+				INNER JOIN	`product` p
+				ON			p.`id`=c.`id_product`
+				INNER JOIN	`comment` c1
+				ON			c1.`id_product`=c.`id_product`	AND
+							c1.`status`=1
+				INNER JOIN	`account` a
+				ON			a.`id`=c1.`id_account`	OR
+							a.`id`=12
+				INNER JOIN	`account` a1
+				ON			a1.`id`=c.`id_account`
+				WHERE		c.`id`=$idcomment
+				GROUP BY	a.`id`
+				HAVING		a.`id`<>a1.`id`;";
+		
+		$rs4 = mysql_query($str);
+		if (mysql_num_rows($rs4)>0) {
+			while ($rs5 = mysql_fetch_assoc($rs4)) {
+				$id_mem = $rs5['id_mem'];
+				$id_sender = $rs5['id_sender'];
+				$uid_sender = $rs5['uid_sender'];
+				$name_sender = $rs5['name_sender'];
+				$id_owner = $rs5['id_owner'];
+				$uid_owner = $rs5['uid_owner'];
+				$name_owner = $rs5['name_owner'];
+				$content = $rs5['content'];
+				$id_post = $rs5['id_post'];
+				$image = $rs5['image'];
+				$type = 5;
+				$unread = 1;
+				$date = $rs5['date'];
+				$status = 1;
+				
+				$str = "INSERT INTO	`notify`	(`id_mem`, `id_sender`, `uid_sender`, `name_sender`, `id_owner`, `uid_owner`, `name_owner`, `content`, `id_post`, `image`, `type`, `cm_type`, `unread`, `date`, `status`)
+						VALUES					('$id_mem', '$id_sender', '$uid_sender', '$name_sender', '$id_owner', '$uid_owner', '$name_owner', '$content', '$id_post', '$image', '$type', '$cmtype', '$unread', '$date', '$status');";
+						
+				$rs6 = mysql_query($str);
+				if ($rs6==TRUE) {
+					$ids = array();
+					$ids[] = $rs5['gcm_id'];
+					$id1 = mysql_insert_id();
+					$notify = new Notify($id1, $id_mem, $id_sender, $uid_sender, $name_sender, $id_owner, $uid_owner, $name_owner, $content, $id_post, $image, $type, $cmtype, $unread, $date, $status);
+					$mess = json_encode($notify);
+					SendNotification($mess, $ids);
+				}
+			}
+		}
+	}
+	
+	if ($cmtype==2) {
+		$str = "SELECT		c1.`content`,
+							a.`id`			AS	`id_mem`,
+							a.`gcm_id`,
+							a1.`id`			AS	`id_sender`,
+							a1.`name`		AS	`uid_sender`,
+							a1.`nick_name`	AS	`name_sender`,
+							a1.`image`,
+							a2.`id`			AS	`id_owner`,
+							a2.`name`		AS	`uid_owner`,
+							a2.`nick_name`	AS	`name_owner`,
+							c1.`id_product`	AS	`id_post`,
+							c.`date`
+				FROM		`comment` c
+				INNER JOIN	`comment` c1
+				ON			c1.`id_product`=c.`id_product`
+				INNER JOIN	`account` a1
+				ON			a1.`id`=c1.`id_account`
+				INNER JOIN	`post` p
+				ON			p.`id`=c1.`id_product`
+				INNER JOIN	`account` a2
+				ON			a2.`id`=p.`id_account`
+				INNER JOIN	`account` a
+				ON			(a.`id`=p.`id_account`)
+				WHERE		c1.`id`=$idcomment
+				GROUP BY	a.`id`
+				HAVING		a.`id`<>a1.`id`;";
+				
+		$rs4 = mysql_query($str);
+		if (mysql_num_rows($rs4)>0) {
+			$rs5 = mysql_fetch_assoc($rs4);
+			$id_mem = $rs5['id_mem'];
+			$id_sender = $rs5['id_sender'];
+			$uid_sender = $rs5['uid_sender'];
+			$name_sender = $rs5['name_sender'];
+			$id_owner = $rs5['id_owner'];
+			$uid_owner = $rs5['uid_owner'];
+			$name_owner = $rs5['name_owner'];
+			$content = $rs5['content'];
+			$id_post = $rs5['id_post'];
+			$image = $rs5['image'];
+			$type = 1;
+			$unread = 1;
+			$date = $rs5['date'];
+			$status = 1;
+			
+			$str = "INSERT INTO	`notify`	(`id_mem`, `id_sender`, `uid_sender`, `name_sender`, `id_owner`, `uid_owner`, `name_owner`, `content`, `id_post`, `image`, `type`, `cm_type`, `unread`, `date`, `status`)
+					VALUES					('$id_mem', '$id_sender', '$uid_sender', '$name_sender', '$id_owner', '$uid_owner', '$name_owner', '$content', '$id_post', '$image', '$type', '$cmtype', '$unread', '$date', '$status');";
+					
+			$rs6 = mysql_query($str);
+			if ($rs6==TRUE) {
+				$ids = array();
+				$ids[] = $rs5['gcm_id'];
+				$id1 = mysql_insert_id();
+				$notify = new Notify($id1, $id_mem, $id_sender, $uid_sender, $name_sender, $id_owner, $uid_owner, $name_owner, $content, $id_post, $image, $type, $cmtype, $unread, $date, $status);
+				$mess = json_encode($notify);
+				SendNotification($mess, $ids);
+			}
+		}
+		
+		$str = "SELECT		c.`content`,
+							a.`id`			AS	`id_mem`,
+							a.`gcm_id`,
+							a1.`id`			AS	`id_sender`,
+							a1.`name`		AS	`uid_sender`,
+							a1.`nick_name`	AS	`name_sender`,
+							a1.`image`,
+							a2.`id`			AS	`id_owner`,
+							a2.`name`		AS	`uid_owner`,
+							a2.`nick_name`	AS	`name_owner`,
+							c1.`id_product`	AS	`id_post`,
+							c1.`date`
+				FROM		`comment` c
+				INNER JOIN	`post` p
+				ON			p.`id`=c.`id_product`
+				INNER JOIN	`comment` c1
+				ON			c1.`id_product`=c.`id_product`	AND
+							c1.`id_account`<>p.`id_account`	AND
+							c1.`status`=1
+				INNER JOIN	`account` a
+				ON			a.`id`=c1.`id_account`
+				INNER JOIN	`account` a1
+				ON			a1.`id`=c.`id_account`
+				INNER JOIN	`account` a2
+				ON			a2.`id`=p.`id_account`
+				WHERE		c.`id`=$idcomment
+				GROUP BY	a.`id`
+				HAVING		a.`id`<>a1.`id`;";
+		
+		$rs4 = mysql_query($str);
+		if (mysql_num_rows($rs4)>0) {
+			while ($rs5 = mysql_fetch_assoc($rs4)) {
+				$id_mem = $rs5['id_mem'];
+				$id_sender = $rs5['id_sender'];
+				$uid_sender = $rs5['uid_sender'];
+				$name_sender = $rs5['name_sender'];
+				$id_owner = $rs5['id_owner'];
+				$uid_owner = $rs5['uid_owner'];
+				$name_owner = $rs5['name_owner'];
+				$content = $rs5['content'];
+				$id_post = $rs5['id_post'];
+				$image = $rs5['image'];
+				$type = 2;
+				$unread = 1;
+				$date = $rs5['date'];
+				$status = 1;
+				
+				$str = "INSERT INTO	`notify`	(`id_mem`, `id_sender`, `uid_sender`, `name_sender`, `id_owner`, `uid_owner`, `name_owner`, `content`, `id_post`, `image`, `type`, `cm_type`, `unread`, `date`, `status`)
+						VALUES					('$id_mem', '$id_sender', '$uid_sender', '$name_sender', '$id_owner', '$uid_owner', '$name_owner', '$content', '$id_post', '$image', '$type', '$cmtype', '$unread', '$date', '$status');";
+						
+				$rs6 = mysql_query($str);
+				if ($rs6==TRUE) {
+					$ids = array();
+					$ids[] = $rs5['gcm_id'];
+					$id1 = mysql_insert_id();
+					$notify = new Notify($id1, $id_mem, $id_sender, $uid_sender, $name_sender, $id_owner, $uid_owner, $name_owner, $content, $id_post, $image, $type, $cmtype, $unread, $date, $status);
+					$mess = json_encode($notify);
+					SendNotification($mess, $ids);
+				}
+			}
+		}
+	}
+	
+	mysql_close($conn);
+	echoRespnse ( 200, 1);
+} );
+
+$app->post ( '/addNotice', function () use ($app) {
+	authenticate();
+	verifyRequiredParams ( array (
+			'product',
+			'account'
+	) );
+	
+	$id_product = $app->request->post ('product');
+	$idaccount = $app->request->post ('account');
+	
+	$conn = mysql_connect(DB_HOST, DB_USERNAME, DB_PASSWORD) or
+		die("Khong ket noi dc Database !");
+	mysql_select_db(DB_NAME);
+	mysql_query("SET NAMES 'utf8'");
+	
+	$sql="SELECT c.id_account from `comment` c WHERE c.id_product='$id_product' GROUP BY c.id_account";
+	$result=mysql_query($sql);
+	while ($row=mysql_fetch_array($result)){
+		if($idaccount!=$row['id_account'])
+			mysql_query("INSERT INTO `notice` (`id_account`, `id_product`, `datetime`, `id_writer`) VALUES ('".$row['id_account']."', '$id_product', NOW(), '$idaccount')");
+	}
+	mysql_close($conn);
+	echoRespnse ( 200, 1);
+} );
+
+
+$app->post ( '/addMemoTrack', function () use ($app) {
+	authenticate();
+	
+	$idaccount = $app->request->post ( 'idaccount' );
+	$email = $app->request->post ( 'email' );
+	$version = $app->request->post ( 'version' );
+	$ip = $app->request->getIp();
+	$date = date("Y-m-d H:i:s");
+	
+	$db = new MemoTracker();
+	$res = $db->addTrack($idaccount, $email, $ip, $date, $version);
+	echoRespnse(200, $res);
+} );
+
+
 /**
  * Test method
  */

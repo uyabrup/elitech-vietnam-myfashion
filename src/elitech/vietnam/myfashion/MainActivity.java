@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -59,6 +60,9 @@ public class MainActivity extends ActionBarActivity {
 		mPrefs = getSharedPreferences(getPackageName(), MODE_PRIVATE);
 		mDBHandler = new DBHandler(getApplicationContext());
 		mServices = new ServiceBuilder(this).build();
+
+		mUser = new Gson().fromJson(mPrefs.getString(PrefsDefinition.LOGGEDIN_MEMBER, ""), Member.class);
+		mOptions = new Gson().fromJson(mPrefs.getString(PrefsDefinition.OPTION_SETTINGS, ""), Options.class);
 		
 		mController = new AppController(this);
 		mSlideMenuController = new SlidingMenuController(this);
@@ -66,11 +70,7 @@ public class MainActivity extends ActionBarActivity {
 		mActionBar = getSupportActionBar();
 		mActionBar.setHomeButtonEnabled(true);
 
-		/*
-		 * Dummy user data
-		 */
-		mUser = new Gson().fromJson(mPrefs.getString(PrefsDefinition.LOGGEDIN_MEMBER, ""), Member.class);
-		mOptions = new Gson().fromJson(mPrefs.getString(PrefsDefinition.OPTION_SETTINGS, ""), Options.class);
+		changeLanguage(mOptions != null ? mOptions.mLanguage : 2);
 
 		mSlideMenuController.setUp();
 		
@@ -92,7 +92,6 @@ public class MainActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		
 		final MenuItem searchItem = menu.findItem(R.id.action_search);
@@ -133,9 +132,6 @@ public class MainActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
 			changeBase(BaseFragment.TAG_MYSHOPPING, null);
@@ -249,6 +245,44 @@ public class MainActivity extends ActionBarActivity {
 	@Override
 	protected void onActivityResult(final int arg0, final int arg1, final Intent arg2) {
 		super.onActivityResult(arg0, arg1, arg2);
-//		mController.storeResult(arg0, arg1, arg2);
+	}
+
+	/**
+	 * Change the app's language (locale) by language number
+	 * @param languageOption
+	 */
+	public void changeLanguage(int languageOption) {
+		Locale locale = Locale.KOREA;
+		switch (languageOption) {
+		case 1:
+			locale = Locale.KOREA;
+			break;
+		case 2:
+			locale = Locale.ENGLISH;
+			break;
+		case 0:
+		case 3:
+			locale = new Locale("vi_VN");
+			break;
+		default:
+			break;
+		}
+		Locale.setDefault(locale);
+        Configuration appConfig = getApplicationContext().getResources().getConfiguration();
+        appConfig.locale = locale;
+        getApplicationContext().getResources().updateConfiguration(appConfig,
+        		getApplicationContext().getResources().getDisplayMetrics());
+        
+        mSlideMenuController.setUp();
+	}
+	
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		handleIntent();
+	}
+	
+	private void handleIntent() {
+		
 	}
 }

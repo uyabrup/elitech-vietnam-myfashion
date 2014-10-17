@@ -12,7 +12,7 @@ import android.util.Log;
 
 public class Blur {
 
-	private static final String TAG = "Blur";
+//	private static final String TAG = "Blur";
 
 	@SuppressLint("NewApi")
 	public static Bitmap fastblur(Context context, Bitmap sentBitmap, int radius) {

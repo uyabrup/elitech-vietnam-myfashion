@@ -19,7 +19,6 @@ import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.text.Html;
 import android.util.Log;
@@ -30,7 +29,10 @@ import com.google.gson.Gson;
 import elitech.vietnam.myfashion.MainActivity;
 import elitech.vietnam.myfashion.R;
 import elitech.vietnam.myfashion.config.Const;
+import elitech.vietnam.myfashion.config.Options;
+import elitech.vietnam.myfashion.entities.Member;
 import elitech.vietnam.myfashion.entities.Notify;
+import elitech.vietnam.myfashion.prefs.PrefsDefinition;
 
 public class GCMIntentService extends IntentService {
 	public static int			NUMBER			= 0;
@@ -53,8 +55,12 @@ public class GCMIntentService extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 		Bundle extras = intent.getExtras();
 		GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(this);
+
+		SharedPreferences mPrefs = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+		Options mOption = new Gson().fromJson(mPrefs.getString(PrefsDefinition.OPTION_SETTINGS, ""), Options.class);
 		// The getMessageType() intent parameter must be the intent you received
 		// in your BroadcastReceiver.
+		Member mUser = new Gson().fromJson(mPrefs.getString(PrefsDefinition.LOGGEDIN_MEMBER, ""), Member.class);
 		String messageType = gcm.getMessageType(intent);
 
 		if (!extras.isEmpty()) { // has effect of unparcelling Bundle
@@ -73,23 +79,16 @@ public class GCMIntentService extends IntentService {
 			} else if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
 				// This loop represents the service doing some work.
 				Log.i(TAG, "Received: " + extras.toString());
-				SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-				boolean isNotiOn = mPrefs.getBoolean("GetNotification", true);
-				boolean isNotiComent = mPrefs.getBoolean("GetNotiComent", true);
-				boolean isNotiReply = mPrefs.getBoolean("GetNotiReply", true);
-				boolean isNotiPost = mPrefs.getBoolean("GetNotiPost", true);
-				boolean isNotiFollow = mPrefs.getBoolean("GetNotiFollow", true);
-				boolean isLoggIn = mPrefs.getBoolean("LoggedIn", false);
-				if (isNotiOn && isLoggIn) {
+				if (mOption.mNotiEnable && mUser != null) {
 					String data = extras.getString("message");
 					if (data != null && !data.equals("")) {
 						Notify noti = new Gson().fromJson(data, Notify.class);
 						noti.isNew = true;
-						if ((noti.Type == 1 && isNotiComent) || (noti.Type == 2 && isNotiReply)
-								|| (noti.Type == 3 && isNotiPost) || (noti.Type == 4 && isNotiFollow) || noti.Type == 5) {
-							Log.i(TAG, "Received1: " + extras.toString());
+						// Post notification of received message.
+						if ((noti.Type == 1 && mOption.mNotiComment) || (noti.Type == 2 && mOption.mNotiRepComment)
+								|| (noti.Type == 3 && mOption.mNotiFriendPost)
+								|| (noti.Type == 4 && mOption.mNotiAddFriend) || noti.Type == 5)
 							sendNotification(data, noti);
-						}
 					}
 				}
 				// Log.i(TAG, "Received: " + extras.toString());
@@ -107,8 +106,8 @@ public class GCMIntentService extends IntentService {
 		mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 		GCMEntity e = GCMEntity.newInstance(this, noti);
 
-		SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		boolean isNotiSound = mPrefs.getBoolean("GetNotiSound", true);
+		SharedPreferences mPrefs = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+		Options mOption = new Gson().fromJson(mPrefs.getString(PrefsDefinition.OPTION_SETTINGS, ""), Options.class);
 
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this).setSmallIcon(e.smallIcon)
 				.setContentTitle(Html.fromHtml(e.title))
@@ -153,7 +152,7 @@ public class GCMIntentService extends IntentService {
 				PendingIntent.FLAG_UPDATE_CURRENT);
 		mBuilder.setContentIntent(resultPendingIntent);
 
-		if (isNotiSound) {
+		if (mOption.mNotiSound) {
 			Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 			mBuilder.setSound(alarmSound);
 		}
@@ -197,6 +196,7 @@ public class GCMIntentService extends IntentService {
 		intent.putExtra("DATA", new Gson().toJson(noti));
 		sendBroadcast(intent);
 	}
+	
 
 	private Bitmap readCache(String Id) {
 		File f = new File(cacheDir, Id);
@@ -231,7 +231,7 @@ public class GCMIntentService extends IntentService {
 
 		public static GCMEntity newInstance(Context context, Notify noti) {
 			GCMEntity rs = new GCMEntity();
-//			rs.smallIcon = R.drawable.logo_64;
+			rs.smallIcon = R.drawable.ic_app;
 
 			if (noti.Type == 1) {
 				rs.title = context.getString(R.string.commentedonyourstyle);
