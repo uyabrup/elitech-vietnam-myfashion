@@ -13,7 +13,6 @@
         android:layout_marginRight="15dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="10dp"
-        android:background="@drawable/textfield_default_holo_light"
         android:hint="@string/address"
         android:inputType="textMultiLine|textPostalAddress"
         android:lines="2"
@@ -79,7 +78,6 @@
         android:layout_marginRight="15dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="10dp"
-        android:background="@drawable/textfield_default_holo_light"
         android:hint="@string/phonenumber"
         android:inputType="phone"
         android:maxLength="16" />

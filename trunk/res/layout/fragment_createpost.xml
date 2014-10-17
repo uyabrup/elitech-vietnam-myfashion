@@ -32,7 +32,6 @@
                 android:id="@+id/createpost_edtContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/textfield_default_holo_light"
                 android:gravity="bottom"
                 android:hint="@string/writesomthingaboutthisphoto"
                 android:inputType="textMultiLine|textCapSentences"

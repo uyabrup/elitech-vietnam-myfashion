@@ -129,11 +129,10 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginStart="10dp"
-            android:background="@drawable/bg_button_simple"
+            android:background="@drawable/com_facebook_button_blue"
             android:text="@string/viewpurchasehistory"
-            android:textColor="@color/green"
-            android:textStyle="bold"
-            android:visibility="gone" />
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
         <RelativeLayout
             android:layout_width="match_parent"
