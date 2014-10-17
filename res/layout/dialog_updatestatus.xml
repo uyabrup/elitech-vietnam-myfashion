@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:background="@drawable/textfield_default_holo_light"
         android:gravity="start|top"
         android:hint="@string/what_s_inyourmind"
         android:inputType="textMultiLine|textCapSentences"

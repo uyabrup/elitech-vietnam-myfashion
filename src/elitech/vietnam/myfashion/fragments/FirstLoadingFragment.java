@@ -282,14 +282,14 @@ public class FirstLoadingFragment extends AbstractFragment {
 						onLoadingCompleted(true);
 					}
 				});
-				mActivity.getServices().addMemoTrack((m != null) ? m.Id : 0, (m != null) ? m.Email : "no-id", version, new Callback<Integer>() {
-					@Override
-					public void failure(RetrofitError arg0) {
-					}
-					@Override
-					public void success(Integer arg0, Response arg1) {
-					}
-				});
+//				mActivity.getServices().addMemoTrack((m != null) ? m.Id : 0, (m != null) ? m.Email : "no-id", version, new Callback<Integer>() {
+//					@Override
+//					public void failure(RetrofitError arg0) {
+//					}
+//					@Override
+//					public void success(Integer arg0, Response arg1) {
+//					}
+//				});
 			}
 		}
 	}

@@ -84,6 +84,8 @@
     <color name="swipe_3">#ff12ffa0</color>
     <color name="swipe_4">#ffff6724</color>
     
+    <color name="apptheme_color">#33b5e5</color>
+    
     <color name="google_login_in">#dd4b39</color>
     <color name="google_login_ac">#e16252</color>
     <color name="facebook_login_in">#3c5b97</color>
