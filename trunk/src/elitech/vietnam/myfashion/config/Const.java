@@ -29,6 +29,7 @@ public class Const {
 	public static final int		REQUEST_DIALOG_UPDATESHIPPING	= 10;
 	public static final int		REQUEST_DIALOG_TAKEPICAVATAR	= 11;
 	public static final int		REQUEST_DIALOG_TAKEPICPOST		= 12;
+	public static final int		REQUEST_DIALOG_DELETEFROMCART	= 13;
 	
 	public static final int		REQUEST_EDITCAMERA				= 101;
 	public static final int		REQUEST_EDITLIBRARY				= 102;

@@ -5,6 +5,8 @@ package elitech.vietnam.myfashion.adapters;
 
 import java.util.List;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +44,7 @@ public class CosmeticAdapter extends ArrayAdapter<Cosmetic> {
 			holder = (ViewHolder) convertView.getTag();
 		
 		Cosmetic item = getItem(position);
-		holder.mTxtName.setText(item.Name);
+		holder.mTxtName.setText(WordUtils.capitalizeFully(item.Name));
 		
 		return convertView;
 	}

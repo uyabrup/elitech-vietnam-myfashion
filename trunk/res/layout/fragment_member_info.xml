@@ -124,144 +124,188 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/memInfo_layoutButtonFollow"
+            android:layout_marginBottom="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginStart="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/bg_button_follow"
+            android:background="@drawable/bg_button_simple"
             android:text="@string/viewpurchasehistory"
             android:textColor="@color/green"
             android:textStyle="bold"
             android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/memInfo_txtStyleLabel"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/memInfo_btnPurchaseHistory"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_marginStart="10dp"
-            android:text="@string/style"
-            android:textColor="@color/green"
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:id="@+id/memInfo_layoutStyleContent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/memInfo_txtStyleLabel"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/appwidget_bg"
-            android:orientation="horizontal"
-            android:padding="15dp" >
+            android:background="@drawable/facebook_button_grey_normal" >
 
             <TextView
-                android:id="@+id/memInfo_txtStyleNoData"
+                android:id="@+id/memInfo_txtStyleLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/style"
+                android:textColor="@color/green"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/memInfo_layoutStyleContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/memInfo_txtStyleLabel"
                 android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:gravity="center_horizontal"
-                android:text="@string/nothaveyet"
-                android:textColor="@color/gray" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:padding="10dp" >
 
-        <TextView
-            android:id="@+id/memInfo_txtFavoriteLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/memInfo_layoutStyleContent"
-            android:layout_marginLeft="15dp"
-            android:layout_marginStart="15dp"
-            android:text="@string/favorite"
-            android:textColor="@color/green"
-            android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/memInfo_txtStyleNoData"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_horizontal"
+                    android:text="@string/nothaveyet"
+                    android:textColor="@color/gray" />
+            </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/memInfo_layoutFavoriteContent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/memInfo_txtFavoriteLabel"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/appwidget_bg"
-            android:orientation="horizontal"
-            android:padding="15dp" >
+            <View
+                android:id="@+id/memInfo_dividerStyle"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/memInfo_layoutStyleContent"
+                android:layout_marginEnd="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginStart="10dp"
+                android:background="@android:drawable/divider_horizontal_bright" />
 
             <TextView
-                android:id="@+id/memInfo_txtFavoriteNoData"
+                android:id="@+id/memInfo_txtFavoriteLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/memInfo_dividerStyle"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/favorite"
+                android:textColor="@color/green"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/memInfo_layoutFavoriteContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/memInfo_txtFavoriteLabel"
                 android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:gravity="center_horizontal"
-                android:text="@string/nothaveyet"
-                android:textColor="@color/gray" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:padding="10dp" >
 
-        <TextView
-            android:id="@+id/memInfo_txtSuggestLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/memInfo_layoutFavoriteContent"
-            android:layout_marginLeft="15dp"
-            android:layout_marginStart="15dp"
-            android:text="@string/suggest"
-            android:textColor="@color/green"
-            android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/memInfo_txtFavoriteNoData"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_horizontal"
+                    android:text="@string/nothaveyet"
+                    android:textColor="@color/gray" />
+            </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/memInfo_layoutSuggestContent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/memInfo_txtSuggestLabel"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/appwidget_bg"
-            android:orientation="horizontal"
-            android:padding="15dp" >
+            <View
+                android:id="@+id/memInfo_dividerFavorite"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/memInfo_layoutFavoriteContent"
+                android:layout_marginEnd="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginStart="10dp"
+                android:background="@android:drawable/divider_horizontal_bright" />
 
             <TextView
-                android:id="@+id/memInfo_txtSuggestNoData"
+                android:id="@+id/memInfo_txtSuggestLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/memInfo_dividerFavorite"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/suggest"
+                android:textColor="@color/green"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/memInfo_layoutSuggestContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/memInfo_txtSuggestLabel"
                 android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:gravity="center_horizontal"
-                android:text="@string/nothaveyet"
-                android:textColor="@color/gray" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:padding="10dp" >
 
-        <TextView
-            android:id="@+id/memInfo_txtReviewLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/memInfo_layoutSuggestContent"
-            android:layout_marginLeft="15dp"
-            android:layout_marginStart="15dp"
-            android:text="@string/review"
-            android:textColor="@color/green"
-            android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/memInfo_txtSuggestNoData"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_horizontal"
+                    android:text="@string/nothaveyet"
+                    android:textColor="@color/gray" />
+            </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/memInfo_layoutReviewContent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/memInfo_txtReviewLabel"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/appwidget_bg"
-            android:orientation="horizontal"
-            android:padding="15dp" >
+            <View
+                android:id="@+id/memInfo_dividerSuggest"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/memInfo_layoutSuggestContent"
+                android:layout_marginEnd="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginStart="10dp"
+                android:background="@android:drawable/divider_horizontal_bright" />
 
             <TextView
-                android:id="@+id/memInfo_txtReviewNoData"
+                android:id="@+id/memInfo_txtReviewLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/memInfo_dividerSuggest"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/review"
+                android:textColor="@color/green"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/memInfo_layoutReviewContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/memInfo_txtReviewLabel"
                 android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:gravity="center_horizontal"
-                android:text="@string/nothaveyet"
-                android:textColor="@color/gray" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:padding="10dp" >
+
+                <TextView
+                    android:id="@+id/memInfo_txtReviewNoData"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_horizontal"
+                    android:text="@string/nothaveyet"
+                    android:textColor="@color/gray" />
+            </LinearLayout>
+        </RelativeLayout>
     </RelativeLayout>
 
 </ScrollView>

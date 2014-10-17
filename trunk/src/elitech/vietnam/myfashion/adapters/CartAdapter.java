@@ -62,6 +62,8 @@ public class CartAdapter extends ArrayAdapter<OrderDetail> {
 		} else 
 			holder = (ViewHolder) convertView.getTag();
 		
+		holder.mQuantity.setOnItemSelectedListener(null);
+		
 		final OrderDetail item = getItem(position);
 		UrlImageViewHelper.setUrlDrawable(holder.mImage, Const.SERVER_IMAGE_THUMB_URL + item.Image);
 		item.Quantity = item.Quantity > holder.QUANTITIES.length ? holder.QUANTITIES.length : item.Quantity;
@@ -86,9 +88,14 @@ public class CartAdapter extends ArrayAdapter<OrderDetail> {
 		holder.mTotal.setText(Utilities.numberFormat(item.PriceVN * item.Quantity) + Const.CURRENCY_VN);
 		
 		final ViewHolder dummyHolder = holder;
+		holder.mQuantity.setTag("init tag");
 		holder.mQuantity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				if (parent.getTag() != null) {
+					parent.setTag(null);
+					return;
+				}
 				int subPrice = (dummyHolder.QUANTITIES[position] - item.Quantity) * item.PriceVN;
 				float subWeight = (dummyHolder.QUANTITIES[position] - item.Quantity) * item.Weight;
 				item.Quantity = dummyHolder.QUANTITIES[position];
@@ -103,7 +110,7 @@ public class CartAdapter extends ArrayAdapter<OrderDetail> {
 		holder.mDelete.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				DeleteItemCartDialog.newInstance(item.ProductName, position, 10, mFragment)
+				DeleteItemCartDialog.newInstance(item.ProductName, position, Const.REQUEST_DIALOG_DELETEFROMCART, mFragment)
 				.show(mFragment.getFragmentManager());
 			}
 		});

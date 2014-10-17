@@ -10,6 +10,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import elitech.vietnam.myfashion.R;
+import elitech.vietnam.myfashion.adapters.EndlessScrollListener;
 import elitech.vietnam.myfashion.adapters.ReviewAdapter;
 import elitech.vietnam.myfashion.entities.Product;
 import elitech.vietnam.myfashion.entities.Review;
@@ -55,6 +56,30 @@ public class ProductReviewFragment extends AbstractFragment implements OnItemCli
 		
 		mAdapter = new ReviewAdapter(mActivity, R.layout.fragment_product_review, mReviews);
 		mListView.setAdapter(mAdapter);
+		mListView.setOnScrollListener(new EndlessScrollListener() {
+			@Override
+			public void onLoadmore() {
+				mActivity.getServices().getProductReviews(mProduct.Id, mReviews.size(), LOADMORE, new Callback<List<Review>>() {
+					@Override
+					public void success(List<Review> arg0, Response arg1) {
+						mReviews.addAll(arg0);
+						mAdapter.notifyDataSetChanged();
+						setLoading(false);
+						if (arg0.size() < 20)
+							setEnd(true);
+					}
+					@Override
+					public void failure(RetrofitError arg0) {
+						Log.w("RetrofitError", arg0.getMessage());
+						setLoading(false);
+					}
+				});
+			}
+			@Override
+			public int getItemCount() {
+				return mReviews.size();
+			}
+		});
 
 		mRefresh.setOnRefreshListener(this);
 		mListView.setOnItemClickListener(this);
@@ -68,7 +93,7 @@ public class ProductReviewFragment extends AbstractFragment implements OnItemCli
 		mProduct = mActivity.getController().getProduct();
 		
 		mRefresh.setRefreshing(true);
-		onRefresh();
+		getData();
 	}
 
 	@Override
@@ -82,7 +107,7 @@ public class ProductReviewFragment extends AbstractFragment implements OnItemCli
 	}
 	
 	private void getData() {
-		mActivity.getServices().getProductReviews(mProduct.Id, mReviews.size(), LOADMORE, new Callback<List<Review>>() {
+		mActivity.getServices().getProductReviews(mProduct.Id, 0, LOADMORE, new Callback<List<Review>>() {
 			@Override
 			public void success(List<Review> arg0, Response arg1) {
 				mReviews.clear();

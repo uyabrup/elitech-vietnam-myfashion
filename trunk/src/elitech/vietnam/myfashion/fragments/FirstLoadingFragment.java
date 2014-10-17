@@ -202,6 +202,10 @@ public class FirstLoadingFragment extends AbstractFragment {
 						public void run() {
 							mActivity.getActionBar().show();
 							mActivity.changeBase(BaseFragment.TAG_BESTOFDAY, null);
+							if (mActivity.getPreferences().getBoolean(PrefsDefinition.FIRST_LAUNCH, true)) {
+								mActivity.getPreferences().edit().putBoolean(PrefsDefinition.FIRST_LAUNCH, false).commit();
+								mActivity.getMenuController().showMenu();
+							}
 						}
 					}, 1000);
 				} else {
@@ -265,8 +269,7 @@ public class FirstLoadingFragment extends AbstractFragment {
 					e.printStackTrace();
 				}
 				int api = Build.VERSION.SDK_INT;
-				Member m = null;
-//				Member m = new Gson().fromJson(GetPreference("User"), Member.class);
+				Member m = new Gson().fromJson(pref.getString(PrefsDefinition.LOGGEDIN_MEMBER, ""), Member.class);
 				String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
 				mActivity.getServices().storeDevice(deviceId, version, api, (m != null) ? m.Email : "@null", date, gcmId, new Callback<Integer>() {
 					@Override
@@ -277,6 +280,14 @@ public class FirstLoadingFragment extends AbstractFragment {
 					@Override
 					public void success(Integer arg0, Response arg1) {
 						onLoadingCompleted(true);
+					}
+				});
+				mActivity.getServices().addMemoTrack((m != null) ? m.Id : 0, (m != null) ? m.Email : "no-id", version, new Callback<Integer>() {
+					@Override
+					public void failure(RetrofitError arg0) {
+					}
+					@Override
+					public void success(Integer arg0, Response arg1) {
 					}
 				});
 			}

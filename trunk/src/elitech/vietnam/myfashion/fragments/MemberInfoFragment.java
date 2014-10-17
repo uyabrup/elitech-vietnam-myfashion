@@ -273,6 +273,13 @@ public class MemberInfoFragment extends AbstractFragment implements View.OnClick
 								mBtnFollow.setImageResource(R.drawable.ic_following);
 								mMember.FollowCount += 1;
 								mBtnFollower.setText(mMember.FollowCount + "\n" + getString(mMember.FollowCount > 1 ? R.string.num_followers : R.string.num_follower));
+								mActivity.getServices().notifyAddFriend(mActivity.getLoggedinUser().Id, mMember.Id, new Callback<Integer>() {
+									@Override
+									public void failure(RetrofitError arg0) {
+									}
+									@Override
+									public void success(Integer arg0, Response arg1) {
+									}});
 							}
 							mBtnFollow.setEnabled(true);
 						}

@@ -28,6 +28,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 import elitech.vietnam.myfashion.R;
 import elitech.vietnam.myfashion.adapters.CommentDialogAdapter;
+import elitech.vietnam.myfashion.adapters.EndlessScrollListener;
 import elitech.vietnam.myfashion.entities.Comment;
 import elitech.vietnam.myfashion.fragments.StyleDetailFragment;
 
@@ -79,6 +80,30 @@ public class CommentDialog extends AbstractDialogFragment implements View.OnClic
 		mRefresh.setColorSchemeResources(R.color.swipe_1, R.color.swipe_2, R.color.swipe_3, R.color.swipe_4);
 		mAdapter = new CommentDialogAdapter(mActivity, mComments);
 		mList.setAdapter(mAdapter);
+		mList.setOnScrollListener(new EndlessScrollListener() {
+			@Override
+			public void onLoadmore() {
+				mActivity.getServices().getProductCommnets(mPostId, mComments.size(), LOADMORE, 2, new Callback<List<Comment>>() {
+					@Override
+					public void success(List<Comment> arg0, Response arg1) {
+						mComments.addAll(arg0);
+						mAdapter.notifyDataSetChanged();
+						setLoading(false);
+						if (arg0.size() < 20)
+							setEnd(true);
+					}
+					@Override
+					public void failure(RetrofitError arg0) {
+						Log.w("RetrofitError", arg0.getMessage());
+						setLoading(false);
+					}
+				});
+			}
+			@Override
+			public int getItemCount() {
+				return mComments.size();
+			}
+		});
 		
 		mRefresh.setOnRefreshListener(this);
 		mBtnSend.setOnClickListener(this);
@@ -132,9 +157,16 @@ public class CommentDialog extends AbstractDialogFragment implements View.OnClic
 						com.Type = 2;
 						mComments.add(com);
 						mAdapter.notifyDataSetChanged();
-						// TODO: notify comment
 						mBtnSend.setEnabled(true);
 						mCallback.updateCommentPost(1);
+						// Notify if have comment
+						mActivity.getServices().notifyComment(arg0, 2, new Callback<Integer>() {
+							@Override
+							public void failure(RetrofitError arg0) {
+							}
+							@Override
+							public void success(Integer arg0, Response arg1) {
+							}});
 					}
 					@Override
 					public void failure(RetrofitError arg0) {
@@ -172,22 +204,6 @@ public class CommentDialog extends AbstractDialogFragment implements View.OnClic
 				mBtnNoComment.setVisibility(arg0.size() > 0 ? View.GONE : View.VISIBLE);
 				mList.setVisibility(arg0.size() > 0 ? View.VISIBLE : View.GONE);
 				mLoading.setVisibility(View.GONE);
-			}
-			@Override
-			public void failure(RetrofitError arg0) {
-				Log.w("RetrofitError", arg0.getMessage());
-				mRefresh.setRefreshing(false);
-			}
-		});
-	}
-	
-	private void getMoreData() {
-		mActivity.getServices().getProductCommnets(mPostId, mComments.size(), LOADMORE, 2, new Callback<List<Comment>>() {
-			@Override
-			public void success(List<Comment> arg0, Response arg1) {
-				mComments.addAll(arg0);
-				mAdapter.notifyDataSetChanged();
-				mRefresh.setRefreshing(false);
 			}
 			@Override
 			public void failure(RetrofitError arg0) {

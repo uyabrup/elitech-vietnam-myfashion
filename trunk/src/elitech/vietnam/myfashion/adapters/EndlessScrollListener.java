@@ -42,4 +42,12 @@ public abstract class EndlessScrollListener implements OnScrollListener {
 	public void setEnd(boolean ending) {
 		isEnd = ending;
 	}
+	
+	public boolean isLoading() {
+		return isLoading;
+	}
+	
+	public boolean isEnd() {
+		return isEnd;
+	}
 }

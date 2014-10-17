@@ -69,7 +69,7 @@ public class UpdateShippingDialog extends AbstractDialogFragment implements View
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		getDialog().setTitle(R.string.status);
+		getDialog().setTitle(R.string.address);
 		mRequest = getTargetRequestCode();
 		mClick = (ShippingDialogCallback) getTargetFragment();
 		mMemberId = getArguments().getInt(ARG_MEMBERID);
@@ -91,6 +91,7 @@ public class UpdateShippingDialog extends AbstractDialogFragment implements View
 		mSpinDistrict.setAdapter(mDistrictAdapter);
 		mSpinCity.setAdapter(mCityAdapter);
 		
+		mSpinCity.setTag("init tag");
 		mBtnSave.setOnClickListener(this);
 		mBtnCancel.setOnClickListener(this);
 		mSpinCity.setOnItemSelectedListener(this);
@@ -110,7 +111,7 @@ public class UpdateShippingDialog extends AbstractDialogFragment implements View
 		mCityAdapter.notifyDataSetChanged();
 		for (int i=0; i<mCities.size(); i++) {
 			if (mCities.get(i).Id == mCity) {
-				mSpinCity.setSelection(i, false);
+				mSpinCity.setSelection(i);
 				break;
 			}
 		}
@@ -120,7 +121,7 @@ public class UpdateShippingDialog extends AbstractDialogFragment implements View
 		mDistrictAdapter.notifyDataSetChanged();
 		for (int i=0; i<mDistricts.size(); i++) {
 			if (mDistricts.get(i).Id == mDistrict) {
-				mSpinDistrict.setSelection(i, false);
+				mSpinDistrict.setSelection(i);
 				break;
 			}
 		}
@@ -167,6 +168,10 @@ public class UpdateShippingDialog extends AbstractDialogFragment implements View
 	
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+		if (parent.getTag() != null) {
+			parent.setTag(null);
+			return;
+		}
 		switch (parent.getId()) {
 		case R.id.dialog_updateshipping_spinCity:
 			mDistricts.clear();

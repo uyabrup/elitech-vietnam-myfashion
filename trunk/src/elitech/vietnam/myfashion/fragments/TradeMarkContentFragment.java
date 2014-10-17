@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import elitech.vietnam.myfashion.R;
+import elitech.vietnam.myfashion.adapters.EndlessScrollListener;
 import elitech.vietnam.myfashion.adapters.ProductGridAdapter;
 import elitech.vietnam.myfashion.dialogues.AddToCartDialog.AddToCartCallBack;
 import elitech.vietnam.myfashion.entities.Color;
@@ -65,6 +66,33 @@ public class TrademarkContentFragment extends AbstractFragment implements OnRefr
 		mLayoutRefresh.setColorSchemeResources(R.color.swipe_1, R.color.swipe_2, R.color.swipe_3, R.color.swipe_4);
 		mAdapter = new ProductGridAdapter(mActivity, R.layout.item_bestofday, mProducts, this);
 		mGrid.setAdapter(mAdapter);
+		mGrid.setOnScrollListener(new EndlessScrollListener() {
+			@Override
+			public void onLoadmore() {
+				int member = (mActivity.getLoggedinUser() != null) ? mActivity.getLoggedinUser().Id : -1;
+				mActivity.getServices().getProductByBrand(mTMName, member, mProducts.size(), LOADMORE,
+						new Callback<List<Product>>() {
+							@Override
+							public void success(List<Product> arg0, Response arg1) {
+								mProducts.addAll(arg0);
+								mAdapter.notifyDataSetChanged();
+								setLoading(false);
+								if (arg0.size() < 20)
+									setEnd(true);
+							}
+							@Override
+							public void failure(RetrofitError arg0) {
+								Log.w("RetrofitError", arg0.getMessage());
+								setLoading(false);
+							}
+						});
+			}
+			
+			@Override
+			public int getItemCount() {
+				return mProducts.size();
+			}
+		});
 
 		mLayoutRefresh.setOnRefreshListener(this);
 		mGrid.setOnItemClickListener(this);
@@ -104,23 +132,6 @@ public class TrademarkContentFragment extends AbstractFragment implements OnRefr
 				});
 	}
 
-	private void getMoreData() {
-		int member = (mActivity.getLoggedinUser() != null) ? mActivity.getLoggedinUser().Id : -1;
-		mActivity.getServices().getProductByBrand(mTMName, member, mProducts.size(), LOADMORE,
-				new Callback<List<Product>>() {
-					@Override
-					public void success(List<Product> arg0, Response arg1) {
-						mProducts.addAll(arg0);
-						mAdapter.notifyDataSetChanged();
-						mLayoutRefresh.setRefreshing(false);
-					}
-					@Override
-					public void failure(RetrofitError arg0) {
-						Log.w("RetrofitError", arg0.getMessage());
-						mLayoutRefresh.setRefreshing(false);
-					}
-				});
-	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

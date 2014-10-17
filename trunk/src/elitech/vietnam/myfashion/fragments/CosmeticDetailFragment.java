@@ -3,6 +3,8 @@
  */
 package elitech.vietnam.myfashion.fragments;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 import android.os.Bundle;
 import android.support.v4.app.FragmentTabHost;
 import android.view.LayoutInflater;
@@ -30,7 +32,7 @@ public class CosmeticDetailFragment extends AbstractFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		mCallback = mActivity.getController();
 		mItem = mCallback.getCosmetic();
-		mActivity.getActionBar().setTitle(mItem.Name);
+		mActivity.getActionBar().setTitle(WordUtils.capitalizeFully(mItem.Name));
 		View view = inflater.inflate(R.layout.fragment_category_tabshost, container, false);
 		
 		mTabHost = (FragmentTabHost) view.findViewById(android.R.id.tabhost);

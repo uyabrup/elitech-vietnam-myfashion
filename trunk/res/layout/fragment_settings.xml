@@ -9,90 +9,210 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-        <Button
+        <RelativeLayout
             android:id="@+id/settings_btnAccount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_button_simple"
-            android:drawableLeft="@drawable/edit_user"
-            android:drawablePadding="10dp"
-            android:drawableStart="@drawable/edit_user"
-            android:gravity="start|center_vertical"
-            android:padding="10dp"
-            android:text="@string/account"
-            android:textColor="@color/green" />
+            android:padding="15dp" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/chevron_right"
+                android:drawablePadding="10dp"
+                android:drawableRight="@drawable/chevron_right"
+                android:text="@string/account"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/green" />
+        </RelativeLayout>
 
         <View
+            android:id="@+id/settings_dividerAccount"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@android:drawable/divider_horizontal_bright" />
 
-        <Button
+        <RelativeLayout
             android:id="@+id/settings_btnNotifications"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_button_simple"
-            android:drawableLeft="@drawable/world"
-            android:drawablePadding="10dp"
-            android:drawableStart="@drawable/world"
-            android:gravity="start|center_vertical"
-            android:padding="10dp"
-            android:text="@string/notifications"
-            android:textColor="@color/green" />
+            android:padding="15dp" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/chevron_right"
+                android:drawablePadding="10dp"
+                android:drawableRight="@drawable/chevron_right"
+                android:text="@string/notification"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/green" />
+        </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@android:drawable/divider_horizontal_bright" />
 
-        <Button
+        <RelativeLayout
+            android:id="@+id/settings_btnFindFriend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_button_simple"
+            android:padding="15dp"
+            android:visibility="gone" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Find friends"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/green" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:drawable/divider_horizontal_bright"
+            android:visibility="gone" />
+
+        <RelativeLayout
+            android:id="@+id/settings_btnPrivacy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_button_simple"
+            android:padding="15dp"
+            android:visibility="gone" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pricacy Policy"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/green" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:drawable/divider_horizontal_bright"
+            android:visibility="gone" />
+
+        <RelativeLayout
+            android:id="@+id/settings_btnTerms"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_button_simple"
+            android:padding="15dp"
+            android:visibility="gone" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Terms of Service"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/green" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:drawable/divider_horizontal_bright"
+            android:visibility="gone" />
+
+        <RelativeLayout
             android:id="@+id/settings_btnLanguage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_button_simple"
-            android:drawableLeft="@drawable/chalk_board"
-            android:drawablePadding="10dp"
-            android:drawableStart="@drawable/chalk_board"
-            android:gravity="start|center_vertical"
-            android:padding="10dp"
-            android:text="@string/language"
-            android:textColor="@color/green" />
+            android:padding="15dp" >
+
+            <TextView
+                android:id="@+id/settings_txtLanguageLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/language"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/green" />
+
+            <TextView
+                android:id="@+id/settings_txtLanguageValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/settings_txtLanguageLabel"
+                android:layout_toRightOf="@+id/settings_txtLanguageLabel"
+                android:drawableEnd="@drawable/chevron_right"
+                android:drawablePadding="10dp"
+                android:drawableRight="@drawable/chevron_right"
+                android:gravity="end"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/green" />
+        </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@android:drawable/divider_horizontal_bright" />
 
-        <Button
+        <RelativeLayout
             android:id="@+id/settings_btnAbout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_button_simple"
-            android:drawableLeft="@drawable/info"
-            android:drawablePadding="10dp"
-            android:drawableStart="@drawable/info"
-            android:gravity="start|center_vertical"
-            android:padding="10dp"
-            android:text="@string/about"
-            android:textColor="@color/green" />
+            android:padding="15dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/about"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/green" />
+        </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@android:drawable/divider_horizontal_bright" />
 
-        <Button
+        <RelativeLayout
+            android:id="@+id/settings_btnVersion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_button_simple"
+            android:padding="15dp"
+            android:visibility="gone" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/version"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/green" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:drawable/divider_horizontal_bright"
+            android:visibility="gone" />
+
+        <RelativeLayout
             android:id="@+id/settings_btnLoginSignup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_button_simple"
-            android:drawableLeft="@drawable/key"
-            android:drawablePadding="10dp"
-            android:drawableStart="@drawable/key"
-            android:gravity="start|center_vertical"
-            android:padding="10dp"
-            android:text="@string/loginorsignup"
-            android:textColor="@color/green" />
+            android:padding="15dp" >
+
+            <TextView
+                android:id="@+id/settings_txtLoginSignup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/loginorsignup"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/green" />
+        </RelativeLayout>
 
         <View
             android:layout_width="match_parent"

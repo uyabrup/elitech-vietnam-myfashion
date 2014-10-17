@@ -65,11 +65,12 @@ public class SlidingMenuController implements OnChildClickListener, OnGroupClick
 	public SlidingMenuController(MainActivity activity) {
 		mActivity = activity;
 		mMember = mActivity.getLoggedinUser();
+		mMenu = new SlidingMenu(mActivity);
+		mMenu.attachToActivity(mActivity, SlidingMenu.SLIDING_WINDOW);
 	}
 	
 	@SuppressLint("NewApi")
 	public void setUp() {
-		mMenu = new SlidingMenu(mActivity);
 		mMenu.setMode(SlidingMenu.LEFT);
 		mMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 		mMenu.setShadowWidth(20);
@@ -77,7 +78,6 @@ public class SlidingMenuController implements OnChildClickListener, OnGroupClick
 		mMenu.setBehindWidth(mMenuWidth = mActivity.getConfig().getScreenWidth() * 75 / 100);
 		mMenu.setBehindScrollScale(0.0f);
 		mMenu.setFadeDegree(0.75f);
-		mMenu.attachToActivity(mActivity, SlidingMenu.SLIDING_WINDOW);
 		mMenu.setMenu(R.layout.sliding_menu);
 		
 		mMenuListView = (ExpandableListView) mActivity.findViewById(R.id.slidemenu_explist);
@@ -110,11 +110,12 @@ public class SlidingMenuController implements OnChildClickListener, OnGroupClick
 		mFashions.add(new TradeMark(4, mActivity.getString(R.string.autumn_winter), 0, "menuicon_female"));
 		mFashions.add(new TradeMark(5, mActivity.getString(R.string.cosmetics), 0, "menuicon_best"));
 		mFashions.add(new TradeMark(6, mActivity.getString(R.string.trademarks), 0, "menuicon_best"));
+		mFashions.add(new TradeMark(7, mActivity.getString(R.string.inventory), 0, "menuicon_best"));
 		
 		mStyles = new ArrayList<>();
-		mStyles.add(new TradeMark(7, mActivity.getString(R.string.all_style), 0, "menuicon_styler"));
-		mStyles.add(new TradeMark(8, mActivity.getString(R.string.my_style), 0, "menuicon_mystyle"));
-		mStyles.add(new TradeMark(9, mActivity.getString(R.string.review), 0, "menuicon_review"));
+		mStyles.add(new TradeMark(8, mActivity.getString(R.string.all_style), 0, "menuicon_styler"));
+		mStyles.add(new TradeMark(9, mActivity.getString(R.string.my_style), 0, "menuicon_mystyle"));
+		mStyles.add(new TradeMark(10, mActivity.getString(R.string.review), 0, "menuicon_review"));
 		
 		// Generate child map
 		mChilds = new HashMap<>();
@@ -163,17 +164,19 @@ public class SlidingMenuController implements OnChildClickListener, OnGroupClick
 			break;
 		case 6:
 			mActivity.changeBase(BaseFragment.TAG_TRADEMARK, null);
-			break;
 		case 7:
-			mActivity.changeBase(BaseFragment.TAG_STYLER, null);
+			mActivity.changeBase(BaseFragment.TAG_INVENTORY, null);
 			break;
 		case 8:
+			mActivity.changeBase(BaseFragment.TAG_STYLER, null);
+			break;
+		case 9:
 			if (memId > 0)
 				mActivity.changeBase(BaseFragment.TAG_MYSTYLE, null);
 			else
 				WarningDialog.newInstance(mActivity.getString(R.string.loginrequiremessage)).show(mActivity.getSupportFragmentManager());
 			break;
-		case 9:
+		case 10:
 			mActivity.changeBase(BaseFragment.TAG_REVIEW, null);
 			break;
 		default:
@@ -192,6 +195,7 @@ public class SlidingMenuController implements OnChildClickListener, OnGroupClick
 		case R.id.menu_txtLogin:
 			mActivity.changeBase(BaseFragment.TAG_TPMLOGIN, null);
 			break;
+		case R.id.menu_imgAvatar:
 		case R.id.menu_txtName:
 			mActivity.changeBase(BaseFragment.TAG_MYPAGE, null);
 			break;

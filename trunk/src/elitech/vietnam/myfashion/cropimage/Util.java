@@ -29,7 +29,7 @@ import java.io.Closeable;
  */
 public class Util {
 
-    private static final String TAG = "db.Util";
+//    private static final String TAG = "db.Util";
 
     private Util() {
 

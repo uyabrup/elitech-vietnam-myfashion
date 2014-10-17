@@ -19,7 +19,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import elitech.vietnam.myfashion.R;
 import elitech.vietnam.myfashion.adapters.CategoryAdapter;
-import elitech.vietnam.myfashion.adapters.EndlessScrollListener;
 import elitech.vietnam.myfashion.entities.Category;
 
 /**

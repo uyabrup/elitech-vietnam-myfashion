@@ -30,7 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import elitech.vietnam.myfashion.R;
 import elitech.vietnam.myfashion.adapters.CommentAdapter;
-import elitech.vietnam.myfashion.dialogues.ConfirmDialog;
+import elitech.vietnam.myfashion.adapters.EndlessScrollListener;
 import elitech.vietnam.myfashion.dialogues.ConfirmDialog.ConfirmDialogClick;
 import elitech.vietnam.myfashion.entities.Comment;
 import elitech.vietnam.myfashion.entities.Product;
@@ -69,6 +69,30 @@ public class ProductCommentFragment extends AbstractFragment implements ConfirmD
 		
 		mAdapter = new CommentAdapter(mActivity, R.layout.item_comment, mComments);
 		mListView.setAdapter(mAdapter);
+		mListView.setOnScrollListener(new EndlessScrollListener() {
+			@Override
+			public void onLoadmore() {
+				mActivity.getServices().getProductCommnets(mProduct.Id, mComments.size(), LOADMORE, 1, new Callback<List<Comment>>() {
+					@Override
+					public void success(List<Comment> arg0, Response arg1) {
+						mComments.addAll(arg0);
+						mAdapter.notifyDataSetChanged();
+						setLoading(false);
+						if (arg0.size() < 20)
+							setEnd(true);
+					}
+					@Override
+					public void failure(RetrofitError arg0) {
+						Log.w("RetrofitError", arg0.getMessage());
+						setLoading(false);
+					}
+				});
+			}
+			@Override
+			public int getItemCount() {
+				return mComments.size();
+			}
+		});
 		
 		mRefresh.setColorSchemeResources(R.color.red, R.color.blue, R.color.green, R.color.orange);
 		
@@ -85,7 +109,7 @@ public class ProductCommentFragment extends AbstractFragment implements ConfirmD
 		mProduct = mActivity.getController().getProduct();
 		
 		mRefresh.setRefreshing(true);
-		onRefresh();
+		getData();
 	}
 
 	@Override
@@ -95,12 +119,11 @@ public class ProductCommentFragment extends AbstractFragment implements ConfirmD
 
 	@Override
 	public void onRefresh() {
-		mComments.clear();
 		getData();
 	}
 	
 	private void getData() {
-		mActivity.getServices().getProductCommnets(mProduct.Id, mComments.size(), LOADMORE, 1, new Callback<List<Comment>>() {
+		mActivity.getServices().getProductCommnets(mProduct.Id, 0, LOADMORE, 1, new Callback<List<Comment>>() {
 			@Override
 			public void success(List<Comment> arg0, Response arg1) {
 				mComments.addAll(arg0);
@@ -120,8 +143,7 @@ public class ProductCommentFragment extends AbstractFragment implements ConfirmD
 		switch (v.getId()) {
 		case R.id.detail_comment_btnSend:
 			if (mActivity.getLoggedinUser() == null) {
-				// TODO: 
-				ConfirmDialog.newInstance(R.string.login, R.string.loginsignup, 0, this).show(getFragmentManager());
+				Toast.makeText(mActivity, R.string.requestlogin, Toast.LENGTH_SHORT).show();
 			} else if (mEdtComment.getText().toString().length() == 0) {
 				Toast.makeText(mActivity, R.string.commentblank, Toast.LENGTH_SHORT).show();
 			} else {
@@ -147,8 +169,15 @@ public class ProductCommentFragment extends AbstractFragment implements ConfirmD
 						com.Type = 1;
 						mComments.add(com);
 						mAdapter.notifyDataSetChanged();
-						// TODO: notify comment
 						mBtnSend.setEnabled(true);
+						// Notify comment
+						mActivity.getServices().notifyComment(arg0, 1, new Callback<Integer>() {
+							@Override
+							public void failure(RetrofitError arg0) {
+							}
+							@Override
+							public void success(Integer arg0, Response arg1) {
+							}});
 					}
 					@Override
 					public void failure(RetrofitError arg0) {

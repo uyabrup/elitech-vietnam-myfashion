@@ -2,7 +2,7 @@ package elitech.vietnam.myfashion.widgets;
 
 import java.util.ArrayList;
 import java.util.WeakHashMap;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -57,7 +57,8 @@ public class MagicTextView extends TextView {
                 init(attrs);
         }
         
-        public void init(AttributeSet attrs){
+        @SuppressWarnings("deprecation")
+		public void init(AttributeSet attrs){
                 outerShadows = new ArrayList<Shadow>();
                 innerShadows = new ArrayList<Shadow>();
                 if(canvasStore == null){
@@ -158,7 +159,9 @@ public class MagicTextView extends TextView {
         }
 
         
-        @Override
+        @SuppressLint("DrawAllocation")
+		@SuppressWarnings("deprecation")
+		@Override
         public void onDraw(Canvas canvas){
                 super.onDraw(canvas);
                 
