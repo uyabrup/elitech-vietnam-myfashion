@@ -46,7 +46,7 @@
 
     <color name="likebutton_press">#2Fbfa644</color>
     <color name="likebutton_normal">#0Fbfa644</color>
-    <color name="menuicon_press">#dbbe5e</color>
+    <color name="menuicon_press">#0F000000</color>
     <color name="menuicon_normal">#00FFFFFF</color>
     <color name="btn_checkout_press">#6ead3a</color>
     <color name="btn_checkout_normal">#67ba2a</color>

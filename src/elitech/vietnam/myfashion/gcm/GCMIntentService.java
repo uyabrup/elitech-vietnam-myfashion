@@ -28,6 +28,7 @@ import com.google.gson.Gson;
 
 import elitech.vietnam.myfashion.MainActivity;
 import elitech.vietnam.myfashion.R;
+import elitech.vietnam.myfashion.badge.BadgeHelper;
 import elitech.vietnam.myfashion.config.Const;
 import elitech.vietnam.myfashion.config.Options;
 import elitech.vietnam.myfashion.entities.Member;
@@ -188,13 +189,15 @@ public class GCMIntentService extends IntentService {
 		// ////////////////////////
 
 		// mId allows you to update the notification later on.
+		int badge = mPrefs.getInt(PrefsDefinition.BADGE_COUNT, 0) + 1;
+		BadgeHelper.updateBadge(getApplicationContext(), badge);
+		mPrefs.edit().putInt(PrefsDefinition.BADGE_COUNT, badge).commit();
+		
 		mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
-//		((MyApplication) getApplicationContext()).mBadge.increaseBadge();
-//		mPrefs.edit().putInt("mBadgeCount", ((MyApplication) getApplicationContext()).mBadge.mBadgeCount).commit();
-		Intent intent = new Intent();
-		intent.setAction("elitech.vietnam.myfashion.mNotifyReceiver");
-		intent.putExtra("DATA", new Gson().toJson(noti));
-		sendBroadcast(intent);
+//		Intent intent = new Intent();
+//		intent.setAction("elitech.vietnam.myfashion.mNotifyReceiver");
+//		intent.putExtra("DATA", new Gson().toJson(noti));
+//		sendBroadcast(intent);
 	}
 	
 

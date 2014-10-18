@@ -1423,6 +1423,53 @@ class DbHandler {
 		$stmt->close ();
 		return $num_affected_rows;
 	}
+	public function updateNotifyUnread($id, $read) {
+		$str = "UPDATE	`notify`
+				SET		`unread`=?
+				WHERE	`id`=?;";
+				
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->bind_param ( "ii", $read, $id );
+		$stmt->execute ();
+		$res = $stmt->affected_rows;
+		$stmt->close ();
+		return $res;
+	}
+	public function getMemberNotification($id, $start, $count) {
+		$str = "SELECT		n.`id`,
+							n.`id_mem`,
+							n.`id_sender`,
+							m1.`name`		AS	`uid_sender`,
+							m1.`nick_name`	AS	`name_sender`,
+							n.`id_owner`,
+							IF (n.`cm_type`=1, p.`name`, m2.`name`)			AS	`uid_owner`,
+							IF (n.`cm_type`=1, p.`name`, m2.`nick_name`)	AS	`name_owner`,
+							n.`content`,
+							n.`id_post`,
+							m1.`image`,
+							n.`type`,
+							n.`cm_type`,
+							n.`unread`,
+							n.`date`,
+							n.`status`
+				FROM		`notify` n
+				INNER JOIN	`account` m1
+				ON			m1.`id`=n.`id_sender`
+				LEFT JOIN	`account` m2
+				ON			m2.`id`=n.`id_owner`
+				LEFT JOIN	`product` p
+				ON			p.`id`=n.`id_post`
+				WHERE		n.`id_mem`=?
+				ORDER BY	n.`date`	DESC
+				LIMIT		?, ?;";
+		
+		$stmt = $this->conn->prepare ( $str );
+		$stmt->bind_param ( "iii", $id, $start, $count );
+		$stmt->execute ();
+		$data = $stmt->get_result();
+		$stmt->close ();
+		return $data;
+	}
 }
 
 ?>

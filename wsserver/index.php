@@ -1606,6 +1606,38 @@ $app->post ( '/addMemoTrack', function () use ($app) {
 	echoRespnse(200, $res);
 } );
 
+$app->get( '/member/:id/notification', function ($id) use ($app) {
+	authenticate();
+	verifyRequiredParams ( array (
+			'start',
+			'count'
+	) );
+	
+	$start = $app->request->get ( 'start' );
+	$count = $app->request->get ( 'count' );
+	
+	$db = new DbHandler();
+	$res = $db->getMemberNotification($id, $start, $count);
+	$data = array();
+	while ($row = $res->fetch_assoc())
+		array_push($data, $row);
+	
+	echoRespnse(200, $data);
+} );
+
+$app->put ( '/notification/:id/unread', function ($id) use ($app) {
+	authenticate();
+	verifyRequiredParams ( array (
+			'unread'
+	) );
+	
+	$unread = $app->request->put ( 'unread' );
+	
+	$db = new DbHandler();
+	$res = $db->updateNotifyUnread($id, $unread);
+	echoRespnse (200, $res);
+} );
+
 
 /**
  * Test method

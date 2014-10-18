@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Generated with http://android-holo-colors.com -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="AppTheme" parent="@style/_AppTheme">
+        <item name="android:actionBarItemBackground">@drawable/selectable_background_apptheme</item>
+        <item name="android:popupMenuStyle">@style/PopupMenu.AppTheme</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.AppTheme</item>
+        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.AppTheme</item>
+        <item name="android:actionDropDownStyle">@style/DropDownNav.AppTheme</item>
+        <item name="android:actionBarStyle">@style/ActionBar.Solid.AppTheme</item>
+        <item name="android:actionModeBackground">@drawable/cab_background_top_apptheme</item>
+        <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_apptheme</item>
+        <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.AppTheme</item>
+    </style>
+
+</resources>

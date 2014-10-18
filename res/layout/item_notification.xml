@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/elitech.vietnam.myfashion"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="5dp" >
+
+    <elitech.vietnam.myfashion.widgets.rdimgview.RoundedImageView
+        android:id="@+id/item_noti_imgAvatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/ok"
+        android:scaleType="centerCrop"
+        android:src="@drawable/no_avatar"
+        app:corner_radius="3dp" />
+
+    <TextView
+        android:id="@+id/item_noti_txtContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@+id/item_noti_imgAvatar"
+        android:layout_toRightOf="@+id/item_noti_imgAvatar"
+        android:typeface="serif" />
+
+    <TextView
+        android:id="@+id/item_noti_txtTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/item_noti_txtContent"
+        android:layout_gravity="end"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/gray"
+        android:textSize="12sp"
+        android:typeface="serif" />
+
+</RelativeLayout>

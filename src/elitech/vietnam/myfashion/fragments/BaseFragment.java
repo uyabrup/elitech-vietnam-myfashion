@@ -42,6 +42,7 @@ public class BaseFragment extends Fragment {
 	public static final String	TAG_TPMLOGIN		= "TAG_TPMLOGIN";
 	public static final String	TAG_NETWORKERROR	= "TAG_NETWORKERROR";
 	public static final String	TAG_INVENTORY		= "TAG_INVENTORY";
+	public static final String	TAG_NOTIFICATION	= "TAG_NOTIFICATION";
 	
 	private static final String SAVED_CURRENTTAG 	= "SAVED_CURRENTTAG";
 
@@ -129,6 +130,8 @@ public class BaseFragment extends Fragment {
 				fragment = new SettingsFragment();
 			if (mTag.equals(TAG_INVENTORY))
 				fragment = InventoryFragment.newInstance();
+			if (mTag.equals(TAG_NOTIFICATION))
+				fragment = NotificationFragment.newInstance();
 			
 			getChildFragmentManager().beginTransaction().add(R.id.base_container, fragment, mTag).commit();
 		} else {
