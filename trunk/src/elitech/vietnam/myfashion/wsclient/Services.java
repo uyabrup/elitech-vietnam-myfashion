@@ -21,6 +21,7 @@ import elitech.vietnam.myfashion.entities.Comment;
 import elitech.vietnam.myfashion.entities.Cosmetic;
 import elitech.vietnam.myfashion.entities.District;
 import elitech.vietnam.myfashion.entities.Member;
+import elitech.vietnam.myfashion.entities.Notify;
 import elitech.vietnam.myfashion.entities.Post;
 import elitech.vietnam.myfashion.entities.Product;
 import elitech.vietnam.myfashion.entities.ProductDetail;
@@ -197,4 +198,11 @@ public interface Services {
 	@FormUrlEncoded
 	@POST("/addMemoTrack")
 	void addMemoTrack(@Field("idaccount") int idAccount, @Field("email") String email, @Field("version") String version, Callback<Integer> callback);
+	
+	@FormUrlEncoded
+	@PUT("/notification/{id}/unread")
+	void readNotification(@Path("id") int id, @Field("unread") int unread, Callback<Integer> callback);
+	
+	@GET("/member/{id}/notification")
+	void getMemberNotification(@Path("id") int account, @Query("start") int start, @Query("count") int count, Callback<List<Notify>> callback);
 }

@@ -1,5 +1,5 @@
 /**
- * Aug 19, 2014 1:29:37 PM
+ * Oct 17, 2014 3:36:57 PM
  */
 package elitech.vietnam.myfashion.fragments;
 
@@ -17,8 +17,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.AdapterView.OnItemClickListener;
 import elitech.vietnam.myfashion.R;
 import elitech.vietnam.myfashion.adapters.EndlessScrollListener;
 import elitech.vietnam.myfashion.adapters.ProductGridAdapter;
@@ -29,6 +29,7 @@ import elitech.vietnam.myfashion.entities.Size;
 
 /**
  * @author Cong
+ *
  */
 public class TrademarkContentFragment extends AbstractFragment implements OnRefreshListener, AddToCartCallBack, OnItemClickListener {
 

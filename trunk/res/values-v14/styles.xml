@@ -3,10 +3,27 @@
     <!--
         Base application theme for API 14+. This theme completely replaces
         AppBaseTheme from BOTH res/values/styles.xml and
-        res/values-v11/styles.xml on API 14+ devices.
-    -->
+        res/values-v11/styles.xml on API 14+ devices.    -->
     <style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- API 14 theme customizations can go here. -->
+    </style>
+
+    <style name="ActionBar.Solid.AppTheme" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
+        <item name="android:background">@drawable/ab_background_textured_apptheme</item>
+        <item name="android:backgroundStacked">@drawable/ab_stacked_solid_apptheme</item>
+        <item name="android:backgroundSplit">@drawable/ab_background_textured_apptheme</item>
+        <item name="android:progressBarStyle">@style/ProgressBar.AppTheme</item>
+    </style>
+
+    <style name="ActionBar.Transparent.AppTheme" parent="@style/Widget.AppCompat.Light.ActionBar">
+        <item name="android:background">@drawable/ab_transparent_apptheme</item>
+        <item name="android:progressBarStyle">@style/ProgressBar.AppTheme</item>
+    </style>
+
+    <!-- this style is only referenced in a Light.DarkActionBar based theme -->
+    <style name="Theme.AppTheme.Widget" parent="@style/Theme.AppCompat">
+        <item name="android:popupMenuStyle">@style/PopupMenu.AppTheme</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.AppTheme</item>
     </style>
 
 </resources>
